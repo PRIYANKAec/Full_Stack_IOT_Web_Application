@@ -8,7 +8,7 @@ export default function readValues() {
     const readSensor = async (values) => {
         try {
             setReadLoading(true);
-            const res = await fetch('http://localhost:3000/sensor', {
+            const res = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/sensor`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json', 

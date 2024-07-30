@@ -62,6 +62,7 @@ const App = () => {
           </Card>
         </div>
       ) : (
+        <div className="flex justify-center items-center h-screen align-middle">
         <Card className='flex m-8 border-slate-700 rounded-3xl h-auto'>
           {Object.keys(sensorData).map(device_id => (
             <Card className="relative block w-[350px] rounded-lg bg-slate-200 p-6 shadow-lg m-7">
@@ -84,6 +85,7 @@ const App = () => {
             </Card>
           ))}
         </Card>
+        </div>
       )}
     </div>
   );
