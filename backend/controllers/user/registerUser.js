@@ -9,7 +9,11 @@ const registerUser = async (req, res) => {
     const schema = Joi.object({
         username: Joi.string().required(),
         email: Joi.string().email().required(),
-        password: Joi.string().min(6).required()
+        password: Joi.string().min(6).required(),
+        firstName: Joi.string().required(),
+        lastName: Joi.string().required(),
+        registerNumber: Joi.string().required(),
+        batch: Joi.number().integer().required()
     });
 
     const { error, value } = schema.validate(req.body);

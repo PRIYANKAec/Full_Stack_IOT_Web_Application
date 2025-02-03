@@ -31,9 +31,9 @@ class UserModel {
         })
     }
 
-    static async updateUser(id, userData) {
+    static async updateUser(email, userData) {
         return await prisma.user.update({
-            where: { id },
+            where: { email },
             data: userData
         })
     }
@@ -49,4 +49,4 @@ class UserModel {
     }
 }
 
-module.exports = UserModel;
+module.exports = UserModel; 

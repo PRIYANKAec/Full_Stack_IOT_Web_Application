@@ -5,7 +5,14 @@ const Joi = require('joi');
 
 const updateUser = async (req, res) => {
     const schema = Joi.object({
-        password: Joi.string().min(6)
+        username: Joi.string(),
+        email: Joi.string().email().required(),
+        password: Joi.string().min(6),
+        firstName: Joi.string(),
+        lastName: Joi.string(),
+        registerNumber: Joi.string(),
+        batch: Joi.number().integer(),
+        role: Joi.string().valid('ADMIN', 'USER')
     });
 
     const { error, value } = schema.validate(req.body);
@@ -15,12 +22,21 @@ const updateUser = async (req, res) => {
     }
 
     try {
-        const { id } = req.params;
-        const userId = parseInt(id, 10);
-        if (isNaN(userId)) {
-            return res.status(400).json(formatResponse('error', 'Validation Error', 'Invalid user ID'));
+        const email = req.body.email;
+
+        // Check if user exists
+        const userExists = await User.findByEmail(email);
+        if (!userExists) {
+            return res.status(404).json(formatResponse('error', 'User with this email not found'));
         }
-        const user = await User.updateUser(userId, value);
+
+        // Check if password update
+        if (value.password) {
+            const hashedPassword = await bcrypt.hash(value.password, 10);
+            value.password = hashedPassword;
+        }
+        
+        const user = await User.updateUser(email, value);
         return res.status(200).json(formatResponse('success', 'User updated successfully', user));
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {

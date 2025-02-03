@@ -11,8 +11,8 @@ const router = express.Router();
 // Define user-related routes
 router.post('/users/register', registerUser);
 router.post('/users/signin', signinUser);
-router.get('/users/getAll', authenticateToken, getAllUser);
-router.patch('/users/update/:id', authenticateToken, updateUser);
-router.delete('/users/:id', authenticateToken, deleteUser);
+router.post('/users/getAll', authenticateToken, getAllUser);
+router.patch('/users/update', authenticateToken, updateUser);
+router.delete('/users/delete/:id', authenticateToken, deleteUser);
 
 module.exports = router;
