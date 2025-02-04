@@ -39,9 +39,10 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       await login(data);
-      navigate('/');
     } catch (error) {
       console.error('Login failed:', error);
+    } finally {
+      navigate('/login');
     }
   };
 
@@ -70,18 +71,18 @@ const Login = () => {
                 placeholder="Enter your Password"
               />
               {errors.password && <p className="flex justify-end pr-3 text-red-500 mt-0 text-sm md:text-base lg:text-lg">{errors.password.message}</p>}
-            </div>            
+            </div>
           </form>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4 mb-4">
+          <Button type="submit" form="loginForm" className="w-full md:w-72 lg:w-96 bg-custom-softBlue text-white hover:bg-custom-deepBlue md:text-lg">
+            {loading && <FadeLoader color="#FFFFF" loading={loading} size={35} />}
+            {!loading && 'Login'}
+          </Button>
           <Button
             className="w-full md:w-72 lg:w-96 bg-custom-softBlue text-white hover:bg-custom-deepBlue md:text-lg"
             onClick={() => navigate('/register')}
           >Register</Button>
-          <Button type="submit" form="loginForm" className="w-full md:w-72 lg:w-96 bg-custom-softBlue text-white hover:bg-custom-deepBlue md:text-lg">
-          {loading && <FadeLoader color="#FFFFF" loading={loading} size={35} />}
-          {!loading && 'Login'}
-          </Button>
         </CardFooter>
       </Card>
       <ToastContainer />

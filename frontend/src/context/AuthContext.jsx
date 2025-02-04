@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (userData) => {
+  const registerUser = async (userData) => {
     try {
       setLoading(true);
       const response = await api.post('/api/users/register', userData);
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading, error }}>
+    <AuthContext.Provider value={{ user, login, registerUser, logout, loading, error }}>
       {children}
     </AuthContext.Provider>
   );
