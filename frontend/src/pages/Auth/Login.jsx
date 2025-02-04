@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ClipLoader } from 'react-spinners';
+import { FadeLoader } from 'react-spinners';
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -79,7 +79,7 @@ const Login = () => {
             onClick={() => navigate('/register')}
           >Register</Button>
           <Button type="submit" form="loginForm" className="w-full md:w-72 lg:w-96 bg-custom-softBlue text-white hover:bg-custom-deepBlue md:text-lg">
-          {loading && <ClipLoader color="#FFFFF" loading={loading} size={35} />}
+          {loading && <FadeLoader color="#FFFFF" loading={loading} size={35} />}
           {!loading && 'Login'}
           </Button>
         </CardFooter>
