@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaSignInAlt } from "react-icons/fa";
 
-const Header = () => {
+const Navbar = () => {
   return (
     <nav style={{ backgroundColor: "#03045E" }} className="text-white px-8 py-4 flex justify-between items-center">
 
@@ -37,4 +37,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Navbar;

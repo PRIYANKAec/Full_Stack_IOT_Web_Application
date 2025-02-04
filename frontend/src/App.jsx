@@ -1,27 +1,26 @@
 import React from 'react'
-import {BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Home from './pages/Home'
-import Header from './components/header'
-import Analytics from './pages/Analytics'
-import Admin from './pages/Admin'
+import Navbar from './components/navbar'
 import Login from './pages/Auth/Login'
 import './styles/index.css';
-
+import { isAuthenticated } from './utils/auth';
 
 function App() {
+  
   return (
-    <div className='App'>
+    <AuthProvider>
       <Router>
-        <Header />
+        <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/" element={
+            !!isAuthenticated() ? <Home /> : <Navigate to="/login" />}               
+            />
           <Route path="/login" element={<Login />} />
-          <Route path="*" element={<Home />} />
         </Routes>
       </Router>
-    </div>
+    </AuthProvider>
   )
 }
 
