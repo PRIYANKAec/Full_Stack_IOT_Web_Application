@@ -18,18 +18,22 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (userData) => {
     try {
-      const response = await api.post('/api/users/signin', userData);
+      setLoading(true);
+      const response = await api.post('/api/users/signin', userData);  
       saveToken(response.data.data.token);
       const User = response.data.data.user;
       setUser(User);
       localStorage.setItem('user', JSON.stringify(user));
     } catch (error) {
       console.error('Login failed:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const register = async (userData) => {
     try {
+      setLoading(true);
       const response = await api.post('/api/users/register', userData);
       saveToken(response.data.data.token);
       const newUser = response.data.data.newUser;
@@ -37,6 +41,8 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('user', JSON.stringify(newUser));
     } catch (error) {
       console.error('Registration failed:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,7 +53,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
