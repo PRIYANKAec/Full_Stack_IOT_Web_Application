@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const { Prisma } = require('@prisma/client');
 const User = require('../../models/userModel');
 const { formatResponse } = require('../../utils/helper');
