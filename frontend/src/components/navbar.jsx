@@ -20,12 +20,6 @@ const Navbar = () => {
         <li>
           <Link to="/" className="hover:text-[#48CAE4] transition">Home</Link>
         </li>
-        <li>
-          <Link to="/analytics" className="hover:text-[#48CAE4] transition">Analytics</Link>
-        </li>
-        <li>
-          <Link to="/admin" className="hover:text-[#48CAE4] transition">Admin</Link>
-        </li>
       </ul>
 
       {/* Right Side - Login Button */}
