@@ -13,6 +13,12 @@ class SensorModel {
             where: { id }
         })
     }
+
+    static async findSensorByName(name) {
+        return await prisma.sensor.findFirst({
+            where: { name }
+        })
+    }
     
     static async findByProjectId(projectId) {
         return await prisma.sensor.findMany({
@@ -44,6 +50,24 @@ class SensorModel {
         });
     }
 
+    // find sensor data by id
+    static async findSensorDataById(id) {
+        return await prisma.sensorData.findUnique({
+            where: { id }
+        });
+    }
+
+    // find sensor data by ids
+    static async findSensorDataByIds(ids) {
+        return await prisma.sensorData.findMany({
+            where: {
+                id: {
+                    in: ids
+                }
+            }
+        });
+    }
+
     //delete sensor data
     static async deleteSensorData(id) {
         return await prisma.sensorData.delete({
@@ -52,9 +76,13 @@ class SensorModel {
     }
 
     //delete multiple sensor data
-    static async deleteMultipleSensorData(sensorId) {
+    static async deleteMultipleSensorData(ids) {
         return await prisma.sensorData.deleteMany({
-            where: { sensorId }
+            where: {
+                id: {
+                    in: ids
+                }
+            }
         });
     }
 }
