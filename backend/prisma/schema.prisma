@@ -13,21 +13,59 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  USER
-  ADMIN
-}
-
 model User {
-  id             Int      @id @default(autoincrement())
+  id             Int       @id @default(autoincrement())
   firstName      String?
   lastName       String?
   registerNumber String?   @unique
   batch          Int?
-  username       String   @unique
-  email          String   @unique
+  username       String    @unique
+  email          String    @unique
   password       String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  role           Role     @default(USER)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  role           Role      @default(USER)
+  projects       Project[]
+}
+
+model Project {
+  id              Int      @id @default(autoincrement())
+  name            String
+  description     String
+  microcontroller String
+  userId          Int
+  user            User     @relation(fields: [userId], references: [id])
+  sensors         Sensor[]
+
+  @@unique([userId, name])
+}
+
+model Sensor {
+  id         Int          @id @default(autoincrement())
+  name       String
+  type       SensorType
+  projectId  Int
+  project    Project      @relation(fields: [projectId], references: [id])
+  sensorData SensorData[]
+
+  @@unique([projectId, name])
+}
+
+model SensorData {
+  id        Int      @id @default(autoincrement())
+  value     Float
+  unit      String
+  timestamp DateTime @default(now())
+  sensorId  Int
+  sensor    Sensor   @relation(fields: [sensorId], references: [id])
+}
+
+enum SensorType {
+  INPUT
+  OUTPUT
+}
+
+enum Role {
+  USER
+  ADMIN
 }
