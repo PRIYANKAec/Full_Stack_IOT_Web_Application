@@ -16,11 +16,14 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FadeLoader } from 'react-spinners';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { login, error, loading } = useAuth();
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (error) {
@@ -65,11 +68,20 @@ const Login = () => {
               {errors.email && <p className="flex justify-end pr-3 text-red-500 mt-0 text-sm md:text-base lg:text-lg">{errors.email.message}</p>}
 
               <Label className="block font-bold text-base md:text-lg lg:text-xl px-2">Password</Label>
-              <Input
-                type="password"
-                {...register('password', { required: 'Password is required' })}
-                placeholder="Enter your Password"
-              />
+              <div className="relative">
+                <Input
+                  type={showPassword ? 'text' : 'password'}
+                  {...register('password', { required: 'Password is required' })}
+                  placeholder="Enter your Password"
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 md:pr-5 flex items-center text-gray-400"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
               {errors.password && <p className="flex justify-end pr-3 text-red-500 mt-0 text-sm md:text-base lg:text-lg">{errors.password.message}</p>}
             </div>
           </form>

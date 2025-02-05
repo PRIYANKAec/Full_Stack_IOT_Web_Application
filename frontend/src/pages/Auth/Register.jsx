@@ -17,11 +17,15 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FadeLoader } from 'react-spinners';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Register = () => {
   const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm();
   const { registerUser, error, loading } = useAuth();
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     if (error) {
@@ -38,7 +42,7 @@ const Register = () => {
   }, [error]);
 
   const onSubmit = async (data) => {
-    if(data.confirmPassword) delete data.confirmPassword;
+    if (data.confirmPassword) delete data.confirmPassword;
     try {
       await registerUser(data);
     } catch (error) {
@@ -91,7 +95,7 @@ const Register = () => {
               <Label className="block font-bold text-base md:text-lg lg:text-xl px-2">Batch</Label>
               <Select onValueChange={(value) => setValue('batch', value)}>
                 <SelectTrigger className="w-full px-3 py-2 border rounded-md text-gray-500">
-                  <SelectValue>{watch('batch') || "Select Year"}</SelectValue>
+                  <SelectValue placeholder='Select Batch'>{watch('batch')? watch('batch') : ""}</SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -121,22 +125,40 @@ const Register = () => {
               {errors.email && <p className="flex justify-end pr-3 text-red-500 mt-0 text-sm md:text-base lg:text-lg">{errors.email.message}</p>}
 
               <Label className="block font-bold text-base md:text-lg lg:text-xl px-2">Password</Label>
-              <Input
-                type="password"
-                {...register('password', { required: 'Password is required' })}
-                placeholder="Enter your Password"
-              />
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  {...register('password', { required: 'Password is required' })}
+                  placeholder="Enter your Password"
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 md:pr-5 flex items-center text-gray-400"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
               {errors.password && <p className="flex justify-end pr-3 text-red-500 mt-0 text-sm md:text-base lg:text-lg">{errors.password.message}</p>}
 
               <Label className="block font-bold text-base md:text-lg lg:text-xl px-2">Confirm Password</Label>
+              <div className="relative">
               <Input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 {...register('confirmPassword', {
                   required: 'Confirm Password is required',
                   validate: value => value === password || 'Passwords do not match'
                 })}
                 placeholder="Confirm your Password"
               />
+              <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 md:p-5 flex items-center text-gray-400"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+                </div>
               {errors.confirmPassword && <p className="flex justify-end pr-3 text-red-500 mt-0 text-sm md:text-base lg:text-lg">{errors.confirmPassword.message}</p>}
             </div>
           </form>
