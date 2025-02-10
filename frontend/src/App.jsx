@@ -5,7 +5,10 @@ import Home from './pages/Home';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import './styles/index.css';
-import Navbar from './components/navbar';
+import Sidebar from './components/sidebar';
+import StudentHome from './pages/Student/StudentHome';
+import LiveTracking from './pages/Student/LiveTracking';
+import Projects from './pages/Student/Projects';
 
 function App() {
   return (
@@ -25,12 +28,15 @@ const AppContent = () => {
 
   return (
     <>
-      {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
+      {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
       <Routes>
         <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
         <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
         <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
         <Route path="*" element={<Navigate to={user ? "/" : '/login' } />} />
+        <Route path="/studentHome" element={<StudentHome />} />
+        <Route path="/liveTracking" element={<LiveTracking />} />
+        <Route path="/projects" element={<Projects />} />"
       </Routes>
     </>
   );
