@@ -4,17 +4,16 @@ export const getStatus = async (userId) => {
   try {
     const response = await api.post(`/api/projects/getByUser/${userId}`);
     if(response.data.data[0].id) {
-      return 'connected';
+      return 'Connected';
     }
     else if (response.data.data[0].id === undefined) {
       // console.log(response.data);
-      return 'disconnected';
+      return 'Error';
     }
   } catch (error) {
-    if(error.response.status === 403) {
-      // console.log(response.data);
-      return 'disconnected';
+    if(error?.response?.data?.data?.includes('Invalid token')) {
+      return 'Expired';
     }
-    return 'error';
+    return 'Disconnected';
   }
 };

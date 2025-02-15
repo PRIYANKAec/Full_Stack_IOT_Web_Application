@@ -3,9 +3,10 @@ import { cn } from '@/lib/utils';
 
 const Badge = ({ status }) => {
   const statusClasses = {
-    connected: 'bg-green-500 text-white',
-    disconnected: 'bg-red-500 text-white',
-    failed: 'bg-yellow-500 text-white',
+    Connected: 'bg-green-500 text-white',
+    Disconnected: 'bg-red-500 text-white',
+    Error: 'bg-red-500 text-white',
+    Expired: 'bg-yellow-500 text-white',
   };
 
   return (

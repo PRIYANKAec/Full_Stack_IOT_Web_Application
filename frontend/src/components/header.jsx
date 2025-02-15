@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 
 const Header = () => {
   const { user } = useAuth();
-  const [status, setStatus] = useState('disconnected');
+  const [status, setStatus] = useState('Disconnected');
 
   useEffect(() => {
     const fetchStatus = async () => {
