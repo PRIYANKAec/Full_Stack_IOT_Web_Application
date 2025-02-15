@@ -1,17 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import Home from './pages/Home';
-import Login from './pages/Auth/Login';
-import Register from './pages/Auth/Register';
 import './styles/index.css';
+import ProtectedRoute from './ProtectedRoute';
+
 import Sidebar from './components/sidebar';
-import StudentHome from './pages/Student/StudentHome';
-import LiveTracking from './pages/Student/LiveTracking';
-import Projects from './pages/Student/Projects';
 import Header from './components/header';
 
-function App() {
+import Register from './pages/Auth/Register';
+import Login from './pages/Auth/Login';
+import Home from './pages/Home';
+import Projects from './pages/Student/Projects';
+import LiveTracking from './pages/Student/LiveTracking';
+import Tutorial from './pages/Student/Tutorial';
+
+const App = () => {
   return (
     <AuthProvider>
       <Router>
@@ -38,9 +41,18 @@ const AppContent = () => {
           <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
           <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
           <Route path="*" element={<Navigate to={user ? "/" : '/login'} />} />
-          <Route path="/studentHome" element={<StudentHome />} />
-          <Route path="/liveTracking" element={<LiveTracking />} />
-          <Route path="/projects" element={<Projects />} />
+
+          <Route path="/home" element={<Home />} />
+
+          <Route path="/projects" element={
+            <ProtectedRoute element={<Projects />} allowedRoles={["USER"]} />
+            } />
+          <Route path="/liveTracking" element={
+            <ProtectedRoute element={<LiveTracking />} allowedRoles={["USER"]} />
+            } />
+          <Route path="/tutorial" element={
+            <ProtectedRoute element={<Tutorial />} allowedRoles={["USER"]} />
+            } />
         </Routes>
         </div>
       </div>

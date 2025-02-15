@@ -14,6 +14,7 @@ export const getStatus = async (userId) => {
     if(error?.response?.data?.data?.includes('Invalid token')) {
       return 'Expired';
     }
+    // console.log(error);
     return 'Disconnected';
   }
 };
