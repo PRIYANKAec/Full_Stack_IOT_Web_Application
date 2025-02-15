@@ -9,6 +9,7 @@ import Sidebar from './components/sidebar';
 import StudentHome from './pages/Student/StudentHome';
 import LiveTracking from './pages/Student/LiveTracking';
 import Projects from './pages/Student/Projects';
+import Header from './components/header';
 
 function App() {
   return (
@@ -29,16 +30,19 @@ const AppContent = () => {
   return (
     <div className='flex'>
       {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
-      <div className='flex-grow'>
-      <Routes>
-        <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
-        <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
-        <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
-        <Route path="*" element={<Navigate to={user ? "/" : '/login' } />} />
-        <Route path="/studentHome" element={<StudentHome />} />
-        <Route path="/liveTracking" element={<LiveTracking />} />
-        <Route path="/projects" element={<Projects />} />
-      </Routes>
+      <div className='w-full'>
+      <div className='flex flex-col'>
+      {!hideNavbarRoutes.includes(location.pathname) && <Header />}
+        <Routes>
+          <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
+          <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+          <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
+          <Route path="*" element={<Navigate to={user ? "/" : '/login'} />} />
+          <Route path="/studentHome" element={<StudentHome />} />
+          <Route path="/liveTracking" element={<LiveTracking />} />
+          <Route path="/projects" element={<Projects />} />
+        </Routes>
+        </div>
       </div>
     </div>
   );

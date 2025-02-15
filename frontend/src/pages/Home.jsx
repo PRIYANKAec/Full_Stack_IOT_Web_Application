@@ -3,11 +3,12 @@ import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
   const { user } = useAuth();
+  const userDetail = user && user ? JSON.stringify(user) : "No user details available";
 
   return (
-    <div className="text-center mt-10">
+    <div className="mx-auto p-4">
       <h1 className="text-2xl font-bold">Welcome to the Home Page</h1>
-      {user && <pre>{JSON.stringify(user, null, 2)}</pre>}
+      {/* <p className="mt-4">User: {userDetail}</p> */}
     </div>
   );
 }
