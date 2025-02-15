@@ -28,7 +28,7 @@ const AppContent = () => {
   const hideNavbarRoutes = ['/login', '/register'];
 
   return (
-    <div className='flex'>
+    <div className='flex will-change-transform-opacity'>
       {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
       <div className='w-full'>
       <div className='flex flex-col'>

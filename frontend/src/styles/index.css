@@ -79,3 +79,7 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: #555;
 }
+
+.will-change-transform-opacity {
+  will-change: transform, opacity;
+}

@@ -35,15 +35,16 @@ const Sidebar = () => {
           <FaBars className="text-2xl cursor-pointer text-white" onClick={toggleSideBar} />
         )}
       </div>
-      <motion.div
-        className={`fixed top-0 left-0 pt-10 pb-4 h-full bg-primary text-secondary min-h-screen transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-in-out sm:relative sm:translate-x-0 sm:flex sm:flex-col sm:justify-between sm:w-36 lg:w-64 md:w-48 sm:pt-0`}
+      <motion.div 
+        layout
+        className={`fixed top-0 left-0 pt-10 pb-4 h-full bg-primary text-secondary min-h-screen transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} sm:relative sm:translate-x-0 sm:flex sm:flex-col sm:justify-between sm:w-36 lg:w-64 md:w-48 sm:pt-0`}
         initial={{ x: -100 }}
-        animate={{ x: isOpen ? 0 : -300, transition: { duration: 0.4 } }}
+        animate={{ x: isOpen ? 0 : -300, transition: { duration: 0.8, ease: "easeInOut" } }}
         variants={sidebarVariants}
       >
         <motion.div variants={linkVariants} whileHover="hover"
           onClick={toggleSideBar}
-          className='flex items-center justify-center mt-4 space-x-2 mb-4 sm:mb-0'>
+          className='flex items-center justify-center mt-4 space-x-2 mb-4 sm:mb-0 cursor-pointer'>
           <img src='/IOT.svg' alt='logo' className='w-14 h-14 sm:w-10 sm:h-10 md:w-14 md:h-14  rounded-xl' />
           <p className='font-semibold md:text-xl'>IoT Dashboard</p>
         </motion.div>

@@ -7,10 +7,12 @@ export const getStatus = async (userId) => {
       return 'connected';
     }
     else if (response.data.data[0].id === undefined) {
+      // console.log(response.data);
       return 'disconnected';
     }
   } catch (error) {
     if(error.response.status === 403) {
+      // console.log(response.data);
       return 'disconnected';
     }
     return 'error';
