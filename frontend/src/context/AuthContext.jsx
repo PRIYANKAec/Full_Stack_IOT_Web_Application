@@ -10,21 +10,32 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    const token = getToken();
+    if (token) {
+      fetchUserData(token);
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
+
+  const fetchUserData = async (token) => {
+    try {
+      const response = await api.post('/api/users/me');
+      setUser(response.data.data.user);
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+      setError('Failed to fetch user data');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const login = async (userData) => {
     try {
       setLoading(true);
       const response = await api.post('/api/users/signin', userData);
       saveToken(response.data.data.token);
-      const user = response.data.data.user;
-      setUser(user);
-      localStorage.setItem('user', JSON.stringify(user));
+      fetchUserData(response.data.data.token);
       setError(null);
     } catch (error) {
       console.error('Login failed:', error);
@@ -39,9 +50,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       const response = await api.post('/api/users/register', userData);
       saveToken(response.data.data.token);
-      const newUser = response.data.data.newUser;
-      setUser(newUser);
-      localStorage.setItem('user', JSON.stringify(newUser));
+      fetchUserData(response.data.data.token);
       setError(null);
     } catch (error) {
       console.error('Registration failed:', error);
@@ -54,7 +63,6 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     removeToken();
     setUser(null);
-    localStorage.removeItem('user');
   };
 
   return (
