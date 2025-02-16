@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { FaRegBell, FaRegUser } from 'react-icons/fa';
-import { RiAdminFill } from "react-icons/ri";
+import { useNavigate } from 'react-router-dom';
+
 import { useAuth } from '@/context/AuthContext';
+import { motion } from 'framer-motion';
+import Badge from './ui/badge';
 import { Button } from './ui/button';
 import { getStatus } from '@/utils/status';
-import Badge from './ui/badge';
-import { motion } from 'framer-motion';
+
+import { FaRegBell, FaRegUser } from 'react-icons/fa';
+import { RiAdminFill } from "react-icons/ri";
 
 const Header = () => {
   const { user } = useAuth();
   const [status, setStatus] = useState('Disconnected');
+  const Navigate = useNavigate();
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -47,15 +51,16 @@ const Header = () => {
         )}
         <p className="pl-2 sm:pl-0 text-base sm:text-lg font-medium">{user?.username || "Guest"}</p>
       </div>
+      
       <div className="flex items-center space-x-2 sm:space-x-4">
         <motion.div
           whileHover={{ scale: 1.05 }}
         >
           <Button 
             variant="secondary" className="rounded-lg px-1 sm:px-4 shadow-md transition-all hover:shadow-lg"
-            onClick={() => location.href = '/projects'}
+            onClick={() => user.role === 'ADMIN' ? Navigate('/manageProject') : Navigate('/projects')}
           >
-            Create Project
+            {user?.role === 'ADMIN' ? 'Manage Projects' : 'Create Project'}
           </Button>
         </motion.div>
         <Badge status={status} className="text-sm font-semibold" />
