@@ -83,3 +83,7 @@
 .will-change-transform-opacity {
   will-change: transform, opacity;
 }
+
+html, body, #root {
+  height: 100%;
+}

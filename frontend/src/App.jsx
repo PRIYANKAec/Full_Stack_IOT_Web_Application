@@ -1,8 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import './styles/index.css';
 import ProtectedRoute from './ProtectedRoute';
+import './styles/index.css';
+import { Toaster } from "@/components/ui/toaster";
 
 import Sidebar from './components/sidebar';
 import Header from './components/header';
@@ -40,7 +41,8 @@ const AppContent = () => {
     <div className='flex will-change-transform-opacity'>
       {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
       <div className='w-full'>
-        <div className='flex flex-col'>
+        <Toaster />
+        <div className='flex flex-col h-full'>
           {!hideNavbarRoutes.includes(location.pathname) && <Header />}
           <Routes>
             <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
