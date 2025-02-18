@@ -11,10 +11,10 @@ const router = express.Router();
 
 // Define user-related routes
 router.post('/projects/create', authenticateToken, createProject);
-router.post('/projects/get/:id', authenticateToken, getProjectById);
-router.post('/projects/getByUser/:userId', authenticateToken, getProjectByUserId);
+router.post('/projects/get/:projectId', authenticateToken, getProjectById);
+router.post('/projects/getByUser/:id', authenticateToken, getProjectByUserId);
 router.post('/projects/getAll', authenticateToken, getAllProject);
-router.patch('/projects/update/:id', authenticateToken, updateProject);
-router.delete('/projects/delete/:id', authenticateToken, deleteProject);
+router.patch('/projects/update/:projectId', authenticateToken, updateProject);
+router.delete('/projects/delete/:projectId', authenticateToken, deleteProject);
 
 module.exports = router;

@@ -16,6 +16,7 @@ const deleteMultipleSensorData = async (req, res) => {
     }
 
     const bodySchema = Joi.object({
+        id: Joi.number().integer().required(),
         ids: Joi.array().items(Joi.number().integer().required()).required()
     });
 

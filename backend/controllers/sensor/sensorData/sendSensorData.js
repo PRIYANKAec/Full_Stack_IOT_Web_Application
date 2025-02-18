@@ -10,6 +10,7 @@ const sendSensorData = async (req, res) => {
     });
 
     const bodySchema = Joi.object({
+        id: Joi.number().integer().required(),
         value: Joi.number().required(),
         unit: Joi.string().required()
     });
@@ -40,7 +41,8 @@ const sendSensorData = async (req, res) => {
         }
 
         const sensorData = await SensorModel.createSensorData({
-            ...bodyValue,
+            value: bodyValue.value,
+            unit: bodyValue.unit,
             sensorId: paramsValue.sensorId
         });
         res.status(201).json(formatResponse('success', 'Sensor data sent successfully', sensorData));

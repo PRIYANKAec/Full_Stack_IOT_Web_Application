@@ -7,7 +7,7 @@ const deleteSensorData = async (req, res) => {
     const paramsSchema = Joi.object({
         projectId: Joi.number().integer().required(),
         sensorId: Joi.number().integer().required(),
-        id: Joi.number().integer().required()
+        dataId: Joi.number().integer().required()
     });
 
     const { error: paramsError, value: paramsValue } = paramsSchema.validate(req.params);
@@ -30,12 +30,12 @@ const deleteSensorData = async (req, res) => {
         }
 
         // Check if SensorData exists
-        const sensorData = await SensorModel.findSensorDataById(paramsValue.id);
+        const sensorData = await SensorModel.findSensorDataById(paramsValue.dataId);
         if (!sensorData) {
             return res.status(404).json(formatResponse('error', 'Sensor data not found'));
         }
 
-        await SensorModel.deleteSensorData(paramsValue.id);
+        await SensorModel.deleteSensorData(paramsValue.dataId);
         res.status(200).json(formatResponse('success', 'Sensor data deleted successfully'));
     } catch (error) {
         res.status(500).json(formatResponse('error', 'Internal Server Error', error.message));

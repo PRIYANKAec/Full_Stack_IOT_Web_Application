@@ -6,7 +6,7 @@ const Joi = require('joi');
 const deleteSensor = async (req, res) => {
   const schema = Joi.object({
     projectId: Joi.number().integer().required(),
-    id: Joi.number().integer().required()
+    sensorId: Joi.number().integer().required()
   });
 
   const { error, value } = schema.validate(req.params);
@@ -14,6 +14,8 @@ const deleteSensor = async (req, res) => {
     const formattedError = error.details.map(detail => detail.message.replace(/"/g, '')).join(', ');
     return res.status(400).json(formatResponse('error', 'Validation Error', formattedError));
   }
+
+  const { id } = req.body;
 
   try {
     // Check if project exists
@@ -23,12 +25,12 @@ const deleteSensor = async (req, res) => {
     }
 
     // Check if sensor exists
-    const sensor = await SensorModel.findSensorById(value.id);
+    const sensor = await SensorModel.findSensorById(value.sensorId);
     if (!sensor) {
       return res.status(404).json(formatResponse('error', 'Sensor not found'));
     }
     
-    await SensorModel.deleteSensor(value.id);
+    await SensorModel.deleteSensor(value.sensorId);
     res.status(200).json(formatResponse('success', 'Sensor deleted successfully'));
   } catch (error) {
     res.status(500).json(formatResponse('error', 'Internal Server Error', error.message));

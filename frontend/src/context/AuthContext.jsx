@@ -6,21 +6,23 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState(localStorage.getItem('userId') || null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const token = getToken();
-    if (token) {
-      fetchUserData(token);
+    if (token && userId) {
+      fetchUserData(token, userId);
     } else {
       setLoading(false);
     }
   }, []);
 
-  const fetchUserData = async (token) => {
+  const fetchUserData = async (token, id) => {
+    if (!token) return;
     try {
-      const response = await api.post('/api/users/me');
+      const response = await api.post('/api/users/me', { id: id});
       setUser(response.data.data.user);
     } catch (error) {
       console.error('Failed to get user details:', error);
@@ -35,7 +37,10 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       const response = await api.post('/api/users/signin', userData);
       saveToken(response.data.data.token);
-      fetchUserData(response.data.data.token);
+      const userId = response.data.data.user.id;
+      localStorage.setItem('userId', userId);
+      setUserId(userId);
+      await fetchUserData(response.data.data.token, userId);
       setError(null);
     } catch (error) {
       console.error('Login failed:', error);
@@ -53,7 +58,10 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       const response = await api.post('/api/users/register', userData);
       saveToken(response.data.data.token);
-      fetchUserData(response.data.data.token);
+      const userId = response.data.data.user.id;
+      localStorage.setItem('userId', userId);
+      setUserId(userId);
+      await fetchUserData(response.data.data.token, userId);
       setError(null);
     } catch (error) {
       console.error('Registration failed:', error);

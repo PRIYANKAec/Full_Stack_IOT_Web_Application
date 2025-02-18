@@ -14,6 +14,8 @@ const getAllSensor = async (req, res) => {
         return res.status(400).json(formatResponse('error', 'Validation Error', formattedError));
     }
 
+    const { id } = req.body;
+
     try {
          // Check if project exists
          const projectExists = await ProjectModel.findProjectById(parseInt(value.projectId, 10));

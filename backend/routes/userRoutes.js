@@ -15,6 +15,6 @@ router.post('/users/signin', signinUser);
 router.post('/users/me', authenticateToken, getUser);
 router.post('/users/getAll', authenticateToken, getAllUser);
 router.patch('/users/update', authenticateToken, updateUser);
-router.delete('/users/delete/:id', authenticateToken, deleteUser);
+router.delete('/users/delete/:userId', authenticateToken, deleteUser);
 
 module.exports = router;

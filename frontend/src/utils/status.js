@@ -2,7 +2,7 @@ import api from "./api";
 
 export const getStatus = async (userId) => {
   try {
-    const response = await api.post(`/api/projects/getByUser/${userId}`);
+    const response = await api.post(`/api/projects/getByUser/${userId}`, { id: userId });
     if(response.data.data[0].id) {
       return 'Connected';
     }

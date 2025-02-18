@@ -6,6 +6,7 @@ const Joi = require('joi');
 
 const updateUser = async (req, res) => {
     const schema = Joi.object({
+        id: Joi.number().integer().required(),
         username: Joi.string(),
         email: Joi.string().email().required(),
         password: Joi.string().min(6),

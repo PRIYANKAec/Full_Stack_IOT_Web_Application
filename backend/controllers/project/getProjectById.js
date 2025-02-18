@@ -4,7 +4,7 @@ const Joi = require('joi');
 
 const getProjectById = async (req, res) => {
     const schema = Joi.object({
-        id: Joi.number().integer().required()
+        projectId: Joi.number().integer().required()
     });
 
     const { error, value } = schema.validate(req.params);
@@ -13,8 +13,9 @@ const getProjectById = async (req, res) => {
         return res.status(400).json(formatResponse('error', 'Validation Error', formattedError));
     }
 
+    const { id } = req.body;
     try {
-        const project = await ProjectModel.findProjectById(value.id);
+        const project = await ProjectModel.findProjectById(value.projectId);
         if (!project) {
             return res.status(404).json(formatResponse('error', 'Project not found'));
         }

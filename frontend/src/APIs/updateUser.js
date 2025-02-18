@@ -2,10 +2,10 @@
 
  export const updateUser = async (userData) => {
     try {
-        console.log(userData);
         if(userData){
-            const { id, createdAt, updatedAt, ...rest } = userData;
-            userData = rest;}
+            const { createdAt, updatedAt, ...rest } = userData;
+            userData = rest;
+        }
         const response = await api.patch('/api/users/update', userData);
         // console.log(response.data.message);
         return response.data;

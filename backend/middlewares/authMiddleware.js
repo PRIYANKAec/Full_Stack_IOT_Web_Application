@@ -9,6 +9,17 @@ module.exports = {
         try {
             const user = verifyToken(token);
             req.user = user;
+
+            // Ensure the user ID in the token matches the user ID in the request parameters or body
+            const userId = req.params.id || req.body.id;
+            if (!userId) {
+                return res.status(400).json(formatResponse('error', 'Bad Request', 'User ID is required'));
+            }
+            const userIdFromRequest = parseInt(userId, 10);
+            if (userIdFromRequest && userIdFromRequest != user.id) {
+                return res.status(403).json(formatResponse('error', 'Forbidden', 'User Token mismatch'));
+            }
+
             next();
         } catch (err) {
             return res.status(403).json(formatResponse('error', 'Forbidden', 'Invalid token'));

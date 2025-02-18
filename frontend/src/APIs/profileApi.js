@@ -2,7 +2,7 @@ import api from "@/utils/api";
 
 export const getProjectsByUserId = async (userId) => {
   try {
-    const response = await api.post(`/api/projects/getByUser/${userId}`);
+    const response = await api.post(`/api/projects/getByUser/${userId}`, { id: userId });
     return response.data.data;
   } catch (error) {
     console.error('Failed to fetch projects:', error);
@@ -10,9 +10,9 @@ export const getProjectsByUserId = async (userId) => {
   }
 };
 
-export const getSensorsByProjectId = async (projectId) => {
+export const getSensorsByProjectId = async (projectId, userId) => {
   try {
-    const response = await api.post(`/api/projects/${projectId}/sensor/getByProject`);
+    const response = await api.post(`/api/projects/${projectId}/sensor/getByProject`, { id: userId });
     return response.data.data;
   } catch (error) {
     console.error('Failed to fetch sensors:', error);

@@ -5,7 +5,7 @@ const Joi = require('joi');
 
 const getSensorById = async (req, res) => {
     const schema = Joi.object({
-        id: Joi.number().integer().required(),
+        sensorId: Joi.number().integer().required(),
         projectId: Joi.number().integer().required()
     });
 
@@ -15,6 +15,8 @@ const getSensorById = async (req, res) => {
         return res.status(400).json(formatResponse('error', 'Validation Error', formattedError));
     }
 
+    const { id } = req.body;
+
     try {
         // Check if project exists
         const projectExists = await ProjectModel.findProjectById(parseInt(value.projectId, 10));
@@ -23,7 +25,7 @@ const getSensorById = async (req, res) => {
         }
 
         // Check if Sensor exists
-        const sensor = await SensorModel.findSensorById(value.id);
+        const sensor = await SensorModel.findSensorById(value.sensorId);
         if (!sensor) {
             return res.status(404).json(formatResponse('error', 'Sensor not found'));
         }

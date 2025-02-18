@@ -5,10 +5,10 @@ const Joi = require('joi');
 
 const createProject = async (req, res) => {
     const schema = Joi.object({
+        id: Joi.number().integer().required(),
         name: Joi.string().required(),
         description: Joi.string().required(),
-        microcontroller: Joi.string().required(),
-        userId: Joi.number().integer().required()
+        microcontroller: Joi.string().required()
     });
 
     const { error, value } = schema.validate(req.body);
@@ -19,7 +19,7 @@ const createProject = async (req, res) => {
 
     try {   
         // Check if user exists
-        const userExists = await UserModel.findById(value.userId);
+        const userExists = await UserModel.findById(value.id);
         if (!userExists) {
             return res.status(404).json(formatResponse('error', 'User not found'));
         }
@@ -29,8 +29,8 @@ const createProject = async (req, res) => {
         if(projectExist) {
             return res.status(409).json(formatResponse('error', 'Project with the same name already'))
         }
-
-        const project = await ProjectModel.createProject(value);
+        const {  id, ...projectData } = value;
+        const project = await ProjectModel.createProject({ ...projectData, userId: id });
         res.status(201).json(formatResponse('success', 'Project created successfully', project));
     } catch (error) {
         const errorMessage = error.message.includes('prisma.project.create')

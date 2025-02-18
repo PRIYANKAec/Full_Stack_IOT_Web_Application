@@ -6,10 +6,11 @@ const Joi = require('joi');
 const updateSensor = async (req, res) => {
     const paramsSchema = Joi.object({
         projectId: Joi.number().integer().required(),
-        id: Joi.number().integer().required()
+        sensorId: Joi.number().integer().required()
     });
 
     const bodySchema = Joi.object({
+        id: Joi.number().required(),
         name: Joi.string(),
         type: Joi.string().valid('INPUT', 'OUTPUT')
     });
@@ -34,12 +35,12 @@ const updateSensor = async (req, res) => {
         }
 
         // Check if Sensor exists
-        const sensorExists = await SensorModel.findSensorById(paramsValue.id);
+        const sensorExists = await SensorModel.findSensorById(paramsValue.sensorId);
         if (!sensorExists) {
             return res.status(404).json(formatResponse('error', 'Sensor not found'));
         }
 
-        const sensor = await SensorModel.updateSensor(paramsValue.id, bodyValue);
+        const sensor = await SensorModel.updateSensor(paramsValue.sensorId, { name: bodyValue.name, type: bodyValue.type });
         if (!sensor) {
             return res.status(404).json(formatResponse('error', 'Sensor not found'));
         }

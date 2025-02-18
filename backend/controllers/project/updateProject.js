@@ -4,10 +4,11 @@ const Joi = require('joi');
 
 const updateProject = async (req, res) => {
     const paramsSchema = Joi.object({
-        id: Joi.number().integer().required()
+        projectId: Joi.number().integer().required()
     });
 
     const bodySchema = Joi.object({
+        id: Joi.number().integer(),
         name: Joi.string(),
         description: Joi.string(),
         microcontroller: Joi.string()
@@ -26,7 +27,7 @@ const updateProject = async (req, res) => {
     }
 
     try {
-        const project = await ProjectModel.updateProject(paramsValue.id, bodyValue);
+        const project = await ProjectModel.updateProject(paramsValue.projectId, bodyValue);
         res.status(200).json(formatResponse('success', 'Project updated successfully', project));
     } catch (error) {
         res.status(500).json(formatResponse('error', 'Internal Server Error', error.message));

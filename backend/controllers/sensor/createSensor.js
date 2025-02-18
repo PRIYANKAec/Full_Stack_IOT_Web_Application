@@ -5,6 +5,7 @@ const Joi = require('joi');
 
 const createSensor = async (req, res) => {
     const schema = Joi.object({
+        id: Joi.number().required(),
         name: Joi.string().required(),
         type: Joi.string().valid('INPUT', 'OUTPUT').required(),
     });
@@ -29,8 +30,12 @@ const createSensor = async (req, res) => {
         if (sensorExists) {
             return res.status(409).json(formatResponse('error', 'Sensor already exists'));
         }
-        
-        const sensor = await SensorModel.createSensor({ ...value, projectId: parseInt(projectId, 10) });
+
+        const sensor = await SensorModel.createSensor({
+            name: value.name,
+            type: value.type,
+            projectId: parseInt(projectId, 10)
+        });
         res.status(201).json(formatResponse('success', 'Sensor created successfully', sensor));
     } catch (error) {
         return res.status(500).json(formatResponse('error', 'Internal Server Error', error.message));

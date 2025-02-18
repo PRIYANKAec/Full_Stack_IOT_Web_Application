@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { getToken } from '@/utils/auth';
 
 const Profile = () => {
   const { user, fetchUserData } = useAuth();
@@ -50,7 +51,7 @@ const Profile = () => {
 
           const sensorsData = {};
           for (const project of projectsData) {
-            sensorsData[project.id] = await getSensorsByProjectId(project.id);
+            sensorsData[project.id] = await getSensorsByProjectId(project.id, user.id);
           }
           setSensors(sensorsData);
         }
@@ -76,13 +77,13 @@ const Profile = () => {
         title: updatedUser?.status,
         description: updatedUser?.message,
       });
-      fetchUserData();
+      fetchUserData(getToken(), updatedUser.data.id);
     } catch (error) {
       console.error('Failed to update user:', error);
       toast({
         variant: "destructive",
-        title: updatedUser?.status,
-        description: updatedUser?.message,
+        title: "Failed to update user",
+        description: "Please try again later",
       });
     }
   };
