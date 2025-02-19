@@ -2,6 +2,7 @@ const SensorModel = require("../../../models/sensorModel");
 const ProjectModel = require("../../../models/projectModel");
 const { formatResponse } = require("../../../utils/helper");
 const Joi = require('joi');
+const { io } = require('../../../server');
 
 const getSensorData = async (req, res) => {
     const paramsSchema = Joi.object({
@@ -39,6 +40,10 @@ const getSensorData = async (req, res) => {
         }
 
         const sensorData = await SensorModel.findSensorDataBySensorId(paramsValue.sensorId);
+
+        // Emit sensor data via WebSocket
+        req.io.emit('sensorData', sensorData);
+        
         res.status(201).json(formatResponse('success', 'Sensor data received successfully', sensorData));
     } catch (error) {
         res.status(500).json(formatResponse('error', 'Internal Server Error', error.message));

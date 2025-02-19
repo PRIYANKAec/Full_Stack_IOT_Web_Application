@@ -45,6 +45,10 @@ const sendSensorData = async (req, res) => {
             unit: bodyValue.unit,
             sensorId: paramsValue.sensorId
         });
+
+        // Emit sensor data via WebSocket
+        req.io.emit('sensorData', sensorData);
+
         res.status(201).json(formatResponse('success', 'Sensor data sent successfully', sensorData));
     } catch (error) {
         res.status(500).json(formatResponse('error', 'Internal Server Error', error.message));
