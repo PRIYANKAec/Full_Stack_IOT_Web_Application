@@ -7,6 +7,7 @@ const getAllSensor = require('../controllers/sensor/getAllSensor');
 const updateSensor = require('../controllers/sensor/updateSensor');
 const deleteSensor = require('../controllers/sensor/deleteSensor');
 const sendSensorData = require('../controllers/sensor/sensorData/sendSensorData');
+const getSensorData = require('../controllers/sensor/sensorData/getSensorData');
 const deleteSensorData = require('../controllers/sensor/sensorData/deleteSensorData');
 const deleteMultipleSensorData = require('../controllers/sensor/sensorData/deleteMultipleSensorData');
 
@@ -22,6 +23,8 @@ router.delete('/projects/:projectId/sensor/delete/:sensorId', authenticateToken,
 
 //send sensor data
 router.post('/projects/:projectId/sensor/:sensorId/sendData', authenticateToken, sendSensorData);
+//get sensor data by sensor id
+router.post('/projects/:projectId/sensor/:sensorId/getData', authenticateToken, getSensorData);
 //delete sensor data
 router.delete('/projects/:projectId/sensor/:sensorId/deleteData/:dataId', authenticateToken, deleteSensorData);
 //delete multiple sensor data

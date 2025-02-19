@@ -68,6 +68,13 @@ class SensorModel {
         });
     }
 
+    // find sensor data by sensor id
+    static async findSensorDataBySensorId(sensorId) {
+        return await prisma.sensorData.findMany({
+            where: { sensorId: sensorId }
+        });
+    }
+
     //delete sensor data
     static async deleteSensorData(id) {
         return await prisma.sensorData.delete({
