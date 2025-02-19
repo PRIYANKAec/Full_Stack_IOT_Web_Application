@@ -14,6 +14,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+console.log("execution test")
 app.use(attachSocketIO);
 
 // Database connection
@@ -23,5 +24,6 @@ const db_test = main();
 app.use('/api', userRoutes);
 app.use('/api', projectRoutes);
 app.use('/api', sensorRoutes);
+console.log("execution test1")
 
 module.exports = app;

@@ -4,42 +4,33 @@ import api from '@/utils/api';
 
 const LiveTracking = () => {
   const [sensorData, setSensorData] = useState([]);
-  const projectId = 1; // Replace with actual project ID
-  const sensorId = 4; // Replace with actual sensor ID
 
   useEffect(() => {
-    // Fetch initial sensor data
-    const fetchSensorData = async () => {
-      try {
-        const response = await api.post(`/api/projects/${projectId}/sensor/${sensorId}/getData`, { id: 1 });
-        setSensorData(response.data.data);
-      } catch (error) {
-        console.error('Failed to fetch sensor data:', error);
-      }
-    };
+    // Connect to the Socket.IO server
+    socket.connect();
 
-    fetchSensorData();
-
-    // Handle WebSocket updates
-    socket.on('sensorData', (data) => {
-      setSensorData((prevData) => [...prevData, data]);
+    // Listen for incoming sensor data from the backend
+    socket.on("sensorData", (data) => {
+        console.log("Received sensor data:", data);
+        setSensorData(data);
     });
 
+    // Cleanup: Disconnect when component unmounts
     return () => {
-      socket.off('sensorData');
+        socket.disconnect();
     };
-  }, [projectId, sensorId]);
+}, []);
 
-  return (
+return (
     <div>
-      <h1>Sensor Data</h1>
-      <ul>
-        {sensorData.map((data, index) => (
-          <li key={index}>{data.value} {data.unit}</li>
-        ))}
-      </ul>
+        <h1>Real-Time Sensor Data</h1>
+        {sensorData ? (
+            <p>Latest Data: {JSON.stringify(sensorData)}</p>
+        ) : (
+            <p>Waiting for sensor data...</p>
+        )}
     </div>
-  );
+);
 };
 
 export default LiveTracking;

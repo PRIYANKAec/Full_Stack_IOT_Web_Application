@@ -1,29 +1,52 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
-const app = require('./app');
-const http = require('http');
-const { Server } = require('socket.io');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const main = require('./config/database');
 
-const PORT = process.env.PORT || 3005;
+const { Server } = require('socket.io');
+const http = require('http');
+
+const userRoutes = require('./routes/userRoutes');
+const projectRoutes = require('./routes/projectRoutes');
+const sensorRoutes = require('./routes/sensorRoutes');
+
+const formatResponse = require('./utils/helper')
+
+const app = express();
 
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
         origin: '*',
-        methods: ['GET', 'POST']
+        methods: ['POST']
     }
 });
 
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Database connection
+const db_test = main();
+
+// Routes
+app.use('/api', userRoutes);
+app.use('/api', projectRoutes);
+app.use('/api', sensorRoutes(io));
+
 io.on('connection', (socket) => {
-    console.log('a user connected');
+    console.log('A client connected:', socket.id);
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        console.log('Client disconnected:', socket.id);
     });
 });
+
+const PORT = process.env.PORT || 3005;
 
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
-module.exports = { server, io };
