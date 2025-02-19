@@ -57,10 +57,10 @@ const Header = () => {
           whileHover={{ scale: 1.05 }}
         >
           <Button 
-            variant="secondary" className="rounded-lg px-1 sm:px-4 shadow-md transition-all hover:shadow-lg"
+            variant="secondary" className="rounded-lg px-1 sm:px-4 shadow-md transition-all hover:shadow-lg text-bold text-foreground hover:bg-tertiary hover:text-secondary"
             onClick={() => user.role === 'ADMIN' ? Navigate('/manageProject') : Navigate('/projects')}
           >
-            {user?.role === 'ADMIN' ? 'Manage Projects' : 'Create Project'}
+          {user?.role === 'ADMIN' ? 'Manage Projects' : 'Create Project'}
           </Button>
         </motion.div>
         <Badge status={status} className="text-sm font-semibold" />
