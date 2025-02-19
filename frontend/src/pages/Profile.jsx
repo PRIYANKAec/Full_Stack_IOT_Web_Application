@@ -89,29 +89,31 @@ const Profile = () => {
   };
 
   return (
-    <div className='bg-gray-200 w-full h-full flex flex-col sm:flex-row items-center justify-center pt-8 p-2 sm:p-3 md:p-4 lg:p-8 sm:space-x-4'>
+    <div className=' w-full h-full flex flex-col sm:flex-row items-center justify-center pt-8 p-2 sm:p-3 md:p-4 lg:p-8 sm:space-x-4'>
       <Card className='shadow-lg mb-4 sm:mb-0 w-full'>
-        <CardHeader className='bg-gradient-to-br from-slate-400 to-gray-500 text-white rounded-t-lg pb-3'>
+        <CardHeader className='bg-foreground text-secondary rounded-t-lg pb-3'>
         <div>
         <Dialog>
         <DialogTrigger asChild>
-        <FaEdit className='float-right text-white text-2xl cursor-pointer'/>
+        <FaEdit className='float-right text-secondary text-2xl cursor-pointer'/>
         </DialogTrigger>
-        <DialogContent>
+
+        <DialogContent className="bg-primary">
           <DialogHeader>
-            <DialogTitle>Edit Profile</DialogTitle>
-            <DialogDescription>Update your profile details below.</DialogDescription>
+            <DialogTitle className="text-secondary">Edit Profile</DialogTitle>
+            <DialogDescription className="text-secondary" >Update your profile details below.</DialogDescription>
           </DialogHeader>
-          <div className='space-y-4'>
+          <div className='space-y-4 text-accent-foreground'>
             <Input label="Username" name="username" value={editUser.username} onChange={handleInputChange} />
             <Input label="First Name" name="firstName" value={editUser.firstName} onChange={handleInputChange} />
             <Input label="Last Name" name="lastName" value={editUser.lastName} onChange={handleInputChange} />
             <Input label="Register Number" name="registerNumber" value={editUser.registerNumber} onChange={handleInputChange} />
             <Input label="Batch" name="batch" value={editUser.batch} onChange={handleInputChange} />
           </div>
+
           <DialogFooter>
             <DialogClose asChild>
-              <Button onClick={handleSubmit}>Save</Button>
+              <Button onClick={handleSubmit} className="bg-foreground hover:bg-tertiary">Save</Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>
@@ -119,43 +121,48 @@ const Profile = () => {
         </div>
           <div className='flex flex-col items-center'>
             {profileImageUrl ? (
-              <img src={profileImageUrl} alt="Profile" className="rounded-full h-48 w-48 mb-4 border-4 border-white shadow-md" />
+              <img src={profileImageUrl} alt="Profile" className="rounded-full h-48 w-48 mb-4 border-4 border-white shadow-md bg" />
             ) : (
               <div className="rounded-full h-48 w-48 mb-4 bg-gray-500"></div>
             )}
-            <CardTitle className='text-xl font-bold mb-0'>My Profile</CardTitle>
-            <CardDescription className='text-base text-white'>View and edit your profile</CardDescription>
+            <CardTitle className='text-xl font-bold mb-0 text-secondary'>My Profile</CardTitle>
+            <CardDescription className='text-secondary'>View and edit your profile</CardDescription>
           </div>
         </CardHeader>
-        <CardContent className='py-6 px-2 sm:px-4 md:px-8'>
-          <div className='grid grid-cols-2 gap-y-4'>
-            <div className='font-semibold text-gray-700'>Email:</div><div className='text-gray-900 break-words'>{user.email}</div>
-            <div className='font-semibold text-gray-700'>Username:</div><div className='text-gray-900'>{user.username}</div>
-            <div className='font-semibold text-gray-700'>First Name:</div><div className='text-gray-900'>{user.firstName}</div>
-            <div className='font-semibold text-gray-700'>Last Name:</div><div className='text-gray-900'>{user.lastName}</div>
-            <div className='font-semibold text-gray-700'>Register Number:</div><div className='text-gray-900'>{user.registerNumber}</div>
-            <div className='font-semibold text-gray-700'>Batch:</div><div className='text-gray-900'>{user.batch}</div>
-            <div className='font-semibold text-gray-700'>Role:</div><div className='text-gray-900'>{user.role === "USER" ? "Student" : "Admin"}</div>
+        
+        <CardContent className='py-6 px-2 sm:px-4 md:px-8 bg-primary'>
+          <div className='grid grid-cols-2 gap-y-4 '>
+            <div className='font-semibold text-secondary'>Email:</div><div className='text-secondary break-words'>{user.email}</div>
+            <div className='font-semibold text-secondary'>Username:</div><div className='text-secondary'>{user.username}</div>
+            <div className='font-semibold text-secondary'>First Name:</div><div className='text-secondary'>{user.firstName}</div>
+            <div className='font-semibold text-secondary'>Last Name:</div><div className='text-secondary'>{user.lastName}</div>
+            <div className='font-semibold text-secondary'>Register Number:</div><div className='text-secondary'>{user.registerNumber}</div>
+            <div className='font-semibold text-secondary'>Batch:</div><div className='text-secondary'>{user.batch}</div>
+            <div className='font-semibold text-secondary'>Role:</div><div className='text-secondary'>{user.role === "USER" ? "Student" : "Admin"}</div>
           </div>
         </CardContent>
       </Card>
+
+      {/* Project List */}
       <Card className='shadow-lg mb-4 sm:mb-0 w-full'>
-        <CardHeader className='bg-gradient-to-br from-slate-400 to-gray-500 text-white rounded-t-lg pb-3'>
+        <CardHeader className='bg-foreground text-secondary rounded-t-lg pb-3'>
           <CardTitle className='text-xl font-bold mb-0 text-center'>Projects and Sensors</CardTitle>
-          <CardDescription className='text-base text-white text-center'>Here is the list of project you created</CardDescription>
+          <CardDescription className='text-base text-secondary text-center'>Here is the list of project you created</CardDescription>
         </CardHeader>
-        <CardContent className='py-6 px-2 sm:px-4 md:px-8'>
+
+        <CardContent className='py-6 px-2 sm:px-4 md:px-8 bg-primary-foreground'>
           {projects.map(project => (
-            <div key={project.id} className='mb-4 bg-gray-200 p-4 rounded-lg shadow-md'>
-              <div className='mb-2 grid grid-cols-2'>
-                <div className='text-lg font-bold mb-1'>Project Name:</div>
-                <div className='text-lg font-bold mb-1'>{project.name}</div>
-                <div className='text-gray-700'>Description:</div><div className='text-gray-900 mb-2'>{project.description}</div>
-                <div className='text-gray-700'>MicroController:</div><div className='text-gray-900 mb-2'>{project.microcontroller}</div>
+            <div key={project.id} className='mb-4 bg-primary p-4 rounded-lg shadow-md '>
+              <div className='mb-2 grid grid-cols-2 '>
+                <div className='text-lg font-bold mb-1 text-secondary'>Project Name:</div>
+                <div className='text-lg font-bold mb-1 text-secondary'>{project.name}</div>
+                <div className='text-secondary'>Description:</div><div className='text-secondary mb-2'>{project.description}</div>
+                <div className='text-secondary'>MicroController:</div><div className='text-secondary mb-2'>{project.microcontroller}</div>
               </div>
               <div>
-                <CardTitle className='text-lg font-bold mb-1'>Sensors:</CardTitle>
-                <ul className='list-disc list-inside text-gray-900'>
+              
+                <CardTitle className='text-lg font-bold mb-1 text-secondary'>Sensors:</CardTitle>
+                <ul className='list-disc list-inside text-secondary'>
                   {sensors[project.id]?.map(sensor => (
                     <li key={sensor.id}>{sensor.name} ({sensor.type})</li>
                   ))}

@@ -17,7 +17,10 @@ const formatResponse = require('./utils/helper')
 
 const app = express();
 
+// Create HTTP server
 const server = http.createServer(app);
+
+// Initialize WebSocket
 const io = new Server(server, {
     cors: {
         origin: '*',
