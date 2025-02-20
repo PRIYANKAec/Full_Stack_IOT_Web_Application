@@ -13,7 +13,7 @@ const linkVariants = {
   initial: { opacity: 0, y: -10, scale: 1, fontWeight: 'normal' },
   hidden: { opacity: 0, y: -10 },
   visible: { opacity: 1, y: 0, transition: { duration: 1 } },
-  hover: { scale: 1.1, fontWeight: 'bold' }
+  hover: { scale: 1.1, fontWeight: 400 }
 };
 
 const Sidebar = () => {

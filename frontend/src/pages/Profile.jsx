@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
 
-import { getProjectsByUserId, getSensorsByProjectId } from "@/APIs/profileApi";
+import { getProjectsByUserId } from "@/APIs/profileApi";
 import { updateUser } from "@/APIs/updateUser";
 
 import { FaEdit } from "react-icons/fa";
@@ -43,7 +43,6 @@ const Profile = () => {
   const { toast } = useToast();
   const [profileImageUrl, setProfileImageUrl] = useState("");
   const [projects, setProjects] = useState([]);
-  const [sensors, setSensors] = useState({});
   const [editUser, setEditUser] = useState({});
   const [error, setError] = useState("");
 
@@ -56,26 +55,18 @@ const Profile = () => {
       setEditUser(user);
     }
 
-    const fetchProjectsAndSensors = async () => {
+    const fetchProject = async () => {
       try {
         if (user && user.id) {
           const projectsData = await getProjectsByUserId(user.id);
           setProjects(projectsData);
 
-          const sensorsData = {};
-          for (const project of projectsData) {
-            sensorsData[project.id] = await getSensorsByProjectId(
-              project.id,
-              user.id
-            );
-          }
-          setSensors(sensorsData);
         }
       } catch (error) {
         console.error("Failed to fetch projects and sensors:", error);
       }
     };
-    fetchProjectsAndSensors();
+    fetchProject();
   }, [user]);
 
   const handleInputChange = (e) => {
@@ -277,18 +268,6 @@ const Profile = () => {
                   <div className="text-primary font-medium mb-2">
                     {project.microcontroller}
                   </div>
-                </div>
-                <div>
-                  <CardTitle className="text-lg font-bold mb-1 text-primary">
-                    Sensors:
-                  </CardTitle>
-                  <ul className="list-disc list-inside text-primary font-medium">
-                    {sensors[project.id]?.map((sensor) => (
-                      <li key={sensor.id}>
-                        {sensor.name} ({sensor.type})
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               </motion.div>
             ))}
