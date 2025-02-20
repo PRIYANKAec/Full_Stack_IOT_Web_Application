@@ -27,16 +27,13 @@ const router = (io) => {
         req.io = io;
         sendSensorData(req, res);
     });
-
     // Get sensor data (WebSocket enabled)
     router.post('/projects/:projectId/sensor/:sensorId/getData', authenticateToken, (req, res) => {
         req.io = io;
         getSensorData(req, res);
     });
-
     // Delete sensor data
     router.delete('/projects/:projectId/sensor/:sensorId/deleteData/:dataId', authenticateToken, deleteSensorData);
-
     // Delete multiple sensor data
     router.delete('/projects/:projectId/sensor/:sensorId/deleteData', authenticateToken, deleteMultipleSensorData);
 

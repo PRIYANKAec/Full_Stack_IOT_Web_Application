@@ -7,7 +7,7 @@ export const createProjects = async (data) => {
     return response.data;
   } catch (error) {
     const errorMessage = error.response.data.message;
-    console.error("Failed to create projects:", errorMessage);
+    console.error("Failed to create project:", errorMessage);
     const response = {
       status: error.response.status,
       message: errorMessage,
