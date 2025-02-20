@@ -13,6 +13,8 @@ const deleteProject = async (req, res) => {
         return res.status(400).json(formatResponse('error', 'Validation Error', formattedError));
     }
 
+    const { id } = req.body;
+
     try {
         const project = await ProjectModel.findProjectById(value.projectId);
         if (!project) {

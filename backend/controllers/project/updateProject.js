@@ -27,7 +27,8 @@ const updateProject = async (req, res) => {
     }
 
     try {
-        const project = await ProjectModel.updateProject(paramsValue.projectId, bodyValue);
+        const { id, ...data } = bodyValue;
+        const project = await ProjectModel.updateProject(paramsValue.projectId, data);
         res.status(200).json(formatResponse('success', 'Project updated successfully', project));
     } catch (error) {
         res.status(500).json(formatResponse('error', 'Internal Server Error', error.message));
