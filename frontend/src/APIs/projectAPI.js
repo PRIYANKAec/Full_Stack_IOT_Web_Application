@@ -11,7 +11,7 @@ export const createProjects = async (data) => {
     const response = {
       status: error.response.status,
       message: errorMessage,
-      data: null,
+      data: error.response.data?.data,
     };
     return response;
   }
@@ -30,7 +30,7 @@ export const getProjectsByUserId = async (userId) => {
     const response = {
       status: error.response.status,
       message: errorMessage,
-      data: null,
+      data: error.response.data?.data,
     };
     return response;
   }
@@ -49,7 +49,7 @@ export const getAllProjects = async (id) => {
     const response = {
       status: error.response.status,
       message: errorMessage,
-      data: null,
+      data: error.response.data?.data,
     };
     return response;
   }
@@ -70,7 +70,7 @@ export const getProjectById = async (projectId, userId) => {
     const response = {
       status: error.response.status,
       message: errorMessage,
-      data: null,
+      data: error.response.data?.data,
     };
     return response;
   }
@@ -90,7 +90,7 @@ export const updateProject = async (projectId, userId, data) => {
     const response = {
       status: error.response.status,
       message: errorMessage,
-      data: null,
+      data: error.response.data?.data,
     };
     return response;
   }
@@ -109,7 +109,7 @@ export const deleteProject = async (projectId, userId) => {
     const response = {
       status: error.response.status,
       message: errorMessage,
-      data: null,
+      data: error.response.data?.data,
     };
     return response;
   }

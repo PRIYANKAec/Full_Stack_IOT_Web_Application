@@ -11,7 +11,7 @@ export const createSensor = async (projectId, data) => {
     const response = {
       status: error.response.status,
       message: errorMessage,
-      data: null,
+      data: error.response.data?.data,
     };
     return response;
   }
@@ -28,7 +28,7 @@ export const getSensorById = async (projectId, sensorId, userId) => {
         const response = {
             status: error.response.status,
             message: errorMessage,
-            data: null,
+            data: error.response.data?.data,
         };
         return response;
     }
@@ -45,7 +45,7 @@ export const getSensorByProjectId = async (projectId, userId) => {
         const response = {
             status: error.response.status,
             message: errorMessage,
-            data: null,
+            data: error.response.data?.data,
         };
         return response;
     }
@@ -62,7 +62,7 @@ export const getAllSensors = async (projectId, userId) => {
         const response = {
             status: error.response.status,
             message: errorMessage,
-            data: null,
+            data: error.response.data?.data,
         };
         return response;
     }
@@ -79,7 +79,7 @@ export const updateSensor = async (projectId, sensorId, data) => {
         const response = {
             status: error.response.status,
             message: errorMessage,
-            data: null,
+            data: error.response.data?.data,
         };
         return response;
     }
@@ -98,7 +98,7 @@ export const deleteSensor = async (projectId, sensorId, userId) => {
         const response = {
             status: error.response.status,
             message: errorMessage,
-            data: null,
+            data: error.response.data?.data,
         };
         return response;
     }
