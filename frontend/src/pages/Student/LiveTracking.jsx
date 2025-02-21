@@ -20,8 +20,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Loading from "@/components/loading";
-import GaugeComponent from "react-gauge-component";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import GaugeCard from "@/components/gauge/gauge-mapping";
+import SwitchCard from "@/components/ui/switch";
 
 const LiveTracking = () => {
   const { user } = useAuth();
@@ -118,51 +118,45 @@ const LiveTracking = () => {
             <img src="/project.png" alt="project" className="w-24 h-24 mr-4" />
             <div className="flex space-x-5 lg:space-x-12">
               <div>
-                <CardTitle className="text-2xl font-bold">{selectedProject?.name}</CardTitle>
-                <CardDescription className="text-lg">{selectedProject?.description}</CardDescription>
+                <CardTitle className="text-2xl font-bold">
+                  {selectedProject?.name}
+                </CardTitle>
+                <CardDescription className="text-lg">
+                  {selectedProject?.description}
+                </CardDescription>
               </div>
               <div className="hidden md:flex md:flex-col">
-                <CardTitle className="text-2xl font-bold">Microcontroller</CardTitle>
-                <CardDescription className="text-lg pr-2 font-semibold">{selectedProject?.microcontroller}</CardDescription>
+                <CardTitle className="text-2xl font-bold">
+                  Microcontroller
+                </CardTitle>
+                <CardDescription className="text-lg pr-2 font-semibold">
+                  {selectedProject?.microcontroller}
+                </CardDescription>
               </div>
             </div>
           </div>
           <div className="text-right md:hidden">
-            <CardDescription className="text-lg font-semibold">Microcontroller</CardDescription>
-            <CardTitle className="text-2xl pr-2 font-bold">{selectedProject?.microcontroller}</CardTitle>
+            <CardDescription className="text-lg font-semibold">
+              Microcontroller
+            </CardDescription>
+            <CardTitle className="text-2xl pr-2 font-bold">
+              {selectedProject?.microcontroller}
+            </CardTitle>
           </div>
         </CardHeader>
       </Card>
 
-      <div className=" flex justify-start items-center mb-2 cursor-pointer select-none overflow-x-auto min-w-full">
-        {sensorData.map((data, index) => (
-          <Card
-            key={index}
-            className="m-4 w-72 bg-secondary rounded-xl shadow-xl flex-shrink-0"
-          >
-            <CardHeader className="flex items-center justify-center h-16">
-              <CardTitle className="text-xl font-bold">
-                {sensors[index]?.name}
-              </CardTitle>
-              <CardDescription className="text-base font-medium">
-                {sensors[index]?.type}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col items-center justify-center h-full">
-              <GaugeComponent
-                value={data[0] ? data?.[0]?.value : 0}
-                unit={data[0] ? data?.[0]?.unit : "N/A"}
-                label={sensors[index]?.name}
-              />
-              <p className="text-center mt-2">
-                {data[0] ? data?.[0]?.value : 0}{" "}
-                {data[0] ? data?.[0]?.unit : "N/A"}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      { <GaugeCard 
+          sensors={sensors?.filter((sensor) => sensor.type === "OUTPUT")} 
+          sensorData={sensorData?.filter((data, index) => sensors[index].type === "OUTPUT")} 
+        />
+      }
 
+      {sensors.filter(sensor => sensor.type === "INPUT").map(sensor => (
+        <SwitchCard key={sensor.id} sensor={sensor} />
+      ))}
+
+      <div>My new content</div>
     </div>
   );
 };
