@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/card";
 import Loading from "@/components/loading";
 import GaugeComponent from "react-gauge-component";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 const LiveTracking = () => {
   const { user } = useAuth();
@@ -133,11 +134,11 @@ const LiveTracking = () => {
         </CardHeader>
       </Card>
 
-      <div className="flex flex-wrap justify-center items-center">
+      <div className=" flex justify-start items-center mb-2 cursor-pointer select-none overflow-x-auto min-w-full">
         {sensorData.map((data, index) => (
           <Card
             key={index}
-            className="m-4 w-72 bg-secondary rounded-xl shadow-xl"
+            className="m-4 w-72 bg-secondary rounded-xl shadow-xl flex-shrink-0"
           >
             <CardHeader className="flex items-center justify-center h-16">
               <CardTitle className="text-xl font-bold">
@@ -161,6 +162,7 @@ const LiveTracking = () => {
           </Card>
         ))}
       </div>
+
     </div>
   );
 };
