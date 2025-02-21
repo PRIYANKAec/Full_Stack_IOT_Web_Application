@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { getProjectsByUserId } from "@/APIs/projectAPI";
+import { getSensorByProjectId } from "@/APIs/sensorAPI";
+import { receiveSensorData } from "@/APIs/sensorDataAPI";
+
 import {
   Select,
   SelectContent,
@@ -6,12 +11,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getProjectsByUserId } from "@/APIs/projectAPI";
-import { useAuth } from "@/context/AuthContext";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import Loading from "@/components/loading";
 import GaugeComponent from "react-gauge-component";
-import { getSensorByProjectId } from "@/APIs/sensorAPI";
-import { receiveSensorData } from "@/APIs/sensorDataAPI";
 
 const LiveTracking = () => {
   const { user } = useAuth();
@@ -43,6 +52,7 @@ const LiveTracking = () => {
           user?.id
         );
         setSensors(response.data);
+        setSensorData([]);
       } catch (error) {
         console.error("Failed to fetch sensors:", error);
       }
@@ -76,16 +86,20 @@ const LiveTracking = () => {
 
   return (
     <div className="p-3 w-full">
-      <div className="flex justify-between items-center md:px-12 lg:px-20 2xl:px-32">
-        <h1 className="text-xl text-foreground font-bold items-center">
-          Track each project here
+      <div className="flex my-3 sm:my-5 justify-between items-center md:px-12 lg:px-20 2xl:px-32">
+        <h1 className="text-lg sm:text-xl lg:text-2xl text-foreground font-bold items-center">
+          Track Individual Project
         </h1>
         <Select
           value={selectedProject}
           onValueChange={(value) => setSelectedProject(value)}
         >
-          <SelectTrigger className="w-[180px] bg-slate-50">
-            <SelectValue placeholder={selectedProject ? selectedProject.name : "Select a Project"} />
+          <SelectTrigger className="w-[150px] sm:w-[180px] bg-slate-50">
+            <SelectValue
+              placeholder={
+                selectedProject ? selectedProject.name : "Select a Project"
+              }
+            />
           </SelectTrigger>
           <SelectContent>
             {projects.map((project) => (
@@ -97,27 +111,54 @@ const LiveTracking = () => {
         </Select>
       </div>
 
-      <div className="flex flex-col justify-center items-center">
-        <h1 className="text-2xl font-bold">Project Name</h1>
-        <h1>{selectedProject?.name}</h1>
-        <h1 className="text-2xl font-bold">Project description</h1>
-        <h1>{selectedProject?.description}</h1>
-        <h1 className="text-2xl font-bold">Project Microcontroller</h1>
-        <h1>{selectedProject?.microcontroller}</h1>
-      </div>
+      <Card className="h-auto bg-quaternary rounded-xl md:rounded-2xl shadow-xl mx-2 sm:mx-3 md:mx-15 lg:mx-32 mb-6">
+        <CardHeader className="flex items-center justify-between p-4">
+          <div className="flex items-center lg:space-x-4">
+            <img src="/project.png" alt="project" className="w-24 h-24 mr-4" />
+            <div className="flex space-x-5 lg:space-x-12">
+              <div>
+                <CardTitle className="text-2xl font-bold">{selectedProject?.name}</CardTitle>
+                <CardDescription className="text-lg">{selectedProject?.description}</CardDescription>
+              </div>
+              <div className="hidden md:flex md:flex-col">
+                <CardTitle className="text-2xl font-bold">Microcontroller</CardTitle>
+                <CardDescription className="text-lg pr-2 font-semibold">{selectedProject?.microcontroller}</CardDescription>
+              </div>
+            </div>
+          </div>
+          <div className="text-right md:hidden">
+            <CardDescription className="text-lg font-semibold">Microcontroller</CardDescription>
+            <CardTitle className="text-2xl pr-2 font-bold">{selectedProject?.microcontroller}</CardTitle>
+          </div>
+        </CardHeader>
+      </Card>
 
       <div className="flex flex-wrap justify-center items-center">
         {sensorData.map((data, index) => (
-          <div key={index} className="m-4">
-            <GaugeComponent
-              value={data[0] ? data?.[0]?.value : 0}
-              unit={data[0] ? data?.[0]?.unit : "N/A"}
-              label={sensors[index]?.name}
-            />
-            <p className="text-center mt-2">
-              {sensors[index]?.name}: {data[0] ? data?.[0]?.value : 0} {data[0] ? data?.[0]?.unit : "N/A"}
-            </p>
-          </div>
+          <Card
+            key={index}
+            className="m-4 w-72 bg-secondary rounded-xl shadow-xl"
+          >
+            <CardHeader className="flex items-center justify-center h-16">
+              <CardTitle className="text-xl font-bold">
+                {sensors[index]?.name}
+              </CardTitle>
+              <CardDescription className="text-base font-medium">
+                {sensors[index]?.type}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col items-center justify-center h-full">
+              <GaugeComponent
+                value={data[0] ? data?.[0]?.value : 0}
+                unit={data[0] ? data?.[0]?.unit : "N/A"}
+                label={sensors[index]?.name}
+              />
+              <p className="text-center mt-2">
+                {data[0] ? data?.[0]?.value : 0}{" "}
+                {data[0] ? data?.[0]?.unit : "N/A"}
+              </p>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>
