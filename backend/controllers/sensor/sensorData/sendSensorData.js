@@ -40,16 +40,30 @@ const sendSensorData = async (req, res) => {
             return res.status(404).json(formatResponse('error', 'Sensor not found'));
         }
 
-        const sensorData = await SensorModel.createSensorData({
-            value: bodyValue.value,
-            unit: bodyValue.unit,
-            sensorId: paramsValue.sensorId
-        });
-
-        // Emit sensor data via WebSocket
-        req.io.emit('sensorData', sensorData);
-
-        res.status(201).json(formatResponse('success', 'Sensor data sent successfully', sensorData));
+        // Check if input type sensor
+        if (sensor.type === 'INPUT') {
+            if(bodyValue.value !== 0 && bodyValue.value !== 1){
+                return res.status(400).json(formatResponse('error', 'Validation Error', 'Value must be 0 or 1 for input type sensor'));
+            }
+            const sensorData = await SensorModel.createSensorData({
+                value: bodyValue.value,
+                unit: bodyValue.unit,
+                sensorId: paramsValue.sensorId
+            });
+            // Emit sensor data via WebSocket
+            req.io.emit('sensorData', sensorData);
+            res.status(201).json(formatResponse('success', 'Input data change sent successfully', sensorData));
+        } else{
+            const sensorData = await SensorModel.createSensorData({
+                value: bodyValue.value,
+                unit: bodyValue.unit,
+                sensorId: paramsValue.sensorId
+            });
+    
+            // Emit sensor data via WebSocket
+            req.io.emit('sensorData', sensorData);
+            res.status(201).json(formatResponse('success', 'Output Sensor data sent successfully', sensorData));
+        }        
     } catch (error) {
         res.status(500).json(formatResponse('error', 'Internal Server Error', error.message));
     }

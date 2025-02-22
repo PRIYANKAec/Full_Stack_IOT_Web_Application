@@ -13,11 +13,13 @@ const Switch = ({ checked, onChange }) => {
   );
 };
 
-const SwitchCard = ({ sensor }) => {
+const SwitchCard = ({ sensor, onSwitchChange }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleSwitchChange = () => {
     setIsChecked(!isChecked);
+    const newValue = isChecked ? 0 : 1;
+    onSwitchChange(sensor.id, newValue);
   };
 
   return (
@@ -30,7 +32,7 @@ const SwitchCard = ({ sensor }) => {
         </div>
         {/* Status Indicator */}
         <span className={`px-3 py-1 text-xs font-semibold rounded-full tracking-wider ${isChecked ? "bg-green-500 text-white" : "bg-red-500 text-white"}`}>
-          {isChecked ? "ON" : "OFF"}
+          { isChecked ? "ON" : "OFF" }
         </span>
       </CardHeader>
 

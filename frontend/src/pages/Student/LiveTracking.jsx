@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { getProjectsByUserId } from "@/APIs/projectAPI";
 import { getSensorByProjectId } from "@/APIs/sensorAPI";
-import { receiveSensorData } from "@/APIs/sensorDataAPI";
+import { receiveSensorData, sendSensorData } from "@/APIs/sensorDataAPI";
 
 import {
   Select,
@@ -76,6 +76,19 @@ const LiveTracking = () => {
     selectedProject?.id && getSensors();
     sensors.length > 0 && getSensorData();
   }, [user?.id, selectedProject?.id, sensors.length]);
+
+  const handleSwitchChange = async (sensorId, newValue) => {
+    try {
+      const response = await sendSensorData(selectedProject.id, sensorId, { id: user?.id, value: newValue, unit: "status" });
+      console.log(response);
+      if (response.status == 201)
+      setSensorData(sensorData.map((sensor) =>
+        sensor.id === sensorId ? { ...sensor, value: newValue } : sensor
+      ));
+    } catch (error) {
+      console.error("Failed to send sensor data:", error);
+    }
+  };
 
   if (loading) {
     return (
@@ -153,7 +166,7 @@ const LiveTracking = () => {
       }
 
       {sensors.filter(sensor => sensor.type === "INPUT").map(sensor => (
-        <SwitchCard key={sensor.id} sensor={sensor} />
+        <SwitchCard key={sensor.id} sensor={sensor} onSwitchChange={handleSwitchChange} />
       ))}
 
       <div>My new content</div>
