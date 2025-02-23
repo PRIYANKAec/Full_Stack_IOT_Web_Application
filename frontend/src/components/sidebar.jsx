@@ -35,9 +35,10 @@ const Sidebar = () => {
           <FaBars className="text-2xl cursor-pointer text-white" onClick={toggleSideBar} />
         )}
       </div>
+      <div className='min-h-screen bg-foreground text-secondary'>
       <motion.div
         layout
-        className={`fixed top-0 left-0 pt-10 pb-4 min-h-screen bg-foreground text-secondary transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} sm:relative sm:translate-x-0 sm:flex sm:flex-col sm:justify-between sm:w-36 lg:w-64 md:w-48 sm:pt-0`}
+        className={`fixed top-0 left-0 pt-10 pb-4 h-screen transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} sm:relative sm:translate-x-0 sm:flex sm:flex-col sm:justify-between sm:w-36 lg:w-64 md:w-48 sm:pt-0`}
         initial={{ x: -100 }}
         animate={{ x: isOpen ? 0 : -300, transition: { duration: 0.8, ease: "easeInOut" } }}
         variants={sidebarVariants}
@@ -51,7 +52,7 @@ const Sidebar = () => {
 
         <nav className='text-center text-xl space-y-2 flex flex-col'>
           <motion.div variants={linkVariants} whileHover="hover" onClick={toggleSideBar}>
-            <Link to="/" className="pl-4 lg:pl-6 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center space-x-2">
+            <Link to="/" className="pl-4 lg:pl-10 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center space-x-2">
               <FaHome className="text-lg" />
               <span>Home</span>
             </Link>
@@ -60,19 +61,19 @@ const Sidebar = () => {
             user?.role === "USER" ? (
               <>
                 <motion.div variants={linkVariants} whileHover="hover" onClick={toggleSideBar}>
-                  <Link to="/projects" className='pl-4 lg:pl-6 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center space-x-2'>
+                  <Link to="/projects" className='pl-4 lg:pl-10 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center space-x-2'>
                     <FaProjectDiagram className="text-lg" />
                     <span>Projects</span>
                   </Link>
                 </motion.div>
                 <motion.div variants={linkVariants} whileHover="hover" onClick={toggleSideBar}>
-                  <Link to="/LiveTracking" className='pl-4 lg:pl-6 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center space-x-2'>
+                  <Link to="/LiveTracking" className='pl-4 lg:pl-10 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center space-x-2'>
                     <FaMapMarkerAlt className="text-lg" />
                     <span>LiveTracking</span>
                   </Link>
                 </motion.div>
                 <motion.div variants={linkVariants} whileHover="hover" onClick={toggleSideBar}>
-                  <Link to="/Tutorial" className='pl-4 lg:pl-6 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center space-x-2'>
+                  <Link to="/Tutorial" className='pl-4 lg:pl-10 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center space-x-2'>
                     <FaBook className="text-lg" />
                     <span>Tutorial</span>
                   </Link>
@@ -81,19 +82,19 @@ const Sidebar = () => {
             ) : (
               <>
                 <motion.div variants={linkVariants} whileHover="hover" onClick={toggleSideBar}>
-                  <Link to="/manageProject" className='pl-4 lg:pl-4 py-3 mx-5 sm:mx-1 md:mx-4 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center space-x-0'>
+                  <Link to="/manageProject" className='pl-4 lg:pl-10 py-3 mx-5 sm:mx-1 md:mx-4 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center lg:space-x-2'>
                     <FaProjectDiagram className="text-lg" />
                     <span className=''>Manage Projects</span>
                   </Link>
                 </motion.div>
                 <motion.div variants={linkVariants} whileHover="hover" onClick={toggleSideBar}>
-                  <Link to="/manageUser" className='pl-4 lg:pl-6 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center space-x-2'>
+                  <Link to="/manageUser" className='pl-4 lg:pl-10 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center space-x-2'>
                     <FaMapMarkerAlt className="text-lg" />
                     <span className=''>Manage User</span>
                   </Link>
                 </motion.div>
                 <motion.div variants={linkVariants} whileHover="hover" onClick={toggleSideBar}>
-                  <Link to="/allTracking" className='pl-4 lg:pl-6 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center space-x-2'>
+                  <Link to="/allTracking" className='pl-4 lg:pl-10 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center space-x-2'>
                     <FaBook className="text-lg" />
                     <span className=''>Live Tracking</span>
                   </Link>
@@ -107,18 +108,19 @@ const Sidebar = () => {
         <div className='text-center text-xl mb-4 space-y-2'>
           <motion.div variants={linkVariants} whileHover="hover"
             onClick={toggleSideBar}>
-            <Link to="/profile" className='pl-4 lg:pl-6 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 cursor-pointer flex items-center space-x-2'>
+            <Link to="/profile" className='pl-4 lg:pl-10 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 cursor-pointer flex items-center space-x-2'>
             <FaUser className="text-lg" />
             <span>Profile</span>
             </Link>
           </motion.div>
-          <motion.div variants={linkVariants} whileHover="hover" className='pl-5 lg:pl-6 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 cursor-pointer flex items-center space-x-2'
+          <motion.div variants={linkVariants} whileHover="hover" className='pl-5 lg:pl-10 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 cursor-pointer flex items-center space-x-2'
             onClick={() => logout()} >
             <FaSignOutAlt className="text-lg" />
             <span>Logout</span>
           </motion.div>
         </div>
       </motion.div>
+      </div>
     </>
   );
 }
