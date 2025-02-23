@@ -164,9 +164,8 @@ const Register = () => {
           </form>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4 mb-4">
-          <Button type="submit" form="registerForm" className="w-full md:w-72 lg:w-96 bg-custom-softBlue text-white hover:bg-custom-deepBlue md:text-lg">
-            {loading && <FadeLoader color="#FFFFF" loading={loading} size={35} />}
-            {!loading && 'Register'}
+          <Button type="submit" form="registerForm" className="w-full md:w-72 lg:w-96 bg-custom-softBlue text-white hover:bg-custom-deepBlue md:text-lg flex justify-center items-center">
+            {loading ? <FadeLoader color="#FFFFFF" loading={loading} radius={2} margin={2} /> : 'Register'}
           </Button>
           <Button
             className="w-full md:w-72 lg:w-96 bg-custom-softBlue text-white hover:bg-custom-deepBlue md:text-lg"

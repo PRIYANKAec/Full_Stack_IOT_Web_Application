@@ -87,9 +87,8 @@ const Login = () => {
           </form>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4 mb-4">
-          <Button type="submit" form="loginForm" className="w-full md:w-72 lg:w-96 bg-custom-softBlue text-white hover:bg-custom-deepBlue md:text-lg">
-            {loading && <FadeLoader color="#FFFFF" loading={loading} size={35} />}
-            {!loading && 'Login'}
+        <Button type="submit" form="loginForm" className="w-full md:w-72 lg:w-96 bg-custom-softBlue text-white hover:bg-custom-deepBlue md:text-lg flex justify-center items-center">
+            {loading ? <FadeLoader color="#FFFFFF" loading={loading} radius={2} margin={2} /> : 'Login'}
           </Button>
           <Button
             className="w-full md:w-72 lg:w-96 bg-custom-softBlue text-white hover:bg-custom-deepBlue md:text-lg"
