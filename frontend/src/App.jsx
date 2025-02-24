@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import ProtectedRoute from './ProtectedRoute';
 import './styles/index.css';
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SonnerToaster } from 'sonner';
 
 import Sidebar from './components/sidebar';
 import Header from './components/header';
@@ -42,6 +43,7 @@ const AppContent = () => {
       {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
       <div className='w-full'>
         <Toaster />
+        <SonnerToaster position="top-center" expand={false} richColors className='z-[150]' />
         <div className='flex flex-col h-full'>
           {!hideNavbarRoutes.includes(location.pathname) && <Header />}
           <Routes>
@@ -57,7 +59,7 @@ const AppContent = () => {
             <Route path="/projects" element={
               <ProtectedRoute element={<Projects />} allowedRoles={["USER"]} />
             } />
-            <Route path="/liveTracking" element={
+            <Route path="/liveTracking/:projectId" element={
               <ProtectedRoute element={<LiveTracking />} allowedRoles={["USER"]} />
             } />
             <Route path="/tutorial" element={

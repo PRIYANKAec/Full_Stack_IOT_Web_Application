@@ -38,7 +38,7 @@ const Sidebar = () => {
       <div className='min-h-screen bg-foreground text-secondary'>
       <motion.div
         layout
-        className={`fixed top-0 left-0 pt-10 pb-4 h-screen transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} sm:relative sm:translate-x-0 sm:flex sm:flex-col sm:justify-between sm:w-36 lg:w-64 md:w-48 sm:pt-0`}
+        className={`fixed top-0 left-0 pt-10 pb-4 h-screen bg-foreground text-secondary transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} sm:relative sm:translate-x-0 sm:flex sm:flex-col sm:justify-between sm:w-36 lg:w-64 md:w-48 sm:pt-0`}
         initial={{ x: -100 }}
         animate={{ x: isOpen ? 0 : -300, transition: { duration: 0.8, ease: "easeInOut" } }}
         variants={sidebarVariants}

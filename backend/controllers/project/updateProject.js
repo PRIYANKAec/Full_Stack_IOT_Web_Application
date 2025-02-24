@@ -27,6 +27,11 @@ const updateProject = async (req, res) => {
     }
 
     try {
+
+        const projectExists = await ProjectModel.findProjectByName(bodyValue.name);
+        if (projectExists.id !== paramsValue.projectId) {
+            return res.status(400).json(formatResponse('error', 'Project already exists', null));
+        }
         const { id, ...data } = bodyValue;
         const project = await ProjectModel.updateProject(paramsValue.projectId, data);
         res.status(200).json(formatResponse('success', 'Project updated successfully', project));

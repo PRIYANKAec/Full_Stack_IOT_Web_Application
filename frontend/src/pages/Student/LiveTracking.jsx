@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { getProjectsByUserId } from "@/APIs/projectAPI";
 import { getSensorByProjectId } from "@/APIs/sensorAPI";
@@ -25,6 +26,7 @@ import SwitchCard from "@/components/ui/switch";
 
 const LiveTracking = () => {
   const { user } = useAuth();
+  const { projectId } = useParams();
   const [projects, setProjects] = useState([]);
   const [sensors, setSensors] = useState([]);
   const [sensorData, setSensorData] = useState([]);
@@ -37,7 +39,8 @@ const LiveTracking = () => {
         const response = await getProjectsByUserId(user?.id);
         setProjects(response.data);
         if (response.data.length > 0) {
-          setSelectedProject(response.data[0]);
+          const project = response.data.find((proj) => proj.id === parseInt(projectId));
+          setSelectedProject(project || response.data[0]);
         }
       } catch (error) {
         console.error("Failed to fetch projects:", error);
