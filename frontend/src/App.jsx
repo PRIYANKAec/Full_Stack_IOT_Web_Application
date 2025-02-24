@@ -62,6 +62,9 @@ const AppContent = () => {
             <Route path="/liveTracking/:projectId" element={
               <ProtectedRoute element={<LiveTracking />} allowedRoles={["USER"]} />
             } />
+            <Route path="/liveTracking" element={
+              <ProtectedRoute element={<LiveTracking />} allowedRoles={["USER"]} />
+            } />
             <Route path="/tutorial" element={
               <ProtectedRoute element={<Tutorial />} allowedRoles={["USER"]} />
             } />
