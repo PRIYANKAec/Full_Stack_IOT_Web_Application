@@ -63,6 +63,7 @@ const LiveTracking = () => {
     };
 
     const getSensorData = async () => {
+      setLoading(true);
       try {
         const sensorDataPromises = sensors.map((sensor) =>
           receiveSensorData(selectedProject?.id, sensor.id, user?.id)
@@ -72,6 +73,8 @@ const LiveTracking = () => {
         // await console.log(sensorData);
       } catch (error) {
         console.error("Failed to fetch sensors:", error);
+      } finally {
+        setLoading(false);
       }
     };
 

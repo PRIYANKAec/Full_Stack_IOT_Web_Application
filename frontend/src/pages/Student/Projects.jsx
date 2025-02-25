@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import {
   createProjects,
   getProjectsByUserId,
@@ -8,6 +9,7 @@ import {
 import { getSensorByProjectId } from "@/APIs/sensorAPI";
 import { useAuth } from "@/context/AuthContext";
 
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -33,10 +35,21 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import Loading from "@/components/loading";
 
 import { Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { useNavigate } from 'react-router-dom';
+
+const containerVariants = {
+  hidden: { opacity: 0, scale: 0.2 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 1.5 } },
+  hover: { scale: 1.05, transition: { duration: 0.3 } },
+};
 
 const Projects = () => {
   const { user } = useAuth();
@@ -44,6 +57,7 @@ const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [showForm, setShowForm] = useState(false); //create form
   const [isEditing, setIsEditing] = useState(false);//edit form
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -79,6 +93,8 @@ const Projects = () => {
       } catch (error) {
         console.error("Failed to fetch projects:", error);
         toast.error("Something went wrong");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -183,18 +199,33 @@ const Projects = () => {
     navigate(`/liveTracking/${projectId}`);
   };
 
+  if (loading) {
+    return (
+      <div className="relative h-full">
+        <Loading />
+      </div>
+    );
+  }
+
   return (
-    <div className="p-3 w-full">
+    <motion.div
+      className="p-3 w-full"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       <div className="flex my-3 sm:my-5 justify-between items-center md:px-12 lg:px-20 2xl:px-32">
         <h1 className="flex items-center mt-4 text-lg sm:text-xl lg:text-2xl text-foreground font-bold">
           Manage & Explore Projects
         </h1>
         <Dialog open={showForm} onOpenChange={(open) => open ? handleDialogOpen() : handleDialogClose()}>
           <DialogTrigger asChild>
+          <motion.div whileHover={{ scale: 1.1 }} whileFocus={{ scale: 1.05 }}>
             <Button className="bg-foreground text-secondary hover:bg-quaternary hover:text-foreground font-semibold px-2 mt-4" 
               onClick={() => setShowForm(true)}>
               Create New Project
             </Button>
+            </motion.div>
           </DialogTrigger>
 
           <DialogContent className="sm:max-w-md text-foreground font-bold bg-secondary rounded-xl">
@@ -269,12 +300,17 @@ const Projects = () => {
 
       {/* Listing Projects */}
       <div className="w-full overflow-auto my-5">
-        <div className="flex flex-wrap justify-center gap-4">
+      <motion.div
+          className="flex flex-wrap justify-center gap-4 mt-2"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {projects.map((project) => (
-            <Card
-              key={project.id}
-              className="bg-quaternary rounded-xl shadow-md w-80 md:w-64 lg:w-72 max-w-full h-fit"
-            >
+            <motion.div key={project.id} variants={itemVariants} whileFocus={{ scale: 1.05 }} whileHover="hover">
+              <Card
+                className="bg-quaternary rounded-xl shadow-md w-80 md:w-64 lg:w-72 max-w-full h-fit"
+              >
               <CardHeader className="bg-gradient-to-r from-foreground to-tertiary text-secondary rounded-t-xl pb-3">
                 <div className="flex justify-between">
                   {/* absolute need to applied */}
@@ -348,10 +384,11 @@ const Projects = () => {
                 </div>
               </CardContent>
             </Card>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
