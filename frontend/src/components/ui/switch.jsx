@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import React, { useEffect, useState } from "react";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "@/components/ui/card";
 import { FaPowerOff } from "react-icons/fa";
 
 const Switch = ({ checked, onChange }) => {
@@ -13,44 +13,47 @@ const Switch = ({ checked, onChange }) => {
   );
 };
 
-const SwitchCard = ({ sensor, onSwitchChange }) => {
-  const [isChecked, setIsChecked] = useState(false);
+const SwitchCard = ({ sensor, sensorData, onSwitchChange }) => {
+  const lastData = sensorData.length > 0 ? sensorData[sensorData.length - 1] : null;
+  const [isChecked, setIsChecked] = useState((lastData?.value === 1)? true : false);
+
+  useEffect(() => {
+    setIsChecked((lastData?.value === 1)? true : false);
+  }, [lastData]);
 
   const handleSwitchChange = () => {
-    setIsChecked(!isChecked);
     const newValue = isChecked ? 0 : 1;
+    setIsChecked(!isChecked);
     onSwitchChange(sensor.id, newValue);
   };
 
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+  };
+
   return (
-    <Card className="w-full max-w-sm bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200">
-      {/* Card Header */}
-      <CardHeader className="flex items-center justify-between bg-gray-900 text-white p-4">
-        <div className="flex items-center gap-2">
-          <FaPowerOff className="text-xl" />
-          <CardTitle className="text-lg font-semibold tracking-wide">{sensor.name}</CardTitle>
-        </div>
-        {/* Status Indicator */}
-        <span className={`px-3 py-1 text-xs font-semibold rounded-full tracking-wider ${isChecked ? "bg-green-500 text-white" : "bg-red-500 text-white"}`}>
-          { isChecked ? "ON" : "OFF" }
-        </span>
+    <Card className="bg-secondary rounded-2xl shadow-xl w-80 md:w-64 lg:w-72 max-w-full mb-6">
+      <CardHeader className="flex items-center rounded-t-2xl bg-gray-900 text-white p-4 pb-6">
+        <CardTitle className="text-xl font-bold text-center">
+          {sensor.name}
+        </CardTitle>
+        <CardDescription className="text-lg font-medium text-center text-slate-300">{sensor.type}</CardDescription>
       </CardHeader>
 
-      {/* Card Content */}
-      <CardContent className="p-5">
-        <p className="text-gray-700 text-sm font-medium">
-          Type: <span className="font-semibold text-gray-900">{sensor.type}</span>
-        </p>
-        <p className="text-gray-700 text-sm font-medium mt-2">
-          Status: 
-          <span className={`font-bold ml-1 ${isChecked ? "text-green-600" : "text-red-600"}`}>
-            {isChecked ? "Active" : "Inactive"}
+      <CardContent className="flex flex-col items-center">
+      <span className={`px-5 py-2 my-5 text-sm font-semibold rounded-full tracking-wider ${isChecked ? "bg-green-500 text-white" : "bg-red-500 text-white"}`}>
+          { isChecked ? "ON" : "OFF" }
+        </span>
+        <p className="text-gray-700 text-sm text-center font-medium">
+          Last modified
+          <span className={'flex font-bold ml-1'}>
+            {sensorData.length > 0 ? formatDate(sensorData[sensorData.length - 1].timestamp) : "N/A"}
           </span>
         </p>
       </CardContent>
 
-      {/* Card Footer (Switch Button) */}
-      <CardFooter className="p-4 flex justify-center">
+      <CardFooter className="px-4 pt-1 pb-6 flex justify-center">
         <Switch checked={isChecked} onChange={handleSwitchChange} />
       </CardFooter>
     </Card>

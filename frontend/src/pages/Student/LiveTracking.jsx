@@ -23,6 +23,7 @@ import {
 import Loading from "@/components/loading";
 import GaugeCard from "@/components/gauge/gauge-mapping";
 import SwitchCard from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 
 const LiveTracking = () => {
   const { user } = useAuth();
@@ -162,18 +163,30 @@ const LiveTracking = () => {
               {selectedProject?.microcontroller}
             </CardTitle>
           </div>
+          <div><Button className='bg-foreground text-slate-100 hover:bg-primary hover:text-slate-200 font-semibold px-2 mt-5'>Manage Project</Button></div>
         </CardHeader>
       </Card>
 
-      { <GaugeCard 
-          sensors={sensors?.filter((sensor) => sensor.type === "OUTPUT")} 
-          sensorData={sensorData?.filter((data, index) => sensors[index].type === "OUTPUT")} 
-        />
-      }
+      <GaugeCard 
+        sensors={sensors?.filter((sensor) => sensor.type === "OUTPUT")} 
+        sensorData={sensorData?.filter((data, index) => sensors[index]?.type === "OUTPUT")}
+      />
 
-      {sensors.filter(sensor => sensor.type === "INPUT").map(sensor => (
-        <SwitchCard key={sensor.id} sensor={sensor} onSwitchChange={handleSwitchChange} />
-      ))}
+      <div className="w-full overflow-auto">
+      <div className="flex flex-wrap justify-center gap-4">
+      { sensors.filter((sensor) => sensor?.type === "INPUT").map((sensor) => {
+      const matchedSensorData = sensorData.flat().filter((data) => data.sensorId === sensor.id);
+        return (
+          <SwitchCard
+            key={sensor.id}
+            sensor={sensor}
+            sensorData={matchedSensorData}
+            onSwitchChange={handleSwitchChange}
+          />
+        )
+      })}
+      </div>
+      </div>
 
       <div>My new content</div>
     </div>

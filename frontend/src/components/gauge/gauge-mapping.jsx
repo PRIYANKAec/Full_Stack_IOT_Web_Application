@@ -4,12 +4,12 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 
 const GaugeCard = ({ sensors, sensorData }) => {
     return (
-        <div className="w-full overflow-auto mb-6">
+        <div className="w-full overflow-auto">
             <div className="flex flex-wrap justify-center gap-4">
                 {sensorData.map((data, index) => (
                     <Card
                         key={index}
-                        className="bg-secondary rounded-xl shadow-xl w-80 sm:w-64 lg:w-72 max-w-full"
+                        className="bg-secondary rounded-xl shadow-xl w-80 sm:w-64 lg:w-72 max-w-full mb-6"
                     >
                         <CardHeader className="flex flex-col items-center justify-center h-16">
                             <CardTitle className="text-xl font-bold text-center">
