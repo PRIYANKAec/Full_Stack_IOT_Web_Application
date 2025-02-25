@@ -242,14 +242,14 @@ const Profile = () => {
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="py-6 px-2 sm:px-4 md:px-8 bg-accent">
+          <CardContent className="py-6 px-2 sm:px-4 md:px-8 bg-accent rounded-lg">
             {projects.map((project) => (
               <motion.div
                 key={project.id}
                 variants={itemVariants}
                 initial="hidden"
                 animate="visible"
-                className="mb-4 bg-secondary p-4 rounded-lg shadow-md"
+                className="mb-4 bg-secondary p-4 shadow-md"
               >
                 <div className="mb-2 grid grid-cols-2 ">
                   <div className="text-lg font-bold mb-1 text-primary">

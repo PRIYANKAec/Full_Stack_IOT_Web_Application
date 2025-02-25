@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { getProjectsByUserId } from "@/APIs/projectAPI";
 import { getSensorByProjectId } from "@/APIs/sensorAPI";
 import { receiveSensorData, sendSensorData } from "@/APIs/sensorDataAPI";
+import socket from "@/utils/socket";
 
 import {
   Select,
@@ -20,10 +21,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import Loading from "@/components/loading";
 import GaugeCard from "@/components/gauge/gauge-mapping";
 import SwitchCard from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
 
 const LiveTracking = () => {
   const { user } = useAuth();
@@ -84,14 +85,37 @@ const LiveTracking = () => {
     sensors.length > 0 && getSensorData();
   }, [user?.id, selectedProject?.id, sensors.length]);
 
+  useEffect(() => {
+    socket.on("sensorData", (data) => {
+      console.log("socket", data);
+      setSensorData((prevData) => {
+        const updatedData = prevData.map((sensorArray) => {
+          if (sensorArray.length > 0 && sensorArray[0].sensorId === data.sensorId) {
+            return [...sensorArray, data];
+          }
+          return sensorArray;
+        });
+        return updatedData;
+      });
+      console.log("sensorData", sensorData);
+    });
+    return () => {
+      socket.off("sensorData");
+    };
+  }, []);
+
   const handleSwitchChange = async (sensorId, newValue) => {
     try {
       const response = await sendSensorData(selectedProject.id, sensorId, { id: user?.id, value: newValue, unit: "status" });
       console.log(response);
       if (response.status == 201)
-      setSensorData(sensorData.map((sensor) =>
-        sensor.id === sensorId ? { ...sensor, value: newValue } : sensor
-      ));
+        if (response.status === 201) {
+          setSensorData((prevData) =>
+            prevData.map((sensor) =>
+              sensor.sensorId === sensorId ? { ...sensor, value: newValue } : sensor
+            )
+          );
+        }
     } catch (error) {
       console.error("Failed to send sensor data:", error);
     }

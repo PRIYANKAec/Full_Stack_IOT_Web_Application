@@ -8,4 +8,12 @@ const socket = io(SOCKET_SERVER_URL, {
     transports: ['websocket', 'polling']
 });
 
+socket.on('connect', () => {
+    console.log('Connected to server:', socket.id);
+});
+
+socket.on('disconnect', () => {
+    console.log('Disconnected from server');
+});
+
 export default socket;

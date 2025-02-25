@@ -42,7 +42,7 @@ const SwitchCard = ({ sensor, sensorData, onSwitchChange }) => {
       </CardHeader>
 
       <CardContent className="flex flex-col items-center">
-      <span className={`px-5 py-2 my-5 text-sm font-semibold rounded-full tracking-wider ${isChecked ? "bg-green-500 text-white" : "bg-red-500 text-white"}`}>
+        <span className={`px-5 py-2 my-5 text-sm font-semibold rounded-full tracking-wider cursor-pointer ${isChecked ? "bg-green-500 text-white" : "bg-red-500 text-white"}`}>
           { isChecked ? "ON" : "OFF" }
         </span>
         <p className="text-gray-700 text-sm text-center font-medium">

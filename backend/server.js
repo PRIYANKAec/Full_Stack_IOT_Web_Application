@@ -13,7 +13,7 @@ const userRoutes = require('./routes/userRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const sensorRoutes = require('./routes/sensorRoutes');
 
-const formatResponse = require('./utils/helper')
+const formatResponse = require('./utils/helper');
 
 const app = express();
 
@@ -24,7 +24,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
         origin: '*',
-        methods: ['POST']
+        methods: ['GET', 'POST']
     }
 });
 
