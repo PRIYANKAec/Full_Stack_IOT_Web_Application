@@ -23,8 +23,8 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Loading from "@/components/loading";
-import GaugeCard from "@/components/gauge/gauge-mapping";
-import SwitchCard from "@/components/ui/switch";
+import GaugeCard from "@/components/gauge/gaugeCard";
+import SwitchCard from "@/components/switch/switchCard";
 
 const LiveTracking = () => {
   const { user } = useAuth();
@@ -187,7 +187,9 @@ const LiveTracking = () => {
               {selectedProject?.microcontroller}
             </CardTitle>
           </div>
-          <div><Button className='bg-foreground text-slate-100 hover:bg-primary hover:text-slate-200 font-semibold px-2 mt-5'>Manage Project</Button></div>
+          <div><Button className='bg-foreground text-slate-100 hover:bg-primary hover:text-slate-200 font-semibold px-2 mt-5'>
+          Manage Sensor
+          </Button></div>
         </CardHeader>
       </Card>
 
