@@ -9,7 +9,7 @@ export const ChartCard = ({ sensors, sensorData }) => {
 
   return (
     <div className="w-full overflow-auto">
-      <div className="flex flex-wrap justify-center gap-4">
+      <div className="w-full flex flex-wrap justify-center gap-4">
         {sensorData?.map((data, index) => {
           const salesData = data?.map((dataPoint) => {
             const month = new Date(dataPoint?.timestamp).toLocaleDateString("en-US", { month: "short" });
@@ -28,7 +28,7 @@ export const ChartCard = ({ sensors, sensorData }) => {
           };
 
           return (
-            <Card key={index} className="bg-secondary rounded-xl shadow-xl w-full md:mx-12 max-w-full mb-6">
+            <Card key={index} className="bg-secondary rounded-xl shadow-xl w-full max-w-[550px] lg:w-5/12 xl:max-w-3/5 mb-6">
               <CardHeader className="flex flex-col items-center justify-center h-16">
                 <CardTitle className="text-xl font-bold text-center">
                   {sensors[index]?.name}

@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card1";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FadeLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
@@ -88,7 +88,7 @@ const Login = () => {
         </CardContent>
         <CardFooter className="flex flex-col space-y-4 mb-4">
         <Button type="submit" form="loginForm" className="w-full md:w-72 lg:w-96 bg-custom-softBlue text-white hover:bg-custom-deepBlue md:text-lg flex justify-center items-center">
-            {loading ? <FadeLoader color="#FFFFFF" loading={loading} radius={2} margin={2} /> : 'Login'}
+            {loading ? <PulseLoader color="#FFFFFF" loading={loading} radius={2} margin={2} /> : 'Login'}
           </Button>
           <Button
             className="w-full md:w-72 lg:w-96 bg-custom-softBlue text-white hover:bg-custom-deepBlue md:text-lg"
