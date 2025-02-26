@@ -25,8 +25,8 @@ export const AuthProvider = ({ children }) => {
       const response = await api.post('/api/users/me', { id: id});
       setUser(response.data.data.user);
     } catch (error) {
-      console.error('Failed to get user details:', error);
-      setError('Failed: ' + error?.message);
+      console.error('Failed to get user details:', error?.response?.data);
+      setError('Failed: ' + error?.response?.data?.message);
     } finally {
       setLoading(false);
     }
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
       setError(null);
     } catch (error) {
       console.error('Login failed:', error);
-      if(error?.message) setError(error.message);
+      // if(error?.message) setError(error.message);
       if(error?.response?.data?.message) {
       setError((error?.response?.data?.message + ": " + error.response?.data?.data) || 'Login failed');
       }
@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
       setError(null);
     } catch (error) {
       console.error('Registration failed:', error);
-      if(error?.message) setError(error.message);
+      // if(error?.message) setError(error.message);
       if(error?.response?.data?.message) 
       setError((error?.response?.data?.message + ": " + error.response?.data?.data) || 'Registration failed');
     } finally {
