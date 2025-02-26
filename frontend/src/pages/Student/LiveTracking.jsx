@@ -26,6 +26,7 @@ import Loading from "@/components/loading";
 import GaugeCard from "@/components/gauge/gaugeCard";
 import SwitchCard from "@/components/switch/switchCard";
 import { ChartCard } from "@/components/chart/chartCard";
+import ManageSensors from "@/components/manageSensors/ManageSensors";
 
 const LiveTracking = () => {
   const { user } = useAuth();

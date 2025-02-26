@@ -299,7 +299,7 @@ const Projects = () => {
       </div>
 
       {/* Listing Projects */}
-      <div className="w-full overflow-auto my-5">
+      <div className="w-full overflow-auto py-8">
       <motion.div
           className="flex flex-wrap justify-center gap-4 mt-2"
           variants={containerVariants}
