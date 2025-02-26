@@ -1,12 +1,9 @@
 import React from "react";
 import GaugeComponent from "react-gauge-component";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card1";
+import { formatDate } from "@/utils/time-functions";
 
 const GaugeCard = ({ sensors, sensorData }) => {
-    const formatDate = (timestamp) => {
-        const date = new Date(timestamp);
-        return date.toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
-    };
     
     return (
         <div className="w-full overflow-auto">

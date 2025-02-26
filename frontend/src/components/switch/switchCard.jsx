@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "@/components/ui/card1";
-import { FaPowerOff } from "react-icons/fa";
+import { formatDate } from "@/utils/time-functions";
 
 const Switch = ({ checked, onChange }) => {
   return (
@@ -25,11 +25,6 @@ const SwitchCard = ({ sensor, sensorData, onSwitchChange }) => {
     const newValue = isChecked ? 0 : 1;
     setIsChecked(!isChecked);
     onSwitchChange(sensor.id, newValue);
-  };
-
-  const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
   };
 
   return (
