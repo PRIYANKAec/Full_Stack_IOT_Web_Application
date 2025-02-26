@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import Loading from "@/components/loading";
 import GaugeCard from "@/components/gauge/gaugeCard";
 import SwitchCard from "@/components/switch/switchCard";
-import { ChartDemo } from "@/components/chart-demo";
+import { ChartCard } from "@/components/chart/chartCard";
 
 const LiveTracking = () => {
   const { user } = useAuth();
@@ -200,23 +200,26 @@ const LiveTracking = () => {
       />
 
       <div className="w-full overflow-auto">
-      <div className="flex flex-wrap justify-center gap-4">
-      { sensors.filter((sensor) => sensor?.type === "INPUT").map((sensor) => {
-      const matchedSensorData = sensorData.flat().filter((data) => data.sensorId === sensor.id);
-        return (
-          <SwitchCard
-            key={sensor.id}
-            sensor={sensor}
-            sensorData={matchedSensorData}
-            onSwitchChange={handleSwitchChange}
-          />
-        )
-      })}
-      </div>
+        <div className="flex flex-wrap justify-center gap-4">
+          { sensors.filter((sensor) => sensor?.type === "INPUT").map((sensor) => {
+          const matchedSensorData = sensorData.flat().filter((data) => data.sensorId === sensor.id);
+            return (
+              <SwitchCard
+                key={sensor.id}
+                sensor={sensor}
+                sensorData={matchedSensorData}
+                onSwitchChange={handleSwitchChange}
+              />
+            )
+          })}
+        </div>
       </div>
 
-      <div>My new content</div>
-      <ChartDemo />
+      <ChartCard
+        sensors={sensors?.filter((sensor) => sensor.type === "OUTPUT")}
+        sensorData={sensorData?.filter((data, index) => sensors[index]?.type === "OUTPUT")}
+      />
+
     </div>
   );
 };

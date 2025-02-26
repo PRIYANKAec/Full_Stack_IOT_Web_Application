@@ -24,30 +24,20 @@ const Home = () => {
   const userDetail = user ? JSON.stringify(user) : "No user details available";
 
   return (
-    <div className="w-full -mt-1">
+    <div className="w-full">
       {/* Hero Section with Background Image */}
       <motion.div
-        className="relative w-full bg-slate-400 h-screen"
+        className="w-full bg-slate-400 h-screen"
         initial="hidden"
         animate="visible"
         variants={fadeIn}
         transition={{ duration: 1 }}
       >
-        <div
-          className="absolute inset-0 bg-center opacity-50"
-          style={{
-            backgroundImage: "url('/iot.png')",
-            filter: "brightness(60%)",
-            background: "cover",
-            backgroundPosition: "center",
-          }}
-        ></div>
-
-        <div className="relative flex flex-col items-center justify-center h-full text-secondary text-center px-6">
+        <div className="flex flex-col items-center justify-center h-full text-center px-6 bg-overlay-image bg-cover bg-center">
           <motion.h1
-            className="text-3xl md:text-5xl font-bold drop-shadow-lg"
+            className="text-3xl md:text-5xl font-bold"
             variants={fadeInUp}
-            transition={{ duration: 1 }}
+            transition={{ duration: 1, delay: 0.3 }}
           >
             Centralized IoT Dashboard for Real-Time Project Monitoring
           </motion.h1>
@@ -60,7 +50,7 @@ const Home = () => {
           </motion.p>
           <motion.div variants={fadeInUp} transition={{ duration: 1, delay: 0.6 }}>
             <Button
-              className="bg-foreground hover:bg-primary"
+              className="bg-foreground hover:bg-primary cursor-pointer"
               onClick={() => navigate("/projects")}
             >
               Get Started

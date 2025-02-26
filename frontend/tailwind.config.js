@@ -17,6 +17,9 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        'overlay-image': "linear-gradient(rgba(255, 255, 255, 0.5), rgba(225, 255, 255, 0.5)), url('/iot.png')",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
