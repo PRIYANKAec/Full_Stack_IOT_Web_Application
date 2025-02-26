@@ -20,11 +20,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card1";
 import { Button } from "@/components/ui/button";
 import Loading from "@/components/loading";
 import GaugeCard from "@/components/gauge/gaugeCard";
 import SwitchCard from "@/components/switch/switchCard";
+import { ChartDemo } from "@/components/chart-demo";
 
 const LiveTracking = () => {
   const { user } = useAuth();
@@ -215,6 +216,7 @@ const LiveTracking = () => {
       </div>
 
       <div>My new content</div>
+      <ChartDemo />
     </div>
   );
 };

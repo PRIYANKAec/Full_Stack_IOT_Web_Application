@@ -1,6 +1,6 @@
 import React from "react";
 import GaugeComponent from "react-gauge-component";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card1";
 
 const GaugeCard = ({ sensors, sensorData }) => {
     const formatDate = (timestamp) => {
