@@ -42,7 +42,7 @@ const SwitchCard = ({ sensor, sensorData, onSwitchChange }) => {
         </span>
         <p className="text-gray-700 text-sm text-center font-medium">
           Last modified
-          <span className={'flex font-bold ml-1'}>
+          <span className={'flex justify-center font-bold ml-1'}>
             {sensorData.length > 0 ? formatDate(sensorData[sensorData.length - 1].timestamp) : "N/A"}
           </span>
         </p>

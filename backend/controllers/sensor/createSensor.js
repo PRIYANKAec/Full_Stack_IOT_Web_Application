@@ -25,10 +25,10 @@ const createSensor = async (req, res) => {
             return res.status(404).json(formatResponse('error', 'Project not found'));
         }
 
-        // Check if sensor name already exists
-        const sensorExists = await SensorModel.findSensorByName(value.name);
+        // Check if sensor name already exists within the project
+        const sensorExists = await SensorModel.findSensorByNameAndProjectId(value.name, parseInt(projectId, 10));
         if (sensorExists) {
-            return res.status(409).json(formatResponse('error', 'Sensor already exists'));
+            return res.status(409).json(formatResponse('error', 'Sensor with same name already exist in the project'));
         }
 
         const sensor = await SensorModel.createSensor({

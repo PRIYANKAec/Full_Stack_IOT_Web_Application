@@ -41,6 +41,7 @@ import ManageSensors from "@/components/manageSensors/ManageSensors";
 const LiveTracking = () => {
   const { user } = useAuth();
   const { projectId } = useParams();
+  const [showForm, setShowForm] = useState(false);
   const [projects, setProjects] = useState([]);
   const [sensors, setSensors] = useState([]);
   const [sensorData, setSensorData] = useState([]);
@@ -133,6 +134,21 @@ const LiveTracking = () => {
     }
   };
 
+  const handleDialogClose = () => {
+    setShowForm(false);
+  };
+
+  const handleDialogOpen = () => {
+    setShowForm(true);
+  };
+
+  const handleOpen = () => {
+    setShowForm(false);
+  }
+
+  const changeSensors = (sensors) => {
+    setSensors(sensors);
+  }
   if (loading) {
     return (
       <div className="relative h-full">
@@ -199,15 +215,18 @@ const LiveTracking = () => {
               {selectedProject?.microcontroller}
             </CardTitle>
           </div>
-          <Dialog>
+          <Dialog className="w-full" open={showForm} onOpenChange={(open) => open ? handleDialogOpen() : handleDialogClose()}>
             <DialogTrigger asChild>
               <Button className="bg-foreground text-slate-100 hover:bg-primary hover:text-slate-200 font-semibold ">
                 Manage Sensors
               </Button>
             </DialogTrigger>
-            <DialogContent className="w-fit flex flex-col space-2 p-2 bg-quaternary  rounded-xl shadow-xl justify-evenly">
-            <DialogTitle>Control your Sensors Here!</DialogTitle>
-              <ManageSensors projectId = {selectedProject.id} userId = {user.id} />
+            <DialogContent className="w-full flex flex-col justify-center items-center mt-4 bg-quaternary rounded-xl shadow-xl">
+            <DialogTitle className='-mb-2'>Control your Sensors Here!</DialogTitle>
+            <DialogDescription className='-mr-2'>
+              Manage your sensors here. You can add, edit, or delete sensors as needed.
+            </DialogDescription>
+              <ManageSensors projectId = {selectedProject.id} userId = {user.id} sensors={sensors} handleOpen={handleOpen} changeSensors={changeSensors} />
             </DialogContent>
           </Dialog>
         </CardHeader>

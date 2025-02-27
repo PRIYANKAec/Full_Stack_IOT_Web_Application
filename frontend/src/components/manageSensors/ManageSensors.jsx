@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { createSensor, deleteSensor, updateSensor } from "@/APIs/sensorAPI";
+
 import {
   Card,
   CardContent,
@@ -26,92 +23,126 @@ import {
   SelectValue,
 } from "../ui/select";
 import { toast } from "sonner";
-import { createSensor } from "@/APIs/sensorAPI";
 
-const ManageSensors = ({ projectId, userId }) => {
+const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }) => {
+  const [sensorId, setSensorId] = useState("");
   const [sensorName, setSensorName] = useState("");
   const [sensorType, setSensorType] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleCreateSensor = async () => {
-    if (!sensorName || !sensorType) {
-      toast.error("Please fill in all fields.");
-      return;
-    }
-
-    if (sensorType !== "INPUT" && sensorType !== "OUTPUT") {
-      toast.error("Sensor type must be 'INPUT' or 'OUTPUT'.");
-      return;
-    }
+    if (!sensorName || !sensorType) { handleOpen(); toast.error("Please fill in all fields."); return; }
 
     setLoading(true);
-
     const data = { name: sensorName, type: sensorType, id: userId };
-    console.log("Data:", data, projectId);
 
     try {
       const response = await createSensor(projectId, data);
-      console.log("Create Sensor Response:", response);
-      console.log("User ID:", userId);
-
-      if (response.status === 201) {
-        toast.success("Sensor created successfully!");
+      if (response.status === "success") {
+        toast.success(response.message);
         setSensorName("");
         setSensorType("");
+        changeSensors([...sensors, response.data]);
       } else {
-        toast.error(response.message || "Failed to create sensor.");
+        toast.error(response?.message || "Failed to create sensor.");
       }
     } catch (error) {
       console.error("Error while creating sensor:", error);
       toast.error("An error occurred while creating the sensor.");
     } finally {
+      handleOpen()
       setLoading(false);
     }
   };
 
+  const handleUpdateSensor = async () => {
+    if (!sensorId) { handleOpen(); toast.error("Please select sensor ID to edit."); return; }
+
+    setLoading(true);
+    const data = { name: sensorName, type: sensorType, id: userId };
+
+    try {
+      const response = await updateSensor(projectId, sensorId, data);
+      if (response.status === "success") {
+        toast.success(response.message);
+        setSensorName("");
+        setSensorType("");
+        changeSensors(sensors.map((sensor) => (sensor.id === sensorId ? response.data : sensor)));
+      } else {
+        toast.error(response?.message || "Failed to update sensor.");
+      }
+    } catch (error) {
+      console.error("Error while updating sensor:", error);
+      toast.error("An error occurred while updating the sensor.");
+    } finally {
+      handleOpen()
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async() => {
+    if (!sensorId) { handleOpen();toast.error("Please select a sensor to delete.");return; }
+    
+    setLoading(true);
+    try {
+      const response = await deleteSensor(projectId, sensorId, userId);
+      if (response.status === "success") {
+        toast.success(response.message);
+        setSensorId("")
+        changeSensors(sensors.filter((sensor) => sensor.id !== sensorId));
+      } else {
+        toast.error(response?.message || "Failed to create sensor.");
+      }
+    } catch (error) {
+      console.error("Error while deleting sensor:", error);
+      toast.error("An error occurred while deleting the sensor.");
+    } finally {
+      handleOpen()
+      setLoading(false);
+    }
+  }
+
   return (
-    <Tabs defaultValue="create" className="w-[400px]">
-      <TabsList className="grid w-full grid-cols-3 gap-2 text-foreground ">
+    <Tabs defaultValue="create" className="w-full">
+      <TabsList className="w-full grid grid-cols-3 gap-2 text-foreground">
         <TabsTrigger value="create">Create</TabsTrigger>
         <TabsTrigger value="update">Update</TabsTrigger>
         <TabsTrigger value="delete">Delete</TabsTrigger>
       </TabsList>
 
       {/* Create Sensors */}
-      <TabsContent value="create" className="w-full text-foreground">
+      <TabsContent value="create" className="w-full text-center text-foreground">
         <Card>
           <CardHeader>
-            <CardTitle className="text-foreground">Create Sensor</CardTitle>
+            <CardTitle className="text-foreground text-2xl -mb-2">Create Sensor</CardTitle>
             <CardDescription className="text-foreground text-base">
               Click Create when you're done.
             </CardDescription>
           </CardHeader>
-          <CardContent className="text-foreground text-base">
-            <div className="grid w-full max-w-sm items-center gap-2">
-              <Label className="text-lg">Sensor Name:</Label>
+          <CardContent className="text-foreground text-base -mt-2 w-full">
+              <Label className="block pl-2 text-lg text-left pb-2.5">Sensor Name:</Label>
               <Input
                 type="text"
                 value={sensorName}
                 onChange={(e) => setSensorName(e.target.value)}
+                placeholder="Enter sensor name"
+                className='mb-3'
               />
-              <Label className="text-lg">Sensor Type:</Label>
-              <Input
-                type="text"
-                value={sensorType}
-                placeholder="Type 'INPUT' or 'OUTPUT'"
-                onChange={(e) => setSensorType(e.target.value)}
-              />
-            </div>
+              <Label className="block pl-2 text-lg text-left pb-2.5">Sensor Type:</Label>
+              <Select onValueChange={(value) => setSensorType(value)}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select sensor type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="INPUT">INPUT</SelectItem>
+                    <SelectItem value="OUTPUT">OUTPUT</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button
-              type="button"
-              className="bg-destructive hover:bg-red-300"
-              onClick={() => {
-                setSensorName("");
-                setSensorType("");
-              }}
-            >
+            <Button type="button" className="bg-destructive hover:bg-red-300" onClick={handleOpen}>
               Cancel
             </Button>
             <Button
@@ -127,36 +158,44 @@ const ManageSensors = ({ projectId, userId }) => {
       </TabsContent>
 
       {/* Update Sensor */}
-      <TabsContent value="update" className="w-full text-foreground">
+      <TabsContent value="update" className="w-full text-center text-foreground">
         <Card>
           <CardHeader>
-            <CardTitle className="text-foreground">Update</CardTitle>
+            <CardTitle className="text-foreground text-2xl -mb-2">Update Sensor</CardTitle>
             <CardDescription className="text-foreground text-base">
               Make changes to your sensors here. Click save when you're done.
             </CardDescription>
           </CardHeader>
-          <CardContent className="text-foreground text-base">
-            <div className="grid w-full max-w-sm items-center gap-2">
-              <Label className="text-lg"> Sensor Name:</Label>
-              <Select>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select a sensor" />
+          <CardContent className="text-foreground text-base -mt-2 w-full">
+            <Label className="block pl-2 text-lg text-left pb-2.5">Choose sensor:</Label>
+              <Select onValueChange={(value) => {setSensorId(value.id); setSensorName(value.name); setSensorType(value.type)}}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select sensor to edit" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Sensors</SelectLabel>
-                  </SelectGroup>
+                  {sensors.map((sensor) => (
+                    <SelectItem key={sensor.id} value={sensor}>
+                      {sensor.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
-              <Label className="text-lg"> Sensor Type:</Label>
-              <Input type="text" />
-            </div>
+              <Label className="block pl-2 text-lg text-left pt-2 pb-2.5">Sensor Name:</Label>
+              <Input
+                type="text"
+                value={sensorName}
+                onChange={(e) => setSensorName(e.target.value)}
+                placeholder="Enter sensor name"
+                className='mb-3'
+              />
+              <Label className="block pl-2 text-lg text-left pb-2.5">Sensor Type:</Label>
+              <Input type="text" disabled value={sensorType} className='mb-3' placeholder='This field cannot be edited' />
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button type="cancel" className="bg-destructive hover:bg-red-300">
+            <Button type="cancel" className="bg-destructive hover:bg-red-300" onClick={handleOpen}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-foreground hover:bg-primary">
+            <Button type="submit" className="bg-foreground hover:bg-primary" onClick={handleUpdateSensor}>
               Save changes
             </Button>
           </CardFooter>
@@ -164,29 +203,35 @@ const ManageSensors = ({ projectId, userId }) => {
       </TabsContent>
 
       {/* Delete Sensor */}
-      <TabsContent value="delete" className="w-full text-foreground">
+      <TabsContent value="delete" className="w-full text-center text-foreground">
         <Card>
           <CardHeader>
-            <CardTitle className="text-foreground">Delete</CardTitle>
+            <CardTitle className="text-foreground text-2xl -mb-2">Delete Sensor</CardTitle>
             <CardDescription className="text-foreground text-base">
               Select your sensors to delete.
             </CardDescription>
           </CardHeader>
-          <CardContent className="text-foreground text-base">
-            <Select>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a sensor" />
+          <CardContent className="text-foreground text-base -mt-2 w-full">
+            <Label className="block pl-2 text-lg text-left pb-2.5">Choose sensor:</Label>
+            <Select onValueChange={(value) => setSensorId(value)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select sensor to delete" />
               </SelectTrigger>
               <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Sensors</SelectLabel>
-                </SelectGroup>
+                {sensors.map((sensor) => (
+                  <SelectItem key={sensor.id} value={sensor.id}>
+                    {sensor.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </CardContent>
-          <CardFooter className="flex justify-end">
-            <Button type="delete" className="bg-destructive hover:bg-red-300">
-              Delete
+          <CardFooter className="flex justify-between">
+            <Button type="cancel" className="bg-destructive hover:bg-red-300" onClick={handleOpen}>
+              Cancel
+            </Button>
+            <Button type="delete" className="bg-foreground hover:bg-primary" onClick={handleDelete} disabled={loading}>
+            {loading ? "Deleting..." : "Delete"}
             </Button>
           </CardFooter>
         </Card>

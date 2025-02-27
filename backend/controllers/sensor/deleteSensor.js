@@ -30,6 +30,10 @@ const deleteSensor = async (req, res) => {
       return res.status(404).json(formatResponse('error', 'Sensor not found'));
     }
     
+    // Delete sensor related sensor-data
+    await SensorModel.deleteSensorDataBySensorId(parseInt(value.sensorId, 10));
+
+    // Delete the sensor
     await SensorModel.deleteSensor(value.sensorId);
     res.status(200).json(formatResponse('success', 'Sensor deleted successfully'));
   } catch (error) {
