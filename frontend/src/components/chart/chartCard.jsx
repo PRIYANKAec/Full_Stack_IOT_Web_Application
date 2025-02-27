@@ -11,7 +11,7 @@ export const ChartCard = ({ sensors, sensorData }) => {
     <div className="w-full overflow-auto">
       <div className="w-full flex flex-wrap justify-center gap-4">
         {sensorData?.map((data, index) => {
-          const salesData = data?.map((dataPoint) => {
+          const chartData = data?.map((dataPoint) => {
             const month = new Date(dataPoint?.timestamp).toLocaleDateString("en-US", { month: "short" });
             const day = new Date(dataPoint?.timestamp).getDate();
             return {
@@ -20,7 +20,7 @@ export const ChartCard = ({ sensors, sensorData }) => {
             };
           });
 
-          const salesConfig = {
+          const chartConfig = {
             value: {
               label: "Value",
               color: "var(--chart-1)",
@@ -38,8 +38,8 @@ export const ChartCard = ({ sensors, sensorData }) => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Chart config={salesConfig}>
-                  <BarChart data={salesData}>
+                <Chart config={chartConfig}>
+                  <BarChart data={chartData}>
                     <XAxis dataKey="period" tickLine={true} axisLine={false} />
                     <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel={false} />} />
                     <Bar dataKey="value" fill="var(--color-revenue)" radius={5} />

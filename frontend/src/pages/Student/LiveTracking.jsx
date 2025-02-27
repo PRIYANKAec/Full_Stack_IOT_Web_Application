@@ -22,6 +22,16 @@ import {
   CardTitle,
 } from "@/components/ui/card1";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 import Loading from "@/components/loading";
 import GaugeCard from "@/components/gauge/gaugeCard";
 import SwitchCard from "@/components/switch/switchCard";
@@ -189,7 +199,16 @@ const LiveTracking = () => {
               {selectedProject?.microcontroller}
             </CardTitle>
           </div>
-          <ManageSensors projectId = {projectId} userId = {user.id}/>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="bg-foreground text-slate-100 hover:bg-primary hover:text-slate-200 font-semibold ">
+                Manage Sensors
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="w-fit flex flex-col space-2 p-2 bg-quaternary  rounded-xl shadow-xl justify-evenly">
+              <ManageSensors projectId = {selectedProject.id} userId = {user.id}/>
+            </DialogContent>
+          </Dialog>
         </CardHeader>
       </Card>
 
