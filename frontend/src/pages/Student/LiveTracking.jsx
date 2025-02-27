@@ -206,7 +206,8 @@ const LiveTracking = () => {
               </Button>
             </DialogTrigger>
             <DialogContent className="w-fit flex flex-col space-2 p-2 bg-quaternary  rounded-xl shadow-xl justify-evenly">
-              <ManageSensors projectId = {selectedProject.id} userId = {user.id}/>
+            <DialogTitle>Control your Sensors Here!</DialogTitle>
+              <ManageSensors projectId = {selectedProject.id} userId = {user.id} />
             </DialogContent>
           </Dialog>
         </CardHeader>
