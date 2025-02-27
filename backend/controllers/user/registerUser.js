@@ -13,7 +13,7 @@ const registerUser = async (req, res) => {
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
         registerNumber: Joi.string().required(),
-        batch: Joi.number().integer().required()
+        batch: Joi.number().integer().required(),
     });
 
     const { error, value } = schema.validate(req.body);

@@ -7,6 +7,7 @@ const createSensor = async (req, res) => {
     const schema = Joi.object({
         id: Joi.number().required(),
         name: Joi.string().required(),
+        unit: Joi.string().required(),
         type: Joi.string().valid('INPUT', 'OUTPUT').required(),
     });
 
@@ -34,6 +35,7 @@ const createSensor = async (req, res) => {
         const sensor = await SensorModel.createSensor({
             name: value.name,
             type: value.type,
+            unit: value.unit,
             projectId: parseInt(projectId, 10)
         });
         res.status(201).json(formatResponse('success', 'Sensor created successfully', sensor));

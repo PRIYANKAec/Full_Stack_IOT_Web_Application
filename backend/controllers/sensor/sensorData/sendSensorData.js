@@ -11,8 +11,7 @@ const sendSensorData = async (req, res) => {
 
     const bodySchema = Joi.object({
         id: Joi.number().integer().required(),
-        value: Joi.number().required(),
-        unit: Joi.string().required()
+        value: Joi.number().required()
     });
 
     const { error: paramsError, value: paramsValue } = paramsSchema.validate(req.params);
@@ -47,7 +46,6 @@ const sendSensorData = async (req, res) => {
             }
             const sensorData = await SensorModel.createSensorData({
                 value: bodyValue.value,
-                unit: bodyValue.unit,
                 sensorId: paramsValue.sensorId
             });
             // Emit sensor data via WebSocket
@@ -56,7 +54,6 @@ const sendSensorData = async (req, res) => {
         } else{
             const sensorData = await SensorModel.createSensorData({
                 value: bodyValue.value,
-                unit: bodyValue.unit,
                 sensorId: paramsValue.sensorId
             });
     

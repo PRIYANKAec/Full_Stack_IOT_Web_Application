@@ -44,6 +44,7 @@ model Sensor {
   id         Int          @id @default(autoincrement())
   name       String
   type       SensorType
+  unit      String
   projectId  Int
   project    Project      @relation(fields: [projectId], references: [id])
   sensorData SensorData[]
@@ -54,7 +55,6 @@ model Sensor {
 model SensorData {
   id        Int      @id @default(autoincrement())
   value     Float
-  unit      String
   timestamp DateTime @default(now())
   sensorId  Int
   sensor    Sensor   @relation(fields: [sensorId], references: [id])

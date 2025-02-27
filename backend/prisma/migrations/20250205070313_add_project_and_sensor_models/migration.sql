@@ -13,6 +13,7 @@ CREATE TABLE `Project` (
 CREATE TABLE `Sensor` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
+    `unit` VARCHAR(191) NOT NULL,
     `type` ENUM('INPUT', 'OUTPUT') NOT NULL,
     `projectId` INTEGER NOT NULL,
 
@@ -23,7 +24,6 @@ CREATE TABLE `Sensor` (
 CREATE TABLE `SensorData` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `value` DOUBLE NOT NULL,
-    `unit` VARCHAR(191) NOT NULL,
     `timestamp` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `sensorId` INTEGER NOT NULL,
 
