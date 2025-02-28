@@ -361,7 +361,7 @@ const Projects = () => {
                 {/* Display Sensors */}
                 <div className="my-2">
                   <h3 className="text-lg font-semibold">Sensors:</h3>
-                  {project.sensors.length > 0 ? (
+                  {project?.sensors?.length > 0 ? (
                   <div className="flex items-center justify-center flex-wrap gap-2 mt-2">
                     {project.sensors.map((sensor) => (
                       <div key={sensor.id} className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white px-3 py-1 rounded-full shadow-md text-sm font-semibold flex items-center gap-1 cursor-pointer select-none">

@@ -120,7 +120,7 @@ const LiveTracking = () => {
 
   const handleSwitchChange = async (sensorId, newValue) => {
     try {
-      const response = await sendSensorData(selectedProject.id, sensorId, { id: user?.id, value: newValue, unit: "status" });
+      const response = await sendSensorData(selectedProject.id, sensorId, { id: user?.id, value: newValue });
       console.log(response);
       if (response.status == 201)
         if (response.status === 201) {
