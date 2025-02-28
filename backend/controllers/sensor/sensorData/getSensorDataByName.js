@@ -28,7 +28,7 @@ const getSensorDataByName = async (req, res) => {
             return res.status(404).json(formatResponse('error', 'Sensor not found'));
         }
 
-        const sensorDataByName = await SensorModel.findSensorByNameAndProject(paramsValue.projectName, paramsValue.sensorName);
+        const sensorDataByName = await SensorModel.findSensorDataBySensorId(sensor.id);
 
         req.io.emit('sensorData', sensorDataByName);
         res.status(201).json(formatResponse('success', 'Sensor data received successfully', sensorDataByName));
