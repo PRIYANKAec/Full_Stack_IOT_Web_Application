@@ -10,6 +10,8 @@ const sendSensorData = require('../controllers/sensor/sensorData/sendSensorData'
 const getSensorData = require('../controllers/sensor/sensorData/getSensorData');
 const deleteSensorData = require('../controllers/sensor/sensorData/deleteSensorData');
 const deleteMultipleSensorData = require('../controllers/sensor/sensorData/deleteMultipleSensorData');
+const getSensorDataByName = require('../controllers/sensor/sensorData/getSensorDataByName');
+const { route } = require('./userRoutes');
 
 const router = (io) => {
     const router = express.Router();
@@ -36,6 +38,12 @@ const router = (io) => {
     router.delete('/projects/:projectId/sensor/:sensorId/deleteData/:dataId', authenticateToken, deleteSensorData);
     // Delete multiple sensor data
     router.delete('/projects/:projectId/sensor/:sensorId/deleteData', authenticateToken, deleteMultipleSensorData);
+
+    //get sensor data by sensor name & project Name
+    router.post('/projects/:projectName/sensors/:sensorName/getValue', authenticateToken, (req, res) => {
+        req.io = io;
+        getSensorDataByName(req, res);
+    });
 
     return router;
 };

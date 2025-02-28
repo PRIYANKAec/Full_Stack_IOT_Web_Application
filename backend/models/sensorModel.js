@@ -29,6 +29,16 @@ class SensorModel {
         })
     }
     
+    static async findSensorByNameAndProject(projectName, sensorName) {
+        return await prisma.sensor.findFirst({
+            where: {
+                project: {
+                    name: projectName
+                },
+                name: sensorName
+            }
+        });
+    }
     static async findByProjectId(projectId) {
         return await prisma.sensor.findMany({
             where: { projectId }
