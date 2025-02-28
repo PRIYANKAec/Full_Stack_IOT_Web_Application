@@ -21,7 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card1";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button1";
 import {
   Dialog,
   DialogContent,
@@ -30,14 +30,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog1"
 
 import Loading from "@/components/loading";
+import ManageSensors from "@/components/manageSensors/ManageSensors";
 import GaugeCard from "@/components/gauge/gaugeCard";
 import SwitchCard from "@/components/switch/switchCard";
 import { BarChartCard } from "@/components/chart/BarChartCard";
 import { LineChartCard } from "@/components/chart/LineChartCard";
-import ManageSensors from "@/components/manageSensors/ManageSensors";
+import TableCard from "@/components/table/TableCard";
 
 const LiveTracking = () => {
   const { user } = useAuth();
@@ -234,13 +235,13 @@ const LiveTracking = () => {
       </Card>
 
       <GaugeCard
-        sensors={sensors?.filter((sensor) => sensor.type === "OUTPUT")} 
-        sensorData={sensorData?.filter((data, index) => sensors[index]?.type === "OUTPUT")}
+        sensors={sensors?.filter((sensor) => sensor.type === "OUTPUT" && sensor.projectId === selectedProject?.id)} 
+        sensorData={sensorData?.filter((data, index) => sensors[index]?.type === "OUTPUT" && sensors[index]?.projectId === selectedProject?.id)}
       />
 
       <div className="w-full overflow-auto">
         <div className="flex flex-wrap justify-center gap-4">
-          { sensors.filter((sensor) => sensor?.type === "INPUT").map((sensor) => {
+          { sensors.filter((sensor) => sensor?.type === "INPUT" && sensor.projectId === selectedProject?.id).map((sensor) => {
           const matchedSensorData = sensorData.flat().filter((data) => data.sensorId === sensor.id);
             return (
               <SwitchCard
@@ -255,13 +256,18 @@ const LiveTracking = () => {
       </div>
 
       <BarChartCard
-        sensors={sensors?.filter((sensor) => sensor.type === "OUTPUT")}
-        sensorData={sensorData?.filter((data, index) => sensors[index]?.type === "OUTPUT")}
+        sensors={sensors?.filter((sensor) => sensor.type === "OUTPUT" && sensor.projectId === selectedProject?.id)}
+        sensorData={sensorData?.filter((data, index) => sensors[index]?.type === "OUTPUT" && sensors[index]?.projectId === selectedProject?.id)}
       />
 
       <LineChartCard
-        sensors={sensors?.filter((sensor) => sensor?.type === "OUTPUT")}
-        sensorData={sensorData?.filter((data, index) => sensors[index]?.type === "OUTPUT")}
+        sensors={sensors?.filter((sensor) => sensor?.type === "OUTPUT" && sensor.projectId === selectedProject?.id)}
+        sensorData={sensorData?.filter((data, index) => sensors[index]?.type === "OUTPUT" && sensors[index]?.projectId === selectedProject?.id)}
+      />
+
+      <TableCard
+        sensors={sensors?.filter((sensor) => sensor.projectId === selectedProject?.id)}
+        sensorData={sensorData}
       />
     </div>
   );

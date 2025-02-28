@@ -1,96 +1,195 @@
-"use client"
-
 import * as React from "react"
-import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { X } from "lucide-react"
 
-import { cn } from "@/lib/utils"
+import { IconX } from "justd-icons"
 
-const Dialog = DialogPrimitive.Root
 
-const DialogTrigger = DialogPrimitive.Trigger
 
-const DialogPortal = DialogPrimitive.Portal
 
-const DialogClose = DialogPrimitive.Close
 
-const DialogOverlay = React.forwardRef(({ className, ...props }, ref) => (
-  <DialogPrimitive.Overlay
-    ref={ref}
-    className={cn(
-      "fixed inset-0 z-[50] bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-      className
-    )}
-    {...props} />
-))
-DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
+import {
+  Button as ButtonPrimitive,
+  Dialog as DialogPrimitive,
+  Heading,
+  OverlayTriggerStateContext
+} from "react-aria-components"
+import { tv } from "tailwind-variants"
 
-const DialogContent = React.forwardRef(({ className, children, ...props }, ref) => (
-  <DialogPortal>
-    <DialogOverlay />
-    <DialogPrimitive.Content
-      ref={ref}
-      className={cn(
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
-        className
-      )}
-      {...props}>
-      {children}
-      <DialogPrimitive.Close
-        className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-        <X className="h-4 w-4" />
-        <span className="sr-only">Close</span>
-      </DialogPrimitive.Close>
-    </DialogPrimitive.Content>
-  </DialogPortal>
-))
-DialogContent.displayName = DialogPrimitive.Content.displayName
+import { Button, } from "./button1"
+import { useMediaQuery } from "./primitive"
 
-const DialogHeader = ({
-  className,
-  ...props
-}) => (
-  <div
-    className={cn("flex flex-col space-y-1.5 text-center sm:text-left", className)}
-    {...props} />
-)
-DialogHeader.displayName = "DialogHeader"
+const dialogStyles = tv({
+  slots: {
+    root: [
+      "dlc relative flex max-h-[inherit] [&::-webkit-scrollbar]:size-0.5 [scrollbar-width:thin] flex-col overflow-hidden outline-none",
+      "sm:[&:not(:has([data-slot=dialog-body]))]:px-6 sm:[&:has([data-slot=dialog-body])_[data-slot=dialog-header]]:px-6 sm:[&:has([data-slot=dialog-body])_[data-slot=dialog-footer]]:px-6",
+      "[&:not(:has([data-slot=dialog-body]))]:px-4 [&:has([data-slot=dialog-body])_[data-slot=dialog-header]]:px-4 [&:has([data-slot=dialog-body])_[data-slot=dialog-footer]]:px-4"
+    ],
+    header: "relative flex flex-col pb-3 pt-4 sm:pt-6",
+    description: "text-sm block text-muted-fg mt-0.5 sm:mt-1",
+    body: [
+      "flex flex-1 flex-col gap-2 overflow-auto px-4 sm:px-6 py-1",
+      "max-h-[calc(var(--visual-viewport-height)-var(--visual-viewport-vertical-padding)-var(--dialog-header-height,0px)-var(--dialog-footer-height,0px))]"
+    ],
+    footer: "mt-auto flex flex-col-reverse justify-between gap-3 pb-4 sm:pb-6 pt-4 sm:flex-row",
+    closeIndicator:
+      "close absolute right-1 top-1 sm:right-2 sm:top-2 focus:outline-none focus:bg-secondary hover:bg-secondary grid place-content-center rounded-xl sm:rounded-md focus-visible:ring-1 focus-visible:ring-primary size-8 sm:size-7 z-50"
+  }
+})
 
-const DialogFooter = ({
-  className,
-  ...props
-}) => (
-  <div
-    className={cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className)}
-    {...props} />
-)
-DialogFooter.displayName = "DialogFooter"
+const { root, header, description, body, footer, closeIndicator } = dialogStyles()
 
-const DialogTitle = React.forwardRef(({ className, ...props }, ref) => (
-  <DialogPrimitive.Title
-    ref={ref}
-    className={cn("text-lg font-semibold leading-none tracking-tight", className)}
-    {...props} />
-))
-DialogTitle.displayName = DialogPrimitive.Title.displayName
-
-const DialogDescription = React.forwardRef(({ className, ...props }, ref) => (
-  <DialogPrimitive.Description
-    ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
-    {...props} />
-))
-DialogDescription.displayName = DialogPrimitive.Description.displayName
-
-export {
-  Dialog,
-  DialogPortal,
-  DialogOverlay,
-  DialogClose,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
+const Dialog = ({ role, className, ...props }) => {
+  return <DialogPrimitive role={role ?? "dialog"} className={root({ className })} {...props} />
 }
+
+const Trigger = (props) => (
+  <ButtonPrimitive {...props}>
+    {(values) => (
+      <>{typeof props.children === "function" ? props.children(values) : props.children}</>
+    )}
+  </ButtonPrimitive>
+)
+
+
+
+
+
+
+const Header = ({ className, ...props }) => {
+  const headerRef = React.useRef(null)
+
+  React.useEffect(() => {
+    const header = headerRef.current
+    if (!header) {
+      return
+    }
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        header.parentElement?.style.setProperty(
+          "--dialog-header-height",
+          `${entry.target.clientHeight}px`
+        )
+      }
+    })
+
+    observer.observe(header)
+    return () => observer.unobserve(header)
+  }, [])
+
+  return (
+    <div data-slot="dialog-header" ref={headerRef} className={header({ className })}>
+      {props.title && <Title>{props.title}</Title>}
+      {props.description && <Description>{props.description}</Description>}
+      {!props.title && typeof props.children === "string" ? <Title {...props} /> : props.children}
+    </div>
+  )
+}
+
+const titleStyles = tv({
+  base: "flex flex-1 items-center text-fg",
+  variants: {
+    level: {
+      1: "font-semibold text-lg sm:text-xl",
+      2: "font-semibold text-lg sm:text-xl",
+      3: "font-semibold text-base sm:text-lg",
+      4: "font-semibold text-base"
+    }
+  }
+})
+
+
+
+
+
+const Title = ({ level = 2, className, ...props }) => (
+  <Heading slot="title" level={level} className={titleStyles({ level, className })} {...props} />
+)
+
+const Description = ({ className, ...props }) => (
+  <div className={description({ className })} {...props} />
+)
+
+const Body = ({ className, ...props }) => (
+  <div data-slot="dialog-body" className={body({ className })} {...props} />
+)
+
+const Footer = ({ className, ...props }) => {
+  const footerRef = React.useRef(null)
+
+  React.useEffect(() => {
+    const footer = footerRef.current
+
+    if (!footer) {
+      return
+    }
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        footer.parentElement?.style.setProperty(
+          "--dialog-footer-height",
+          `${entry.target.clientHeight}px`
+        )
+      }
+    })
+
+    observer.observe(footer)
+    return () => {
+      observer.unobserve(footer)
+    }
+  }, [])
+  return (
+    <div ref={footerRef} data-slot="dialog-footer" className={footer({ className })} {...props} />
+  )
+}
+
+const Close = ({ className, appearance = "outline", ...props }) => {
+  const state = React.useContext(OverlayTriggerStateContext)
+  return (
+    <Button
+      className={className}
+      appearance={appearance}
+      onPress={() => state.close()}
+      {...props}
+    />
+  )
+}
+
+
+
+
+
+
+
+const CloseIndicator = ({ className, ...props }) => {
+  const isMobile = useMediaQuery("(max-width: 600px)")
+  const buttonRef = React.useRef(null)
+
+  React.useEffect(() => {
+    if (isMobile && buttonRef.current) {
+      buttonRef.current.focus()
+    }
+  }, [isMobile])
+  return props.isDismissable ? (
+    <ButtonPrimitive
+      ref={buttonRef}
+      {...(isMobile ? { autoFocus: true } : {})}
+      aria-label="Close"
+      onPress={props.close}
+      className={closeIndicator({ className })}
+    >
+      <IconX className="size-4" />
+    </ButtonPrimitive>
+  ) : null
+}
+
+Dialog.Trigger = Trigger
+Dialog.Header = Header
+Dialog.Title = Title
+Dialog.Description = Description
+Dialog.Body = Body
+Dialog.Footer = Footer
+Dialog.Close = Close
+Dialog.CloseIndicator = CloseIndicator
+
+export { Dialog }

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { motion } from 'framer-motion';
 import Badge from './ui/badge';
-import { Button } from './ui/button';
+import { Button } from './ui/button1';
 import { getStatus } from '@/utils/status';
 
 import { FaRegBell, FaRegUser } from 'react-icons/fa';

@@ -10,7 +10,7 @@ import { getSensorByProjectId } from "@/APIs/sensorAPI";
 import { useAuth } from "@/context/AuthContext";
 
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button1";
 import {
   Dialog,
   DialogClose,
@@ -20,7 +20,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog1";
 import {
   Card,
   CardContent,

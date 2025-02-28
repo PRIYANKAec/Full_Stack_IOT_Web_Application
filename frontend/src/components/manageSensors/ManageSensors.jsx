@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card1";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button1";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
