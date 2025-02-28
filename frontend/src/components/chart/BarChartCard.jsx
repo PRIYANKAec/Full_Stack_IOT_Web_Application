@@ -5,7 +5,7 @@ import { Bar, BarChart, XAxis } from "recharts";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card1";
 import { Chart, ChartTooltip, ChartTooltipContent } from "@/components/ui";
 
-export const ChartCard = ({ sensors, sensorData }) => {
+export const BarChartCard = ({ sensors, sensorData }) => {
 
   return (
     <div className="w-full overflow-auto">

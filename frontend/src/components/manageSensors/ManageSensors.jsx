@@ -28,13 +28,14 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
   const [sensorId, setSensorId] = useState("");
   const [sensorName, setSensorName] = useState("");
   const [sensorType, setSensorType] = useState("");
+  const [sensorUnit, setSensorUnit] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleCreateSensor = async () => {
-    if (!sensorName || !sensorType) { handleOpen(); toast.error("Please fill in all fields."); return; }
+    if (!sensorName || !sensorType || !sensorUnit) { handleOpen(); toast.error("Please fill in all fields."); return; }
 
     setLoading(true);
-    const data = { name: sensorName, type: sensorType, id: userId };
+    const data = { name: sensorName, type: sensorType, unit: sensorUnit, id: userId };
 
     try {
       const response = await createSensor(projectId, data);
@@ -42,9 +43,10 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
         toast.success(response.message);
         setSensorName("");
         setSensorType("");
+        setSensorUnit("");
         changeSensors([...sensors, response.data]);
       } else {
-        toast.error(response?.message || "Failed to create sensor.");
+        toast.error(response?.data || response?.message || "Failed to create sensor.");
       }
     } catch (error) {
       console.error("Error while creating sensor:", error);
@@ -59,7 +61,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
     if (!sensorId) { handleOpen(); toast.error("Please select sensor ID to edit."); return; }
 
     setLoading(true);
-    const data = { name: sensorName, type: sensorType, id: userId };
+    const data = { name: sensorName, type: sensorType, unit: sensorUnit, id: userId };
 
     try {
       const response = await updateSensor(projectId, sensorId, data);
@@ -67,9 +69,10 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
         toast.success(response.message);
         setSensorName("");
         setSensorType("");
+        setSensorUnit("");
         changeSensors(sensors.map((sensor) => (sensor.id === sensorId ? response.data : sensor)));
       } else {
-        toast.error(response?.message || "Failed to update sensor.");
+        toast.error(response?.data || response?.message || "Failed to update sensor.");
       }
     } catch (error) {
       console.error("Error while updating sensor:", error);
@@ -91,7 +94,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
         setSensorId("")
         changeSensors(sensors.filter((sensor) => sensor.id !== sensorId));
       } else {
-        toast.error(response?.message || "Failed to create sensor.");
+        toast.error(response?.data || response?.message || "Failed to create sensor.");
       }
     } catch (error) {
       console.error("Error while deleting sensor:", error);
@@ -120,26 +123,34 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
             </CardDescription>
           </CardHeader>
           <CardContent className="text-foreground text-base -mt-2 w-full">
-              <Label className="block pl-2 text-lg text-left pb-2.5">Sensor Name:</Label>
-              <Input
-                type="text"
-                value={sensorName}
-                onChange={(e) => setSensorName(e.target.value)}
-                placeholder="Enter sensor name"
-                className='mb-3'
-              />
-              <Label className="block pl-2 text-lg text-left pb-2.5">Sensor Type:</Label>
-              <Select onValueChange={(value) => setSensorType(value)}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select sensor type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="INPUT">INPUT</SelectItem>
-                    <SelectItem value="OUTPUT">OUTPUT</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+            <Label className="block pl-2 text-lg text-left pb-2.5">Sensor Name:</Label>
+            <Input
+              type="text"
+              value={sensorName}
+              onChange={(e) => setSensorName(e.target.value)}
+              placeholder="Enter sensor name"
+              className='mb-3'
+            />
+            <Label className="block pl-2 text-lg text-left pb-2.5">Sensor Type:</Label>
+            <Select onValueChange={(value) => { setSensorType(value); if (value === "INPUT") setSensorUnit("status"); }}>
+              <SelectTrigger className="w-full mb-3">
+                <SelectValue placeholder="Select sensor type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="INPUT">INPUT</SelectItem>
+                  <SelectItem value="OUTPUT">OUTPUT</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <Label className="block pl-2 text-lg text-left pb-2.5">Sensor Unit:</Label>
+            <Input
+              type="text"
+              value={sensorType === "INPUT" ? "status" : sensorUnit}
+              onChange={(e) => setSensorUnit(e.target.value)}
+              disabled={sensorType === "INPUT"}
+              placeholder="Enter sensor unit"
+            />
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button type="button" className="bg-destructive hover:bg-red-300" onClick={handleOpen}>
@@ -167,8 +178,8 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
             </CardDescription>
           </CardHeader>
           <CardContent className="text-foreground text-base -mt-2 w-full">
-            <Label className="block pl-2 text-lg text-left pb-2.5">Choose sensor:</Label>
-              <Select onValueChange={(value) => {setSensorId(value.id); setSensorName(value.name); setSensorType(value.type)}}>
+            <Label className="block pl-2 text-lg text-left pb-1">Choose sensor:</Label>
+                <Select onValueChange={(value) => {setSensorId(value.id); setSensorName(value.name); setSensorType(value.type); setSensorUnit(value.unit)}}>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select sensor to edit" />
                 </SelectTrigger>
@@ -180,16 +191,23 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
                   ))}
                 </SelectContent>
               </Select>
-              <Label className="block pl-2 text-lg text-left pt-2 pb-2.5">Sensor Name:</Label>
+              <Label className="block pl-2 text-lg text-left pt-1 pb-1">Sensor Name:</Label>
               <Input
                 type="text"
                 value={sensorName}
                 onChange={(e) => setSensorName(e.target.value)}
                 placeholder="Enter sensor name"
-                className='mb-3'
               />
-              <Label className="block pl-2 text-lg text-left pb-2.5">Sensor Type:</Label>
-              <Input type="text" disabled value={sensorType} className='mb-3' placeholder='This field cannot be edited' />
+              <Label className="block pl-2 text-lg text-left pb-1">Sensor Type:</Label>
+              <Input type="text" disabled value={sensorType} placeholder='This field cannot be edited' />
+              <Label className="block pl-2 text-lg text-left pt-1 pb-1">Sensor Unit:</Label>
+              <Input
+                type="text"
+                value={sensorUnit}
+                disabled={sensorType === "INPUT"}
+                onChange={(e) => setSensorUnit(e.target.value)}
+                placeholder="Enter sensor unit"
+              />
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button type="cancel" className="bg-destructive hover:bg-red-300" onClick={handleOpen}>

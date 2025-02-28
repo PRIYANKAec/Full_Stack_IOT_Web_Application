@@ -12,7 +12,12 @@ const updateSensor = async (req, res) => {
     const bodySchema = Joi.object({
         id: Joi.number().required(),
         name: Joi.string(),
-        type: Joi.string().valid('INPUT', 'OUTPUT')
+        type: Joi.string().valid('INPUT', 'OUTPUT'),
+        unit: Joi.string().when('type', {
+            is: 'INPUT',
+            then: Joi.string().valid('status'),
+            otherwise: Joi.string().required()
+        })
     });
 
     const { error: paramsError, value: paramsValue } = paramsSchema.validate(req.params);
@@ -40,7 +45,7 @@ const updateSensor = async (req, res) => {
             return res.status(404).json(formatResponse('error', 'Sensor not found'));
         }
 
-        const sensor = await SensorModel.updateSensor(paramsValue.sensorId, { name: bodyValue.name, type: bodyValue.type });
+        const sensor = await SensorModel.updateSensor(paramsValue.sensorId, { name: bodyValue.name, type: bodyValue.type, unit: bodyValue.unit });
         if (!sensor) {
             return res.status(404).json(formatResponse('error', 'Sensor not found'));
         }

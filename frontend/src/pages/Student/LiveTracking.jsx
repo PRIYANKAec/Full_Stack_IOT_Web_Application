@@ -35,7 +35,8 @@ import {
 import Loading from "@/components/loading";
 import GaugeCard from "@/components/gauge/gaugeCard";
 import SwitchCard from "@/components/switch/switchCard";
-import { ChartCard } from "@/components/chart/chartCard";
+import { BarChartCard } from "@/components/chart/BarChartCard";
+import { LineChartCard } from "@/components/chart/LineChartCard";
 import ManageSensors from "@/components/manageSensors/ManageSensors";
 
 const LiveTracking = () => {
@@ -253,11 +254,15 @@ const LiveTracking = () => {
         </div>
       </div>
 
-      <ChartCard
+      <BarChartCard
         sensors={sensors?.filter((sensor) => sensor.type === "OUTPUT")}
         sensorData={sensorData?.filter((data, index) => sensors[index]?.type === "OUTPUT")}
       />
 
+      <LineChartCard
+        sensors={sensors?.filter((sensor) => sensor?.type === "OUTPUT")}
+        sensorData={sensorData?.filter((data, index) => sensors[index]?.type === "OUTPUT")}
+      />
     </div>
   );
 };
