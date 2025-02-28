@@ -7,8 +7,12 @@ import {
   CardContent,
 } from "@/components/ui/card1";
 import { motion } from "framer-motion";
+import { esp_code, python_code } from "@/assets/code";
+import { useAuth } from "@/context/AuthContext";
 
 const Tutorial = () => {
+  const { user } = useAuth()
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -100 }}
@@ -88,12 +92,18 @@ const Tutorial = () => {
                 </code>
                 </pre>
               </li>
+              <li>
+                User data to pass in the request body:{" "}
+                <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
+                <code>"id": {user.id}</code>
+                </pre>
+              </li>
             </ul>
           </section>
 
           <section className="mb-8">
             <h2 className="text-lg tex font-bold mb-2">
-              Sending Sensor Data
+              Send/Receive Data from Hardware
             </h2>
             <Tabs defaultValue="esp32" className="flex flex-col items-center">
               <TabsList className="mb-4 flex justify-center w-[240px]">
@@ -107,96 +117,7 @@ const Tutorial = () => {
                 </h2>
                 <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
                   <code className="whitespace-pre-wrap break-all">
-                  {`#include <WiFi.h>
-#include <HTTPClient.h>
-#include <ArduinoJson.h>
-
-const char* ssid = "your_SSID";     // Replace with your Wi-Fi SSID
-const char* password = "your_PASSWORD"; // Replace with your Wi-Fi Password
-
-const char* serverUrl = "https://iot.bitsathy.ac.in/api/projects/your_project_name/sensors/your_sensor_name/sendValue"; // Replace your_project_name, your_sensor_name with actual values
-
-#define RELAY_PIN  2 // Change this to the GPIO pin controlling the relay
-bool lastSwitchState = false;
-
-void setup() {
-    Serial.begin(115200);
-    pinMode(RELAY_PIN, OUTPUT); // Set the relay pin as output
-    digitalWrite(RELAY_PIN, LOW); // Start with relay OFF
-
-    // Connect to Wi-Fi
-    WiFi.begin(ssid, password);
-    Serial.print("Connecting to WiFi");
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        Serial.print(".");
-    }
-    Serial.println("\\nConnected to WiFi!");
-}
-
-void getLatestSensorData() {
-    if (WiFi.status() == WL_CONNECTED) {
-        HTTPClient http;
-        http.begin(serverUrl);
-        http.addHeader("Content-Type", "application/json");
-        http.addHeader("Authorization", "Bearer your_token");
-
-        // Create JSON object for request body
-        StaticJsonDocument<200> requestBody;
-        requestBody["id"] = 1;
-        
-        String requestData;
-        serializeJson(requestBody, requestData);
-
-        // Send POST request
-        int httpResponseCode = http.POST(requestData);
-
-        if (httpResponseCode > 0) {
-            String response = http.getString();
-            Serial.println("Response: " + response);
-
-            // Use DynamicJsonDocument to handle large JSON
-            DynamicJsonDocument jsonDoc(4096); // Increase buffer size
-            DeserializationError error = deserializeJson(jsonDoc, response);
-            
-            if (error) {
-                Serial.print("JSON Parse Error: ");
-                Serial.println(error.f_str());
-                return;
-            }
-
-            // Check if data array exists and has elements
-            if (jsonDoc["data"].size() > 0) {
-                int lastIndex = jsonDoc["data"].size() - 1; // Get the last index
-                int latestValue = jsonDoc["data"][lastIndex]["value"]; // Read last value
-
-                Serial.print("Latest Sensor Value: ");
-                Serial.println(latestValue);
-
-                // Update relay state based on the latest value
-                if (latestValue == 1) {
-                    digitalWrite(RELAY_PIN, HIGH);
-                } else {
-                    digitalWrite(RELAY_PIN, LOW);
-                }
-            } else {
-                Serial.println("No sensor data available.");
-            }
-        } else {
-            Serial.print("Error in HTTP request: ");
-            Serial.println(httpResponseCode);
-        }
-
-        http.end();
-    } else {
-        Serial.println("WiFi Disconnected!");
-    }
-}
-
-void loop() {
-    getLatestSensorData();
-    delay(2000); // Check switch state every second
-}`}
+                  {esp_code}
                   </code>
                 </pre>
               </TabsContent>
@@ -207,30 +128,7 @@ void loop() {
                 </h2>
                 <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
                   <code className="whitespace-pre-wrap break-all">
-                  {`import requests
-import time
-import Adafruit_DHT
-
-DHT_SENSOR = Adafruit_DHT.DHT22
-DHT_PIN = 4
-
-def send_sensor_data(value):
-    url = "http://your_server_url/api/projects/your_project_name/sensors/your_sensor_name/sendValue"
-    headers = {'Content-Type': 'application/json'}
-    data = {'value': value}
-    response = requests.post(url, json=data, headers=headers)
-    print(response.status_code, response.json())
-
-def main():
-    while True:
-        humidity, temperature = Adafruit_DHT.read(DHT_SENSOR, DHT_PIN)
-        if humidity is not None and temperature is not None:
-            print(f"Temp={temperature:.1f}C  Humidity={humidity:.1f}%")
-            send_sensor_data(temperature)
-        time.sleep(60)
-
-if __name__ == "__main__":
-    main()`}
+                  {python_code}
                   </code>
                 </pre>
               </TabsContent>
