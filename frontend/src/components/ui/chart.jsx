@@ -78,6 +78,7 @@ const ChartTooltipContent = ({
   formatter,
   labelFormatter,
   labelClassName,
+  unit
 }) => {
   const { config } = useChart();
 
@@ -115,7 +116,7 @@ const ChartTooltipContent = ({
   return (
     <div
       className={cn(
-        "min-w-[12rem] rounded-lg border bg-slate-200 p-3 text-xs shadow-xl",
+        "min-w-auto text-center rounded-lg border bg-slate-200 p-3 text-xs shadow-xl",
         className
       )}
     >
@@ -127,7 +128,7 @@ const ChartTooltipContent = ({
           const indicatorColor = item.payload.fill || item.color;
 
           return (
-            <div key={item.dataKey} className="flex justify-between">
+            <div key={item.dataKey} className="flex gap-2 justify-between items-center">
               <div className="flex items-center gap-2">
                 {!hideIndicator && (
                   <div
@@ -141,7 +142,7 @@ const ChartTooltipContent = ({
               </div>
               {item.value !== undefined && (
                 <span className="font-medium">
-                  {item.value.toLocaleString()}
+                  {item.value.toLocaleString()} {unit} {/* Display unit */}
                 </span>
               )}
             </div>

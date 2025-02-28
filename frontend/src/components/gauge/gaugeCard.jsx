@@ -26,11 +26,11 @@ const GaugeCard = ({ sensors, sensorData }) => {
                             <CardContent className="flex flex-col items-center">
                                 <GaugeComponent
                                     value={latestData ? latestData.value : 0}
-                                    unit={latestData ? latestData.unit : "N/A"}
+                                    unit={sensors[index]?.unit}
                                     label={sensors[index]?.name}
                                 />
                                 <p className="text-center mt-2">
-                                {latestData ? latestData.value : 0} {latestData ? latestData.unit : "N/A"}
+                                {latestData ? latestData.value : 0} {sensors[index]?.unit}
                                 </p>
                                 <p className="text-gray-700 text-sm text-center font-medium mt-2">
                                     Last modified:

@@ -233,7 +233,7 @@ const LiveTracking = () => {
         </CardHeader>
       </Card>
 
-      <GaugeCard 
+      <GaugeCard
         sensors={sensors?.filter((sensor) => sensor.type === "OUTPUT")} 
         sensorData={sensorData?.filter((data, index) => sensors[index]?.type === "OUTPUT")}
       />

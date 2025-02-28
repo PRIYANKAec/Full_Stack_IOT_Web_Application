@@ -9,6 +9,7 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  ResponsiveContainer,
 } from "recharts";
 import {
   Card,
@@ -18,19 +19,33 @@ import {
   CardContent,
 } from "@/components/ui/card1";
 import { Chart, ChartTooltip, ChartTooltipContent } from "@/components/ui";
+import { calculateDailyAverages } from "@/utils/time-functions";
 
 const colors = ["#443ce6","#a6076e","#1dcf60","#ff7300","#035970","#82ca9d","#00ff00","#0000ff","#ff00ff","#00ffff"];
 
 export const LineChartCard = ({ sensors, sensorData }) => {
-  const chartData = sensors.map((sensor, index) => {
-    return sensorData[index]?.map((dataPoint) => {
-      const date = new Date(dataPoint?.timestamp).toLocaleDateString("en-US", { month: "short", day: "numeric" });
-      return {
-        date,
-        [`value-${sensor.id}`]: dataPoint?.value,
-      };
+  // Create a unified chartData array
+  const chartData = [];
+  const dateMap = new Map();
+
+  sensors.forEach((sensor, index) => {
+    const dailyAverages = calculateDailyAverages(sensorData[index] || []);
+    dailyAverages.forEach((dataPoint) => {
+      const date = dataPoint.date;
+      if (!dateMap.has(date)) {
+        dateMap.set(date, { date });
+      }
+      dateMap.get(date)[`value-${sensor.id}`] = dataPoint.average;
     });
-  }).flat();
+  });
+
+  // Convert dateMap to chartData array
+  dateMap.forEach((value) => {
+    chartData.push(value);
+  });
+
+  // Sort chartData by date
+  chartData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
   const chartConfig = {
     value: {
@@ -59,28 +74,24 @@ export const LineChartCard = ({ sensors, sensorData }) => {
                   <YAxis tickLine={false} axisLine={false} tickMargin={2} />
                   <Tooltip content={<ChartTooltipContent hideLabel={false} />} />
                   <Legend />
-                  {sensors.map((sensor, index) => {
-                    const sensorChartData = sensorData[index]?.map((dataPoint) => ({
-                      date: new Date(dataPoint.timestamp).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
-                      [`value-${sensor.id}`]: dataPoint.value,
-                    }));
-                    return sensorChartData && sensorChartData.length > 0 ? (
-                      <Line
-                        key={sensor.id}
-                        type="natural"
-                        dataKey={`value-${sensor.id}`}
-                        name={sensor.name}
-                        stroke={colors[index % colors.length]}
-                        strokeWidth={2}
-                        dot={{
-                          fill: colors[index % colors.length],
-                        }}
-                        activeDot={{
-                          r: 6,
-                        }}
-                      />
-                    ) : null;
-                  })}
+                  {sensors.map((sensor, index) => (
+                    <Line
+                      key={sensor.id}
+                      type="natural"
+                      dataKey={`value-${sensor.id}`}
+                      name={sensor.name}
+                      stroke={colors[index % colors.length]}
+                      strokeWidth={2}
+                      dot={{
+                        fill: colors[index % colors.length],
+                      }}
+                      activeDot={{
+                        r: 6,
+                      }}
+                      isAnimationActive={false}
+                      connectNulls={true}
+                    />
+                  ))}
                 </LineChart>
             </Chart>
           </CardContent>

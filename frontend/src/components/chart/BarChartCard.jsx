@@ -41,8 +41,8 @@ export const BarChartCard = ({ sensors, sensorData }) => {
                 <Chart config={chartConfig}>
                   <BarChart data={chartData}>
                     <XAxis dataKey="period" tickLine={true} axisLine={false} />
-                    <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel={false} />} />
-                    <Bar dataKey="value" fill="var(--color-revenue)" radius={5} />
+                    <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel={false} unit={sensors[index]?.unit} />} />
+                    <Bar dataKey="value" fill="var(--foreground)" radius={5} />
                   </BarChart>
                 </Chart>
               </CardContent>

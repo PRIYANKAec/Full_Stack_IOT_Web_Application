@@ -19,3 +19,23 @@ export const formatDate = (timestamp) => {
     }
     return 'just now';
 };
+
+export const calculateDailyAverages = (sensorData) => {
+    const dailyAverages = {};
+
+    sensorData.forEach((dataPoint) => {
+        const date = new Date(dataPoint.timestamp).toLocaleDateString("en-US");
+        if (!dailyAverages[date]) {
+            dailyAverages[date] = { sum: 0, count: 0 };
+        }
+        dailyAverages[date].sum += dataPoint.value;
+        dailyAverages[date].count += 1;
+    });
+
+    const result = Object.keys(dailyAverages).map((date) => ({
+        date,
+        average: dailyAverages[date].sum / dailyAverages[date].count,
+    }));
+
+    return result;
+};
