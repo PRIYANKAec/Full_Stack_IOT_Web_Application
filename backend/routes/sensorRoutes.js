@@ -41,13 +41,13 @@ const router = (io) => {
     router.delete('/projects/:projectId/sensor/:sensorId/deleteData', authenticateToken, deleteMultipleSensorData);
 
     //get sensor data by sensor name & project Name (WebSocket enabled)
-    router.post('/projects/:projectName/sensors/:sensorName/getValue', authenticateToken, (req, res) => {
+    router.post('/projects/:projectName/sensor/:sensorName/getValue', authenticateToken, (req, res) => {
         req.io = io;
         getSensorDataByName(req, res);
     });
 
     // Send sensor data by sensor name & project name (WebSocket enabled)
-    router.post('/projects/:projectName/sensors/:sensorName/sendValue', authenticateToken, (req, res) => {
+    router.post('/projects/:projectName/sensor/:sensorName/sendValue', authenticateToken, (req, res) => {
         req.io = io;
         sendSensorDataByName(req, res);
     });
