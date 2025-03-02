@@ -22,8 +22,8 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 import Loading from '@/components/loading';
 
 import { toast } from 'sonner';
-import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import { motion } from "framer-motion";
+import { Pencil, Trash2 } from 'lucide-react';
 
 const containerVariants = {
   hidden: { opacity: 0, scale: 0.2 },
@@ -195,18 +195,20 @@ const ManageProject = () => {
                 <div className='flex flex-row justify-between'>
                 <HoverCard>
                   <HoverCardTrigger>
-                  <FaTrashAlt className='h-6 w-6 text-destructive cursor-pointer float-right' 
-                    onClick={() => handleDelete(project.id, user.id)}
-                  />
+                    <Trash2
+                      className="h-6 w-6 text-destructive cursor-pointer float-right"
+                      onClick={() => handleDelete(project.id, user.id)}
+                    />
                   </HoverCardTrigger>
                   <HoverCardContent className="text-foreground bg-gray-300 w-fit cursor-pointer" >Delete</HoverCardContent>
                 </HoverCard>
                
                 <Dialog open={showForm}>
                   <DialogTrigger>
-                  <FaPencilAlt className='h-6 w-6 float-right text-secondary-foreground cursor-pointer' 
-                    onClick={() => handleEdit(project)}
-                  />
+                    <Pencil
+                      className="h-6 w-6 float-right text-secondary-foreground cursor-pointer"
+                      onClick={() => handleEdit(project)}
+                    />
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-md text-foreground font-bold bg-secondary rounded-xl">
                     <DialogHeader>
@@ -278,18 +280,15 @@ const ManageProject = () => {
                 </div>
               </CardHeader>
               
-              <CardContent className="pt-4 flex flex-col justify-between bg-quaternary rounded-b-xl" >
-                <p>Microcontroller: {project.microcontroller || "Unknown"}</p>
-                 <p>Name: 
-                 {allUsers.find(user => user.id === project.userId)? `${allUsers.find(user => user.id === project.userId).firstName} ${allUsers.find(user => user.id === project.userId).lastName}`: "Unknown" } 
-              </p>  
-              <p>RegisterNumber: { allUsers.find(user => user.id === project.userId)?.registerNumber || "Unknown" } </p>
-              <p>Batch:{  allUsers.find(user => user.id === project.userId)?.batch || "Unknown" }</p>
-              <div className="flex justify-center">
-              <Button  
-                className="bg-foreground text-white hover:bg-tertiary hover:text-secondary font-semibold mt-2" 
-                onClick={() => handleExplore(project.id)}
-                >Explore</Button>
+              <CardContent className="pt-4 flex flex-col justify-between bg-quaternary rounded-b-xl text-center" >
+                <p className="mb-2"><span className='font-semibold'>MicroController:</span> {project.microcontroller || "Unknown"}</p>
+                <p className="mb-1"><span className='font-semibold'>Name:</span> {allUsers.find(user => user.id === project.userId) ? `${allUsers.find(user => user.id === project.userId).firstName} ${allUsers.find(user => user.id === project.userId).lastName}` : "Unknown"}</p>
+                <p className="mb-1"><span className='font-semibold'>Reg No.:</span> {allUsers.find(user => user.id === project.userId)?.registerNumber || "Unknown"}</p>
+                <p className="mb-1"><span className='font-semibold'>Batch:</span> {allUsers.find(user => user.id === project.userId)?.batch || "Unknown"}</p>
+                <div className="flex justify-center">
+                  <Button className="bg-foreground text-white hover:bg-tertiary hover:text-secondary font-semibold mt-2" onClick={() => handleExplore(project.id)}>
+                    Explore
+                  </Button>
                 </div>
               </CardContent>
             </Card>
