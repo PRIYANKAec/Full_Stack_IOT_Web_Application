@@ -228,7 +228,7 @@ const LiveTracking = () => {
             <DialogDescription className='-mr-2'>
               Manage your sensors here. You can add, edit, or delete sensors as needed.
             </DialogDescription>
-              <ManageSensors projectId = {selectedProject.id} userId = {user.id} sensors={sensors} handleOpen={handleOpen} changeSensors={changeSensors} />
+              <ManageSensors projectId = {selectedProject?.id} userId = {user?.id} sensors={sensors} handleOpen={handleOpen} changeSensors={changeSensors} />
             </DialogContent>
           </Dialog>
         </CardHeader>
