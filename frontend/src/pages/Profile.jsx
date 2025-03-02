@@ -112,7 +112,7 @@ const Profile = () => {
             <CardHeader className="bg-gradient-to-br from-foreground to-tertiary text-secondary rounded-t-lg pb-3">
               <div>
                 <Dialog>
-                  <DialogTrigger asChild>
+                  <DialogTrigger className="w-full">
                     <FaEdit className="float-right text-secondary text-2xl cursor-pointer" />
                   </DialogTrigger>
 

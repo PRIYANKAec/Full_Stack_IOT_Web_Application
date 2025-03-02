@@ -55,10 +55,11 @@ const AllTracking = () => {
     const getProjects = async () => {
       try {
         const response = await getAllProjects(user?.id);
-        setProjects(response.data);
-        if (response?.data?.length > 0) {
-          const project = response.data.find((proj) => proj.id === parseInt(projectId));
-          setSelectedProject(project || response.data[0]);
+        console.log("response", response)
+        setProjects(response);
+        if (response?.length > 0) {
+          const project = response.find((proj) => proj.id === parseInt(projectId));
+          setSelectedProject(project || response[0]);
         }
       } catch (error) {
         console.error("Failed to fetch projects:", error);
@@ -183,7 +184,7 @@ const AllTracking = () => {
             />
           </SelectTrigger>
           <SelectContent>
-            {projects.map((project) => (
+            {projects?.map((project) => (
               <SelectItem key={project.id} value={project}>
                 {project.name}
               </SelectItem>
