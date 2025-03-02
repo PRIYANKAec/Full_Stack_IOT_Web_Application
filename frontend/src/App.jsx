@@ -5,6 +5,7 @@ import ProtectedRoute from './ProtectedRoute';
 import './styles/index.css';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from 'sonner';
+import { ScaleLoader } from 'react-spinners';
 
 import Sidebar from './components/sidebar';
 import Header from './components/header';
@@ -34,9 +35,17 @@ const App = () => {
 
 const AppContent = () => {
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
   const hideNavbarRoutes = ['/login', '/register'];
+
+  if (loading) {
+    return (
+      <div className="relative h-full">
+        <ScaleLoader />
+      </div>
+    );
+  }
 
   return (
     <div className='flex will-change-transform-opacity'>
