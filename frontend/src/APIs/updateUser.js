@@ -14,3 +14,19 @@
         return "Failed to update user";
     }
  }
+
+export const getAllUser = async (id) => {
+    try {
+        const response = await api.post("/api/users/getAll", { id: id });
+        const allUser = response.data.data;
+        return allUser;
+    } catch (error) {
+        console.log('Failed to retrieve users:', error);
+        const response = {
+            status: error.response?.status,
+            message: error.response?.data?.message,
+            data: error.response?.data?.data || [],
+        };
+        return response;
+    }
+};
