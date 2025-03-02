@@ -55,7 +55,7 @@ const AllTracking = () => {
       try {
         const response = await getAllProjects(user?.id);
         setProjects(response.data);
-        if (response.data.length > 0) {
+        if (response?.data?.length > 0) {
           const project = response.data.find((proj) => proj.id === parseInt(projectId));
           setSelectedProject(project || response.data[0]);
         }
