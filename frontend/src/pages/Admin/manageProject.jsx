@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { useAuth } from '@/context/AuthContext';
 import { deleteProject, getAllProjects, updateProject } from '@/APIs/projectAPI';
+import { getAllUser } from '@/APIs/updateUser';
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card1';
+import { Button } from "@/components/ui/button1";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card1';
 import {
   Dialog,
-
-DialogContent,
+  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
@@ -16,12 +18,23 @@ DialogContent,
 } from "@/components/ui/dialog1";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-import { useNavigate } from 'react-router-dom';
 import Loading from '@/components/loading';
+
 import { toast } from 'sonner';
-import { getAllUser } from '@/APIs/updateUser';
+import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0, scale: 0.2 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 1.5 } },
+  hover: { scale: 1.05, transition: { duration: 0.3 } },
+};
 
 const ManageProject = () => {
   const { user } = useAuth();
@@ -47,14 +60,11 @@ const ManageProject = () => {
       try {
         const projectData = await getAllProjects(user.id); 
         setProjects(projectData);
-        // console.log("Projects:", projectData);
 
         const allUsersData = await getAllUser(user.id);
-        console.log("All Users:", allUsersData);
-
+        console.log(allUsersData);
         if (Array.isArray(allUsersData)) {
           setAllUsers(allUsersData);
-          console.log("All Users:", allUsersData);
         } else {
           console.error("Invalid project data format:", projectData);
         }
@@ -160,15 +170,27 @@ const ManageProject = () => {
   }
 
   return (
+     <motion.div
+          className="p-3 w-full"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
     <div>
       <h1 className="flex items-center mt-4 ml-5 text-lg sm:text-xl lg:text-2xl text-foreground font-bold">
         Manage & Explore Projects
       </h1>
-
-      <div className="ml-10 mt-10 mr-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="w-full overflow-auto py-8">
+       <motion.div
+                className="flex flex-wrap justify-center gap-4 mt-2"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
         {projects.length > 0 ? (
           projects.map((project) => (
-            <Card key={project.id} className="flex flex-col">
+            <motion.div key={project.id} variants={itemVariants} whileFocus={{ scale: 1.05 }} whileHover="hover">
+            <Card key={project.id}  className="bg-quaternary rounded-xl shadow-md w-80 md:w-64 lg:w-72 max-w-full h-fit">
               <CardHeader className=" bg-gradient-to-r from-foreground to-tertiary text-secondary  rounded-t-xl flex justify-between">
                 <div className='flex flex-row justify-between'>
                 <HoverCard>
@@ -256,30 +278,30 @@ const ManageProject = () => {
                 </div>
               </CardHeader>
               
-              <CardContent className="text-foreground" >
+              <CardContent className="pt-4 flex flex-col justify-between bg-quaternary rounded-b-xl" >
                 <p>Microcontroller: {project.microcontroller || "Unknown"}</p>
-                <p><strong>RegisterNumber:</strong> { 
-                  allUsers.find(user => user.id === project.userId)?.registerNumber || "Unknown" 
-                }
-              </p>
-              <p><strong>Batch:</strong> { 
-                  allUsers.find(user => user.id === project.userId)?.batch || "Unknown" 
-                }
-              </p>
-              </CardContent>
-              <CardFooter className="flex justify-center" >
-                <Button  
+                 <p>Name: 
+                 {allUsers.find(user => user.id === project.userId)? `${allUsers.find(user => user.id === project.userId).firstName} ${allUsers.find(user => user.id === project.userId).lastName}`: "Unknown" } 
+              </p>  
+              <p>RegisterNumber: { allUsers.find(user => user.id === project.userId)?.registerNumber || "Unknown" } </p>
+              <p>Batch:{  allUsers.find(user => user.id === project.userId)?.batch || "Unknown" }</p>
+              <div className="flex justify-center">
+              <Button  
                 className="bg-foreground text-white hover:bg-tertiary hover:text-secondary font-semibold mt-2" 
                 onPress={() => handleExplore(project.id)}
                 >Explore</Button>
-              </CardFooter>
+                </div>
+              </CardContent>
             </Card>
+            </motion.div>
           ))
         ) : (
           <p className="text-center col-span-full" >No projects found.</p>
         )}
+        </motion.div>
       </div>
     </div>
+    </motion.div>
   );
 };
 
