@@ -40,7 +40,7 @@ export const getProjectsByUserId = async (userId) => {
 export const getAllProjects = async (id) => {
   try {
     const response = await api.post("/api/projects/getAll", { id: id });
-    const projects = response.data;
+    const projects = response.data?.data;
 
     return projects;
   } catch (error) {
