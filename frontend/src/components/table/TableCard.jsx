@@ -64,7 +64,7 @@ const TableCard = ({ sensorData, sensors }) => {
   );
 
   return (
-    <div>
+    <div className="w-full overflow-auto lg:px-16 pb-6">
     {sensorData?.length > 0 && sensors?.length > 0 && (
     <Card className="bg-secondary rounded-xl shadow-xl w-full px-4">
         <Card.Header className="flex items-center justify-between -mb-8 md:-mb-5">

@@ -63,7 +63,7 @@ export const LineChartCard = ({ sensors, sensorData }) => {
               Sensor Data Over Time
             </CardTitle>
             <CardDescription className="text-sm sm:text-base font-medium text-center">
-              Compare all sensor data over time
+              Compare all sensor data over time, with daily averages
             </CardDescription>
           </CardHeader>
           <CardContent>

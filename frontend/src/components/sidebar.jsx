@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaHome, FaProjectDiagram, FaMapMarkerAlt, FaBook, FaUser, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
+import { FaHome, FaProjectDiagram, FaMapMarkerAlt, FaBook, FaUser, FaSignOutAlt, FaBars, FaTimes, FaUsersCog } from 'react-icons/fa';
 import { useAuth } from '@/context/AuthContext';
 
 const sidebarVariants = {
@@ -89,7 +89,7 @@ const Sidebar = () => {
                 </motion.div>
                 <motion.div variants={linkVariants} whileHover="hover" onClick={toggleSideBar}>
                   <Link to="/manageUser" className='pl-4 lg:pl-10 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 flex items-center space-x-2'>
-                    <FaMapMarkerAlt className="text-lg" />
+                    <FaUsersCog className="text-lg" />
                     <span className=''>Manage User</span>
                   </Link>
                 </motion.div>

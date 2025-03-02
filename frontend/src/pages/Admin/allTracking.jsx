@@ -39,6 +39,7 @@ import SwitchCard from "@/components/switch/switchCard";
 import { BarChartCard } from "@/components/chart/BarChartCard";
 import { LineChartCard } from "@/components/chart/LineChartCard";
 import TableCard from "@/components/table/TableCard";
+import { toast } from "sonner";
 
 const AllTracking = () => {
   const { user } = useAuth();
@@ -61,6 +62,7 @@ const AllTracking = () => {
         }
       } catch (error) {
         console.error("Failed to fetch projects:", error);
+        toast.error("Failed to fetch projects");
       } finally {
         setLoading(false);
       }
@@ -76,6 +78,7 @@ const AllTracking = () => {
         setSensorData([]);
       } catch (error) {
         console.error("Failed to fetch sensors:", error);
+        toast.error("Failed to fetch sensors");
       }
     };
 
@@ -90,6 +93,8 @@ const AllTracking = () => {
         // await console.log(sensorData);
       } catch (error) {
         console.error("Failed to fetch sensors:", error);
+        toast.error("Failed to get sensor data");
+        
       } finally {
         setLoading(false);
       }
@@ -123,16 +128,17 @@ const AllTracking = () => {
     try {
       const response = await sendSensorData(selectedProject.id, sensorId, { id: user?.id, value: newValue });
       console.log(response);
-      if (response.status == 201)
-        if (response.status === 201) {
-          setSensorData((prevData) =>
-            prevData.map((sensor) =>
-              sensor.sensorId === sensorId ? { ...sensor, value: newValue } : sensor
-            )
-          );
-        }
+      if (response.status === 201) {
+        setSensorData((prevData) =>
+          prevData.map((sensor) =>
+            sensor.sensorId === sensorId ? { ...sensor, value: newValue } : sensor
+          )
+        );
+        toast.success(response?.message)
+      }
     } catch (error) {
       console.error("Failed to send sensor data:", error);
+      toast.error("Failed to send sensor data");
     }
   };
 
@@ -239,21 +245,38 @@ const AllTracking = () => {
         sensorData={sensorData?.filter((data, index) => sensors[index]?.type === "OUTPUT" && sensors[index]?.projectId === selectedProject?.id)}
       />
 
-      <div className="w-full overflow-auto">
-        <div className="flex flex-wrap justify-center gap-4">
-          { sensors.filter((sensor) => sensor?.type === "INPUT" && sensor.projectId === selectedProject?.id).map((sensor) => {
-          const matchedSensorData = sensorData.flat().filter((data) => data.sensorId === sensor.id);
-            return (
-              <SwitchCard
-                key={sensor.id}
-                sensor={sensor}
-                sensorData={matchedSensorData}
-                onSwitchChange={handleSwitchChange}
-              />
-            )
-          })}
-        </div>
+      <div className="lg:px-16">
+        <Card className="h-auto bg-quaternary rounded-xl md:rounded-2xl shadow-xl mb-6">
+          <CardHeader className="flex items-center justify-between p-4">
+            <CardTitle className="text-2xl font-bold">Input Sensors</CardTitle>
+            <CardDescription className="text-lg text-center">
+              You can control the input device here. You can turn them on or off.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {sensors.filter((sensor) => sensor?.type === "INPUT" && sensor.projectId === selectedProject?.id).length === 0 ? (
+              <CardDescription className="text-lg text-center font-semibold">
+                No output sensors found.
+              </CardDescription>
+            ) : (
+              <div className="w-full overflow-auto flex flex-wrap justify-center gap-4">
+                { sensors.filter((sensor) => sensor?.type === "INPUT" && sensor.projectId === selectedProject?.id).map((sensor) => {
+                const matchedSensorData = sensorData.flat().filter((data) => data.sensorId === sensor.id);
+                return (
+                  <SwitchCard
+                    key={sensor.id}
+                    sensor={sensor}
+                    sensorData={matchedSensorData}
+                    onSwitchChange={handleSwitchChange}
+                  />
+                )
+                })}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
+      
 
       <BarChartCard
         sensors={sensors?.filter((sensor) => sensor.type === "OUTPUT" && sensor.projectId === selectedProject?.id)}

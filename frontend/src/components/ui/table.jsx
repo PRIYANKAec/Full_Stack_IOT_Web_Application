@@ -40,7 +40,7 @@ const Table = ({ children, className, ...props }) => (
   <TableContext.Provider value={props}>
     <div className="relative w-full overflow-auto">
       {props.allowResize ? (
-        <ResizableTableContainer className="overflow-auto cursor-col-resize">
+        <ResizableTableContainer className="overflow-auto cursor-pointer">
           <TablePrimitive {...props} className={root({ className })}>
             {children}
           </TablePrimitive>
