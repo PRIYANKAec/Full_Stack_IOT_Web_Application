@@ -78,6 +78,9 @@ const AppContent = () => {
             <Route path="/allTracking" element={
               <ProtectedRoute element={<AllTracking />} allowedRoles={["ADMIN"]} />
             } />
+            <Route path="/allTracking/:projectId" element={
+              <ProtectedRoute element={<AllTracking />} allowedRoles={["ADMIN"]} />
+            } />
           </Routes>
         </div>
       </div>

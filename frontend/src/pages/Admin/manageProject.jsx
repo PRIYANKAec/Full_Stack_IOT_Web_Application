@@ -288,7 +288,7 @@ const ManageProject = () => {
               <div className="flex justify-center">
               <Button  
                 className="bg-foreground text-white hover:bg-tertiary hover:text-secondary font-semibold mt-2" 
-                onPress={() => handleExplore(project.id)}
+                onClick={() => handleExplore(project.id)}
                 >Explore</Button>
                 </div>
               </CardContent>
