@@ -24,6 +24,7 @@
     "@radix-ui/react-toast": "^1.2.6",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.0",
+    "file-saver": "^2.0.5",
     "framer-motion": "^11.18.2",
     "justd-icons": "^1.10.25",
     "lucide-react": "^0.414.0",
@@ -44,7 +45,8 @@
     "tailwind-merge": "^2.2.2",
     "tailwind-variants": "^0.3.1",
     "tailwindcss-animate": "^1.0.7",
-    "tailwindcss-react-aria-components": "^1.2.0"
+    "tailwindcss-react-aria-components": "^1.2.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@tsconfig/vite-react": "^3.0.2",

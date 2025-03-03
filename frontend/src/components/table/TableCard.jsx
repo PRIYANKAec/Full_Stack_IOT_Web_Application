@@ -3,6 +3,9 @@
 import React, { useState } from "react";
 import { Card, Table, Input } from "@/components/ui";
 import { formatDate } from "@/utils/time-functions";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { Button } from "../ui/button1";
 
 const TableCard = ({ sensorData, sensors }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,10 +29,10 @@ const TableCard = ({ sensorData, sensors }) => {
 
     return {
       id: dataPoint.id,
-      timestamp: formattedTimestamp,
-      sensorType: sensor ? sensor.type.toLowerCase() : "Unknown",
       sensorName: sensor ? sensor.name : "Unknown",
+      sensorType: sensor ? sensor.type.toLowerCase() : "Unknown",
       value: dataPoint.value,
+      timestamp: formattedTimestamp,
       status: isOnline ? "Online" : "Offline",
     };
   });
@@ -63,6 +66,15 @@ const TableCard = ({ sensorData, sensors }) => {
     currentPage * itemsPerPage
   );
 
+  const handleDownload = () => {
+    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sensor Data");
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(data, "sensor_data.xlsx");
+  };
+
   return (
     <div className="w-full overflow-auto lg:px-16 pb-6">
     {sensorData?.length > 0 && sensors?.length > 0 && (
@@ -72,13 +84,16 @@ const TableCard = ({ sensorData, sensors }) => {
                 Sensor Data Table
             </Card.Title>
         </Card.Header>
-      <div className="p-4">
+      <div className="py-4 flex justify-between items-center gap-2 sm:gap-5">
         <Input
           placeholder="Search anything..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full border-none bg-input rounded-xl -mb-2 pl-5 h-10"
+          className="w-full border-none bg-slate-200 text-slate-900 rounded-xl pl-5 h-10"
         />
+        <Button onClick={handleDownload} className="bg-foreground text-white hover:bg-tertiary hover:text-secondary font-semibold">
+          Download as Excel
+        </Button>
       </div>
       <Table allowResize aria-label="Live Sensor Data" className="rounded-lg shadow-xl w-full min-w-[600px]">
         <Table.Header className="bg-primary w-full">
