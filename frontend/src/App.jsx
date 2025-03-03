@@ -51,9 +51,10 @@ const AppContent = () => {
   }
 
   const isAuthRoute = hideNavbarRoutes.includes(location.pathname);
+  console.log(isAuthRoute);
 
   return (
-    <div className={`flex will-change-transform-opacity ${isAuthRoute ? 'h-full' : 'h-screen'}`}>
+    <div className={`flex will-change-transform-opacity`}>
       {!isAuthRoute && <Sidebar />}
       <div className={`w-full flex-1 overflow-y-auto ${isAuthRoute ? 'h-full' : 'h-screen'}`}>
         <Toaster />
