@@ -35,7 +35,7 @@ const Sidebar = () => {
           <FaBars className="text-2xl cursor-pointer text-white" onClick={toggleSideBar} />
         )}
       </div>
-      <div className='min-h-screen bg-foreground text-secondary'>
+      <div className='min-h-screen bg-foreground text-secondary z-50'>
         <motion.div
           layout
           className={`fixed top-0 left-0 pt-10 pb-4 h-screen bg-foreground text-secondary transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} sm:relative sm:translate-x-0 sm:flex sm:flex-col sm:justify-between sm:w-36 lg:w-64 md:w-48 sm:pt-0`}
