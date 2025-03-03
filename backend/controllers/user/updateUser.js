@@ -39,7 +39,7 @@ const updateUser = async (req, res) => {
         }
 
         // Check if role update
-        if (value.role) {
+        if (value.role && !value.username && !value.password && !value.firstName && !value.lastName && !value.registerNumber && !value.batch) {
             if (value.role !== 'ADMIN' && value.role !== 'USER') {
                 return res.status(400).json(formatResponse('error', 'Invalid role'));
             }
