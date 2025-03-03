@@ -50,14 +50,16 @@ const AppContent = () => {
     );
   }
 
+  const isAuthRoute = hideNavbarRoutes.includes(location.pathname);
+
   return (
-    <div className='flex will-change-transform-opacity'>
-      {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
-      <div className='w-full flex-1 overflow-y-auto h-screen'>
+    <div className={`flex will-change-transform-opacity ${isAuthRoute ? 'h-full' : 'h-screen'}`}>
+      {!isAuthRoute && <Sidebar />}
+      <div className={`w-full flex-1 overflow-y-auto ${isAuthRoute ? 'h-full' : 'h-screen'}`}>
         <Toaster />
         <SonnerToaster position="top-center" expand={false} richColors className='z-[150]' />
-        <div className='flex flex-col h-full mt-16'>
-          {!hideNavbarRoutes.includes(location.pathname) && <Header />}
+        <div className={`flex flex-col ${isAuthRoute ? 'h-full' : 'h-screen'} mt-16`}>
+          {!isAuthRoute && <Header />}
           <Routes>
             <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
             <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />

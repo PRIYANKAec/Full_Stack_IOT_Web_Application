@@ -105,7 +105,7 @@ const Sidebar = () => {
 
           </nav>
 
-          <div className='text-center text-xl mb-4 space-y-2'>
+          <div className='text-center text-xl mb-14 space-y-2'>
             <motion.div variants={linkVariants} whileHover="hover"
               onClick={toggleSideBar}>
               <Link to="/profile" className='pl-4 lg:pl-10 py-3 mx-5 sm:mx-1 md:mx-5 hover:bg-secondary hover:text-primary rounded-xl transition duration-300 cursor-pointer flex items-center space-x-2'>

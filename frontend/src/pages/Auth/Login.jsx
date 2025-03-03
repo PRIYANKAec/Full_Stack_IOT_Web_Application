@@ -50,7 +50,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-tr from-custom-cornflowerBlue to-custom-deepBlue p-4">
+    <div className="flex -mt-16 justify-center items-center min-h-screen bg-gradient-to-tr from-custom-cornflowerBlue to-custom-deepBlue p-4">
       <Card className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-white shadow-md rounded-2xl">
         <CardHeader>
           <CardTitle className="flex justify-center text-2xl md:text-3xl lg:text-3xl text-custom-deepBlue pt-3">Login to the Application</CardTitle>

@@ -59,7 +59,7 @@ const Register = () => {
   const years = Array.from({ length: 4 }, (_, i) => currentYear - i);
 
   return (
-    <div className="flex justify-center pt-12 pb-12 items-center min-h-screen bg-gradient-to-tr from-custom-cornflowerBlue to-custom-deepBlue p-4">
+    <div className="flex justify-center -mt-16 pt-12 pb-12 items-center min-h-screen bg-gradient-to-tr from-custom-cornflowerBlue to-custom-deepBlue p-4">
       <Card className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-white shadow-md rounded-2xl">
         <CardHeader>
           <CardTitle className="flex justify-center text-2xl md:text-3xl lg:text-3xl text-custom-deepBlue pt-3">Register to the Application</CardTitle>

@@ -159,7 +159,7 @@ const LiveTracking = () => {
   }
   if (loading) {
     return (
-      <div className="relative h-full">
+      <div className="relative h-screen">
         <Loading />
       </div>
     );

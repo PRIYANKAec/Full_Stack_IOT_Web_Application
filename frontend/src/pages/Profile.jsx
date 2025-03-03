@@ -96,7 +96,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="w-full h-full mt-16 sm:mt-4 flex flex-col sm:flex-row items-center justify-center pt-8 p-2 sm:p-3 md:p-4 lg:p-8 sm:space-x-4">
+    <div className="w-full h-full mt-64 pt-10 sm:mt-10 sm:pt-8 md:pt-5 lg:mt-0 flex flex-col sm:flex-row items-center justify-center p-2 sm:p-3 md:p-4 lg:p-8 sm:space-x-4">
       <motion.div
         variants={containerVariants}
         initial="hidden"
