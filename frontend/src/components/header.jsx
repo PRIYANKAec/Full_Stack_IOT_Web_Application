@@ -28,7 +28,7 @@ const Header = () => {
 
   return (
     <motion.header layout
-      className="bg-foreground text-secondary flex justify-between items-center py-4 px-6 shadow-lg border-secondary/30"
+      className="fixed top-0 left-0 sm:left-36 lg:left-64 md:left-48 right-0 z-[40] bg-foreground text-secondary flex justify-between items-center py-4 px-6 shadow-lg border-secondary/30"
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}

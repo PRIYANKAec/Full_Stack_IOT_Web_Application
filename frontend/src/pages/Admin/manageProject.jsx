@@ -62,7 +62,6 @@ const ManageProject = () => {
         setProjects(projectData);
 
         const allUsersData = await getAllUser(user.id);
-        console.log(allUsersData);
         if (Array.isArray(allUsersData)) {
           setAllUsers(allUsersData);
         } else {

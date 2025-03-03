@@ -58,7 +58,7 @@ const ManageUser = () => {
 };
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 md:p-8 lg:p-10">
+    <div className="container mx-auto pt-10 p-4 sm:p-6 md:p-8 lg:p-10">
       <Card className="p-6 bg-slate-200 shadow-lg rounded-xl">
         <h2 className="text-2xl font-semibold mb-4 pl-2 text-gray-800">Manage Users</h2>
         <div className="overflow-x-auto">

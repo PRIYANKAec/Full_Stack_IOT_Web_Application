@@ -53,10 +53,10 @@ const AppContent = () => {
   return (
     <div className='flex will-change-transform-opacity'>
       {!hideNavbarRoutes.includes(location.pathname) && <Sidebar />}
-      <div className='w-full'>
+      <div className='w-full flex-1 overflow-y-auto h-screen'>
         <Toaster />
         <SonnerToaster position="top-center" expand={false} richColors className='z-[150]' />
-        <div className='flex flex-col h-full'>
+        <div className='flex flex-col h-full mt-16'>
           {!hideNavbarRoutes.includes(location.pathname) && <Header />}
           <Routes>
             <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
