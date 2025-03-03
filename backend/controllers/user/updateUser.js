@@ -37,6 +37,15 @@ const updateUser = async (req, res) => {
             const hashedPassword = await bcrypt.hash(value.password, 10);
             value.password = hashedPassword;
         }
+
+        // Check if role update
+        if (value.role) {
+            if (value.role !== 'ADMIN' && value.role !== 'USER') {
+                return res.status(400).json(formatResponse('error', 'Invalid role'));
+            }
+            const user = await User.updateUserRole(userExists.id, value.role);
+            return res.status(200).json(formatResponse('success', 'User role updated successfully', user));
+        }
         
         const user = await User.updateUser(email, value);
         return res.status(200).json(formatResponse('success', 'User updated successfully', user));

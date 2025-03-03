@@ -58,16 +58,16 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       const response = await api.post('/api/users/register', userData);
       saveToken(response.data.data.token);
-      const userId = response.data.data.user.id;
+      const userId = response?.data?.data?.newUser.id;
       localStorage.setItem('userId', userId);
       setUserId(userId);
       await fetchUserData(response.data.data.token, userId);
-      setError(null);
+      setError(response?.data?.message);
     } catch (error) {
       console.error('Registration failed:', error);
       // if(error?.message) setError(error.message);
       if(error?.response?.data?.message) 
-      setError((error?.response?.data?.message + ": " + error.response?.data?.data) || 'Registration failed');
+      setError((error?.response?.data?.message + ": " + error?.response?.data?.data) || 'Registration failed');
     } finally {
       setLoading(false);
     }

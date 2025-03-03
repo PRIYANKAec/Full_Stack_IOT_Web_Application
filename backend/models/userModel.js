@@ -38,6 +38,13 @@ class UserModel {
         })
     }
 
+    static async updateUserRole(id, role) {
+        return await prisma.user.update({
+            where: { id },
+            data: { role }
+        })
+    }
+
     static async deleteUser(id) {
         return await prisma.user.delete({
             where: { id }

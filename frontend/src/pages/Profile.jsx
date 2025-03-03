@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
 
 import { getProjectsByUserId } from "@/APIs/profileApi";
-import { updateUser } from "@/APIs/updateUser";
+import { updateUser } from "@/APIs/UserAPI";
 
 import { FaEdit } from "react-icons/fa";
 import { useToast } from "@/hooks/use-toast";

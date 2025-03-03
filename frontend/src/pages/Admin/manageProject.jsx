@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/context/AuthContext';
 import { deleteProject, getAllProjects, updateProject } from '@/APIs/projectAPI';
-import { getAllUser } from '@/APIs/updateUser';
+import { getAllUser } from '@/APIs/UserAPI';
 
 import { Button } from "@/components/ui/button1";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card1';
