@@ -8,6 +8,7 @@ import { saveAs } from "file-saver";
 
 import { Button } from "../ui/button1";
 import { Trash2 } from "lucide-react";
+import { FaTrash } from "react-icons/fa";
 
 const TableCard = ({ sensorData, sensors }) => {
   const [searchTerm, setSearchTerm] = useState("");
