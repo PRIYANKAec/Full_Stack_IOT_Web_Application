@@ -129,7 +129,7 @@ const AllTracking = () => {
     try {
       const response = await sendSensorData(selectedProject.id, sensorId, { id: user?.id, value: newValue });
       console.log(response);
-      if (response.status === 201) {
+      if (response?.status === "success") {
         setSensorData((prevData) =>
           prevData.map((sensor) =>
             sensor.sensorId === sensorId ? { ...sensor, value: newValue } : sensor

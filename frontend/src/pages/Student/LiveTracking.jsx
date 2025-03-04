@@ -112,6 +112,9 @@ const LiveTracking = () => {
           if (sensorArray.length > 0 && sensorArray[0].sensorId === data.sensorId) {
             return [...sensorArray, data];
           }
+          if (sensorArray.length === 0) {
+            return [data];
+          }
           return sensorArray;
         });
         return updatedData;
@@ -127,9 +130,9 @@ const LiveTracking = () => {
     try {
       const response = await sendSensorData(selectedProject.id, sensorId, { id: user?.id, value: newValue });
       console.log(response);
-      if (response.status == 201)
-        toast.success(response?.message)
-        if (response.status === 201) {
+      if (response?.status === "success")
+        toast.success(response?.message);
+        if (response?.status === "success") {
           setSensorData((prevData) =>
             prevData.map((sensor) =>
               sensor.sensorId === sensorId ? { ...sensor, value: newValue } : sensor

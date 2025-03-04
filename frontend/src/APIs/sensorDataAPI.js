@@ -37,7 +37,7 @@ export const receiveSensorData = async (projectId, sensorId, userId) => {
 // Delete single sensor data
 export const deleteSensorData = async (projectId, sensorId, dataId, userId) => {
     try {
-        const response = await api.delete(`/api/projects/${projectId}/sensor/${sensorId}/deleteData/${dataId}`, { id: userId });
+        const response = await api.delete(`/api/projects/${projectId}/sensor/${sensorId}/deleteData/${dataId}`, { data: {id: userId }});
         return response.data;
     } catch (error) {
         const errorMessage = error.response.data.message;

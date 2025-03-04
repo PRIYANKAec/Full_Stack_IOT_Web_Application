@@ -51,7 +51,6 @@ const AppContent = () => {
   }
 
   const isAuthRoute = hideNavbarRoutes.includes(location.pathname);
-  console.log(isAuthRoute);
 
   return (
     <div className={`flex will-change-transform-opacity`}>
