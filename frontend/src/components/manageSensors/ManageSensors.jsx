@@ -29,13 +29,17 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
   const [sensorName, setSensorName] = useState("");
   const [sensorType, setSensorType] = useState("");
   const [sensorUnit, setSensorUnit] = useState("");
+  const [sensorMinThreshold, setSensorMinThreshold] = useState("");
+  const [sensorMaxThreshold, setSensorMaxThreshold] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleCreateSensor = async () => {
-    if (!sensorName || !sensorType || !sensorUnit) { handleOpen(); toast.error("Please fill in all fields."); return; }
+    if (!sensorName || !sensorType || !sensorUnit || sensorMaxThreshold === ""  || sensorMinThreshold === "") { 
+      handleOpen(); toast.error("Please fill in all fields."); 
+      return; }
 
     setLoading(true);
-    const data = { name: sensorName, type: sensorType, unit: sensorUnit, id: userId };
+    const data = { name: sensorName, type: sensorType, unit: sensorUnit, minThreshold:sensorMinThreshold, maxThreshold: sensorMaxThreshold, id: userId };
 
     try {
       const response = await createSensor(projectId, data);
@@ -44,6 +48,8 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
         setSensorName("");
         setSensorType("");
         setSensorUnit("");
+        setSensorMinThreshold("");
+        setSensorMaxThreshold("");
         changeSensors([...sensors, response.data]);
       } else {
         toast.error(response?.data || response?.message || "Failed to create sensor.");
@@ -61,7 +67,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
     if (!sensorId) { handleOpen(); toast.error("Please select sensor ID to edit."); return; }
 
     setLoading(true);
-    const data = { name: sensorName, type: sensorType, unit: sensorUnit, id: userId };
+    const data = { name: sensorName, type: sensorType, unit: sensorUnit, minThreshold:sensorMinThreshold, maxThreshold: sensorMaxThreshold, id: userId };
 
     try {
       const response = await updateSensor(projectId, sensorId, data);
@@ -70,6 +76,8 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
         setSensorName("");
         setSensorType("");
         setSensorUnit("");
+        setSensorMinThreshold("");
+        setSensorMaxThreshold("");
         changeSensors(sensors.map((sensor) => (sensor.id === sensorId ? response.data : sensor)));
       } else {
         toast.error(response?.data || response?.message || "Failed to update sensor.");
@@ -151,6 +159,22 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
               disabled={sensorType === "INPUT"}
               placeholder="Enter sensor unit"
             />
+            <Label className="block pl-2 text-lg text-left pb-2.5">Minimum Threshold:</Label>
+            <Input
+              type="text"
+              value={sensorType === "INPUT" ? "0" : sensorMinThreshold}
+              onChange={(e) => setSensorMinThreshold(e.target.value)}
+              disabled={sensorType === "INPUT"}
+              placeholder="Enter Minimum Threshold"
+            />
+            <Label className="block pl-2 text-lg text-left pb-2.5">Maximum Threshold:</Label>
+            <Input
+              type="text"
+              value={sensorType === "INPUT" ? "1" : sensorMaxThreshold}
+              onChange={(e) => setSensorMaxThreshold(e.target.value)}
+              disabled={sensorType === "INPUT"}
+              placeholder="Enter Maximum Threshold"
+            />
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button type="button" className="bg-destructive hover:bg-red-300" onClick={handleOpen}>
@@ -207,6 +231,22 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
                 disabled={sensorType === "INPUT"}
                 onChange={(e) => setSensorUnit(e.target.value)}
                 placeholder="Enter sensor unit"
+              />
+              <Label className="block pl-2 text-lg text-left pt-1 pb-1">Minimum Threshold:</Label>
+              <Input 
+                type="text"
+                value={sensorMinThreshold}
+                disabled={sensorType === "INPUT"}
+                onChange={(e) => setSensorMinThreshold(e.target.value)}
+                placeholder="Enter minimum threshold"
+              />
+              <Label className="block pl-2 text-lg text-left pt-1 pb-1">Maximum Threshold:</Label>
+              <Input
+              type="text"
+              value={sensorMaxThreshold}
+              disabled={sensorType === "INPUT"}
+              onChange={(e) => setSensorMaxThreshold(e.target.value)} 
+              placeholder="Enter maximum threshold"
               />
           </CardContent>
           <CardFooter className="flex justify-between">
