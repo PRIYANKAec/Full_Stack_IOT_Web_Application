@@ -9,8 +9,8 @@ const createSensor = async (req, res) => {
         name: Joi.string().required(),
         unit: Joi.string().required(),
         type: Joi.string().valid('INPUT', 'OUTPUT').required(),
-        minThreshold: Joi.number().required(),
-        maxThreshold: Joi.number().required()
+        minThreshold: Joi.when('type', { is: 'OUTPUT', then: Joi.number().required(), otherwise: Joi.forbidden() }),
+        maxThreshold: Joi.when('type', { is: 'OUTPUT', then: Joi.number().required(), otherwise: Joi.forbidden() })
     });
 
     const { error, value } = schema.validate(req.body);
@@ -31,17 +31,22 @@ const createSensor = async (req, res) => {
         // Check if sensor name already exists within the project
         const sensorExists = await SensorModel.findSensorByNameAndProjectId(value.name, parseInt(projectId, 10));
         if (sensorExists) {
-            return res.status(409).json(formatResponse('error', 'Sensor with same name already exist in the project'));
+            return res.status(409).json(formatResponse('error', 'Sensor with same name already exists in the project'));
         }
+
+        // Automatically set minThreshold and maxThreshold for INPUT type
+        let minThreshold = value.type === 'INPUT' ? 0 : value.minThreshold;
+        let maxThreshold = value.type === 'INPUT' ? 1 : value.maxThreshold;
 
         const sensor = await SensorModel.createSensor({
             name: value.name,
             type: value.type,
             unit: value.unit,
-            minThreshold: value.minThreshold,
-            maxThreshold: value.maxThreshold,
+            minThreshold,
+            maxThreshold,
             projectId: parseInt(projectId, 10)
         });
+
         res.status(201).json(formatResponse('success', 'Sensor created successfully', sensor));
     } catch (error) {
         return res.status(500).json(formatResponse('error', 'Internal Server Error', error.message));

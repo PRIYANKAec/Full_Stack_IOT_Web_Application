@@ -13,14 +13,9 @@ const updateSensor = async (req, res) => {
         id: Joi.number().required(),
         name: Joi.string(),
         type: Joi.string().valid('INPUT', 'OUTPUT'),
-        minThreshold: Joi.number().required(),
-        maxThreshold: Joi.number().required(),
-        unit: Joi.string().when('type', {
-            is: 'INPUT',
-            then: Joi.string().valid('status'),
-            otherwise: Joi.string().required()
-        }),
-        
+        minThreshold: Joi.when('type', { is: 'OUTPUT', then: Joi.number().required(), otherwise: Joi.forbidden() }),
+        maxThreshold: Joi.when('type', { is: 'OUTPUT', then: Joi.number().required(), otherwise: Joi.forbidden() }),
+        unit: Joi.string().required()
     });
 
     const { error: paramsError, value: paramsValue } = paramsSchema.validate(req.params);
@@ -48,10 +43,16 @@ const updateSensor = async (req, res) => {
             return res.status(404).json(formatResponse('error', 'Sensor not found'));
         }
 
+        // Auto-set min and max values if type is INPUT
+        if (bodyValue.type === 'INPUT') {
+            bodyValue.minThreshold = 0;
+            bodyValue.maxThreshold = 1;
+        }
+
         const sensor = await SensorModel.updateSensor(paramsValue.sensorId, { 
             name: bodyValue.name, 
             type: bodyValue.type, 
-            unit: bodyValue.unit , 
+            unit: bodyValue.unit,
             minThreshold: bodyValue.minThreshold,
             maxThreshold: bodyValue.maxThreshold
         });
