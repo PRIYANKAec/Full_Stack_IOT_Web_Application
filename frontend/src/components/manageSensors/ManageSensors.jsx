@@ -122,7 +122,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
       </TabsList>
 
       {/* Create Sensors */}
-      <TabsContent value="create" className="w-full text-center text-foreground">
+      <TabsContent value="create" className="w-full text-center text-foreground overflow-y-auto max-h-[500px]">
         <Card>
           <CardHeader>
             <CardTitle className="text-foreground text-2xl -mb-2">Create Sensor</CardTitle>
@@ -159,7 +159,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
               disabled={sensorType === "INPUT"}
               placeholder="Enter sensor unit"
             />
-            <Label className="block pl-2 text-lg text-left pb-2.5">Minimum Threshold:</Label>
+            <Label className="block pl-2 text-lg text-left pt-1 pb-1">Minimum Threshold:</Label>
             <Input
               type="text"
               value={sensorType === "INPUT" ? "0" : sensorMinThreshold}
@@ -167,7 +167,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
               disabled={sensorType === "INPUT"}
               placeholder="Enter Minimum Threshold"
             />
-            <Label className="block pl-2 text-lg text-left pb-2.5">Maximum Threshold:</Label>
+            <Label className="block pl-2 text-lg text-left pt-1 pb-1">Maximum Threshold:</Label>
             <Input
               type="text"
               value={sensorType === "INPUT" ? "1" : sensorMaxThreshold}
@@ -193,7 +193,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
       </TabsContent>
 
       {/* Update Sensor */}
-      <TabsContent value="update" className="w-full text-center text-foreground">
+      <TabsContent value="update" className="w-full text-center text-foreground overflow-y-auto max-h-[500px]">
         <Card>
           <CardHeader>
             <CardTitle className="text-foreground text-2xl -mb-2">Update Sensor</CardTitle>
