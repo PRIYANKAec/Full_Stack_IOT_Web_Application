@@ -62,13 +62,14 @@ const ManageProject = () => {
         setProjects(projectData);
 
         const allUsersData = await getAllUser(user.id);
-        if (Array.isArray(allUsersData)) {
-          setAllUsers(allUsersData);
+        if (Array.isArray(allUsersData.data)) {
+          setAllUsers(allUsersData.data);
         } else {
-          console.error("Invalid project data format:", projectData);
+          console.error("Invalid User data format:", allUsersData);
         }
       } catch (error) {
         console.error('Error fetching projects:', error);
+        toast.error("Failed to fetch projects");
       }finally {
         setLoading(false);
       }
