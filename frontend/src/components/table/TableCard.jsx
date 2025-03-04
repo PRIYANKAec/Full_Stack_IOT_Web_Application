@@ -5,7 +5,9 @@ import { Card, Table, Input } from "@/components/ui";
 import { formatDate } from "@/utils/time-functions";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+
 import { Button } from "../ui/button1";
+import { Trash2 } from "lucide-react";
 
 const TableCard = ({ sensorData, sensors }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,6 +22,7 @@ const TableCard = ({ sensorData, sensors }) => {
     { key: "value", label: "Value" },
     { key: "timestamp", label: "Timestamp", allowsSorting: true },
     { key: "status", label: "Status", allowsSorting: true },
+    { key: "actions", label: "Actions" },
   ];
 
   const data = sensorData.flat().map((dataPoint) => {
@@ -75,6 +78,10 @@ const TableCard = ({ sensorData, sensors }) => {
     saveAs(data, "sensor_data.xlsx");
   };
 
+  const handleDelete = (item) => {
+    console.log("Deleting sensor data:", item);
+  };
+
   return (
     <div className="w-full overflow-auto lg:px-16 pb-6">
     {sensorData?.length > 0 && sensors?.length > 0 && (
@@ -117,6 +124,12 @@ const TableCard = ({ sensorData, sensors }) => {
               <Table.Cell>{item.value}</Table.Cell>
               <Table.Cell>{item.timestamp}</Table.Cell>
               <Table.Cell>{item.status}</Table.Cell>
+              <Table.Cell>
+                <FaTrash
+                  className="cursor-pointer text-red-500 hover:text-red-700 transition-all"
+                  onClick={() => handleDelete(item)}
+                />
+              </Table.Cell>
             </Table.Row>
           )}
         </Table.Body>

@@ -9,9 +9,11 @@ import {
 import { motion } from "framer-motion";
 import { esp_code, python_code } from "@/assets/code";
 import { useAuth } from "@/context/AuthContext";
+import { getToken } from "@/utils/auth";
 
 const Tutorial = () => {
   const { user } = useAuth()
+  const token = getToken()
 
   return (
     <motion.div
@@ -75,12 +77,12 @@ const Tutorial = () => {
 
           <section className="mb-8">
             <h2 className="text-lg font-bold mb-2">API Endpoints</h2>
-            <ul className="list-disc list-inside mb-4 break-all">
+            <ul className="list-disc list-inside mb-4 break-all space-y-2">
               <li>
                 Get sensor data:
                 <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
                 <code>
-                  POST /api/projects/:projectName/sensors/:sensorName/getValue
+                  POST /api/projects/:projectName/sensor/:sensorName/getValue
                 </code>
                 </pre>
               </li>
@@ -88,7 +90,7 @@ const Tutorial = () => {
                 Send sensor data:{" "}
                 <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
                 <code>
-                  POST /api/projects/:projectName/sensors/:sensorName/sendValue
+                  POST /api/projects/:projectName/sensor/:sensorName/sendValue
                 </code>
                 </pre>
               </li>
@@ -96,6 +98,12 @@ const Tutorial = () => {
                 User data to pass in the request body:{" "}
                 <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
                 <code>"id": {user.id}</code>
+                </pre>
+              </li>
+              <li>
+                User Token for header(Format: "Authorization": "Bearer YOUR_TOKEN"):{" "}
+                <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
+                <code>{token}</code>
                 </pre>
               </li>
             </ul>
