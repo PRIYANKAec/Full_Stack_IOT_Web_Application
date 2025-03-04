@@ -48,6 +48,7 @@ model Sensor {
   projectId  Int
   project    Project      @relation(fields: [projectId], references: [id])
   sensorData SensorData[]
+  threshold  Float 
 
   @@unique([projectId, name])
 }
@@ -68,4 +69,9 @@ enum SensorType {
 enum Role {
   USER
   ADMIN
+}
+
+enum threshold {
+  Max_value
+  Min_value
 }
