@@ -9,7 +9,8 @@ const createSensor = async (req, res) => {
         name: Joi.string().required(),
         unit: Joi.string().required(),
         type: Joi.string().valid('INPUT', 'OUTPUT').required(),
-        threshold: Joi.number().required()
+        minThreshold: Joi.number().required(),
+        maxThreshold: Joi.number().required()
     });
 
     const { error, value } = schema.validate(req.body);
@@ -37,7 +38,8 @@ const createSensor = async (req, res) => {
             name: value.name,
             type: value.type,
             unit: value.unit,
-            threshold: value.threshold,
+            minThreshold: value.minThreshold,
+            maxThreshold: value.maxThreshold,
             projectId: parseInt(projectId, 10)
         });
         res.status(201).json(formatResponse('success', 'Sensor created successfully', sensor));

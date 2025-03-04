@@ -13,12 +13,14 @@ const updateSensor = async (req, res) => {
         id: Joi.number().required(),
         name: Joi.string(),
         type: Joi.string().valid('INPUT', 'OUTPUT'),
+        minThreshold: Joi.number().required(),
+        maxThreshold: Joi.number().required(),
         unit: Joi.string().when('type', {
             is: 'INPUT',
             then: Joi.string().valid('status'),
             otherwise: Joi.string().required()
         }),
-        threshold: Joi.number()
+        
     });
 
     const { error: paramsError, value: paramsValue } = paramsSchema.validate(req.params);
@@ -50,7 +52,8 @@ const updateSensor = async (req, res) => {
             name: bodyValue.name, 
             type: bodyValue.type, 
             unit: bodyValue.unit , 
-            threshold: bodyValue.threshold
+            minThreshold: bodyValue.minThreshold,
+            maxThreshold: bodyValue.maxThreshold
         });
         if (!sensor) {
             return res.status(404).json(formatResponse('error', 'Sensor not found'));
