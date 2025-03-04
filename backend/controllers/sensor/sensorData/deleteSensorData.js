@@ -36,6 +36,7 @@ const deleteSensorData = async (req, res) => {
         }
 
         await SensorModel.deleteSensorData(paramsValue.dataId);
+        req.io.emit('deleteSensorData', sensorData);
         res.status(200).json(formatResponse('success', 'Sensor data deleted successfully'));
     } catch (error) {
         res.status(500).json(formatResponse('error', 'Internal Server Error', error.message));

@@ -34,12 +34,16 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
   const [loading, setLoading] = useState(false);
 
   const handleCreateSensor = async () => {
-    if (!sensorName || !sensorType || !sensorUnit || sensorMaxThreshold === ""  || sensorMinThreshold === "") { 
+    if (!sensorName || !sensorType || !sensorUnit || !sensorMaxThreshold  || (sensorMinThreshold=== null || sensorMinThreshold === "")) { 
       handleOpen(); toast.error("Please fill in all fields."); 
       return; }
 
     setLoading(true);
     const data = { name: sensorName, type: sensorType, unit: sensorUnit, minThreshold:sensorMinThreshold, maxThreshold: sensorMaxThreshold, id: userId };
+    if(data.type === "INPUT") {
+      delete data.minThreshold;
+      delete data.maxThreshold;
+    }
 
     try {
       const response = await createSensor(projectId, data);
@@ -68,6 +72,10 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
 
     setLoading(true);
     const data = { name: sensorName, type: sensorType, unit: sensorUnit, minThreshold:sensorMinThreshold, maxThreshold: sensorMaxThreshold, id: userId };
+    if(data.type === "INPUT") {
+      delete data.minThreshold;
+      delete data.maxThreshold;
+    }
 
     try {
       const response = await updateSensor(projectId, sensorId, data);
@@ -140,7 +148,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
               className='mb-3'
             />
             <Label className="block pl-2 text-lg text-left pb-2.5">Sensor Type:</Label>
-            <Select onValueChange={(value) => { setSensorType(value); if (value === "INPUT") setSensorUnit("status"); }}>
+            <Select onValueChange={(value) => { setSensorType(value); if (value === "INPUT") setSensorUnit("status");if (value === "INPUT") setSensorMinThreshold(0); if (value === "INPUT") setSensorMaxThreshold(1);}}>
               <SelectTrigger className="w-full mb-3">
                 <SelectValue placeholder="Select sensor type" />
               </SelectTrigger>
@@ -158,6 +166,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
               onChange={(e) => setSensorUnit(e.target.value)}
               disabled={sensorType === "INPUT"}
               placeholder="Enter sensor unit"
+              className='mb-3'
             />
             <Label className="block pl-2 text-lg text-left pt-1 pb-1">Minimum Threshold:</Label>
             <Input
@@ -166,6 +175,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
               onChange={(e) => setSensorMinThreshold(e.target.value)}
               disabled={sensorType === "INPUT"}
               placeholder="Enter Minimum Threshold"
+              className='mb-3'
             />
             <Label className="block pl-2 text-lg text-left pt-1 pb-1">Maximum Threshold:</Label>
             <Input
@@ -174,6 +184,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
               onChange={(e) => setSensorMaxThreshold(e.target.value)}
               disabled={sensorType === "INPUT"}
               placeholder="Enter Maximum Threshold"
+              className='mb-3'
             />
           </CardContent>
           <CardFooter className="flex justify-between">
@@ -203,8 +214,8 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
           </CardHeader>
           <CardContent className="text-foreground text-base -mt-2 w-full">
             <Label className="block pl-2 text-lg text-left pb-1">Choose sensor:</Label>
-                <Select onValueChange={(value) => {setSensorId(value.id); setSensorName(value.name); setSensorType(value.type); setSensorUnit(value.unit)}}>
-                <SelectTrigger className="w-full">
+                <Select onValueChange={(value) => {setSensorId(value.id); setSensorName(value.name); setSensorType(value.type); setSensorUnit(value.unit); setSensorMinThreshold(value.minThreshold); setSensorMaxThreshold(value.maxThreshold);}}>
+                <SelectTrigger className="w-full mb-3">
                   <SelectValue placeholder="Select sensor to edit" />
                 </SelectTrigger>
                 <SelectContent>
@@ -221,6 +232,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
                 value={sensorName}
                 onChange={(e) => setSensorName(e.target.value)}
                 placeholder="Enter sensor name"
+                className='mb-3'
               />
               <Label className="block pl-2 text-lg text-left pb-1">Sensor Type:</Label>
               <Input type="text" disabled value={sensorType} placeholder='This field cannot be edited' />
@@ -231,6 +243,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
                 disabled={sensorType === "INPUT"}
                 onChange={(e) => setSensorUnit(e.target.value)}
                 placeholder="Enter sensor unit"
+                className='mb-3'
               />
               <Label className="block pl-2 text-lg text-left pt-1 pb-1">Minimum Threshold:</Label>
               <Input 
@@ -239,6 +252,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
                 disabled={sensorType === "INPUT"}
                 onChange={(e) => setSensorMinThreshold(e.target.value)}
                 placeholder="Enter minimum threshold"
+                className='mb-3'
               />
               <Label className="block pl-2 text-lg text-left pt-1 pb-1">Maximum Threshold:</Label>
               <Input
@@ -247,6 +261,7 @@ const ManageSensors = ({ projectId, userId, sensors, changeSensors, handleOpen }
               disabled={sensorType === "INPUT"}
               onChange={(e) => setSensorMaxThreshold(e.target.value)} 
               placeholder="Enter maximum threshold"
+              className='mb-3'
               />
           </CardContent>
           <CardFooter className="flex justify-between">

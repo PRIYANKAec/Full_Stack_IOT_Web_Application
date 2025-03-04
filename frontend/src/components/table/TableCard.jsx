@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Table, Input } from "@/components/ui";
 import { useAuth } from "@/context/AuthContext";
-import { deleteSensorData } from "@/APIs/sensorDataAPI";
 import { formatDate } from "@/utils/time-functions";
 
 import * as XLSX from "xlsx";
@@ -11,14 +10,14 @@ import { saveAs } from "file-saver";
 
 import { Button } from "../ui/button1";
 import { Trash2 } from "lucide-react";
-import { toast } from "sonner";
 
-const TableCard = ({ sensorData, sensors }) => {
+const TableCard = ({ sensorData, sensors, handleDelete }) => {
   const { user } = useAuth()
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("ascending");
+  const [data, setData] = useState([]);
   const itemsPerPage = 10;
 
   const columns = [
@@ -30,22 +29,26 @@ const TableCard = ({ sensorData, sensors }) => {
     { key: "actions", label: "Actions" },
   ];
 
-  const [data, setData] = useState(sensorData.flat().map((dataPoint) => {
-    const sensor = sensors.find((sensor) => sensor.id === dataPoint.sensorId);
-    const formattedTimestamp = formatDate(dataPoint.timestamp);
-    const isOnline = formattedTimestamp.includes("minute") || formattedTimestamp.includes("Just now");
+  useEffect(() => {
+    const formattedData = sensorData.flat().map((dataPoint) => {
+      const sensor = sensors.find((sensor) => sensor.id === dataPoint.sensorId);
+      const formattedTimestamp = formatDate(dataPoint.timestamp);
+      const isOnline = formattedTimestamp.includes("minute") || formattedTimestamp.includes("Just now");
 
-    return {
-      id: dataPoint.id,
-      sensorName: sensor ? sensor.name : "Unknown",
-      sensorType: sensor ? sensor.type.toLowerCase() : "Unknown",
-      value: dataPoint.value,
-      timestamp: formattedTimestamp,
-      status: isOnline ? "Online" : "Offline",
-      sensorId: sensor?.id,
-      projectId: sensor?.projectId
-    };
-  }));
+      return {
+        id: dataPoint.id,
+        sensorName: sensor ? sensor.name : "Unknown",
+        sensorType: sensor ? sensor.type.toLowerCase() : "Unknown",
+        value: dataPoint.value,
+        timestamp: formattedTimestamp,
+        status: isOnline ? "Online" : "Offline",
+        sensorId: sensor?.id,
+        projectId: sensor?.projectId
+      };
+    });
+    setData(formattedData);
+    handleSort("timestamp");
+  }, [sensorData, sensors]);
 
   // Sorting function
   const handleSort = (column) => {
@@ -85,19 +88,8 @@ const TableCard = ({ sensorData, sensors }) => {
     saveAs(data, "sensor_data.xlsx");
   };
 
-  const handleDelete = async (item) => {
-    try {
-      const response = await deleteSensorData(item?.projectId, item?.sensorId, item?.id, user?.id)
-      if (response?.status === "success") {
-        toast.success("Data deleted successfully")
-        setData((prevData) => prevData.filter((dataItem) => dataItem.id !== item.id));
-      } else {
-        toast.error("Failed to delete data")
-      }
-    } catch (error) {
-      toast.error("Failed to delete data")
-    }
-   
+  const ItemDelete = async (item) => {
+    handleDelete(item);
   };
 
   return (
@@ -145,7 +137,7 @@ const TableCard = ({ sensorData, sensors }) => {
               <Table.Cell>
                 <Trash2
                   className="cursor-pointer text-red-500 hover:text-red-700 transition-all"
-                  onClick={() => handleDelete(item)}
+                  onClick={() => ItemDelete(item)}
                 />
               </Table.Cell>
             </Table.Row>

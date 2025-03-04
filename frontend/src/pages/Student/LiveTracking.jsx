@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { getProjectsByUserId } from "@/APIs/projectAPI";
 import { getSensorByProjectId } from "@/APIs/sensorAPI";
-import { receiveSensorData, sendSensorData } from "@/APIs/sensorDataAPI";
+import { deleteSensorData, receiveSensorData, sendSensorData } from "@/APIs/sensorDataAPI";
 import socket from "@/utils/socket";
 
 import {
@@ -121,6 +121,19 @@ const LiveTracking = () => {
       });
       console.log("sensorData", sensorData);
     });
+    socket.on("deleteSensorData", (data) => {
+      console.log("socket", data);
+      setSensorData((prevData) => {
+        const updatedData = prevData.map((sensorArray) => {
+          if (sensorArray.length > 0 && sensorArray[0].sensorId === data.sensorId) {
+            return sensorArray.filter((sensor) => sensor.id !== data.id);
+          }
+          return sensorArray;
+        });
+        return updatedData;
+      });
+      console.log("sensorData", sensorData);
+    });
     return () => {
       socket.off("sensorData");
     };
@@ -144,6 +157,19 @@ const LiveTracking = () => {
       toast.error("Failed to send sensor data");
     }
   };
+
+  const handleDelete = async (item) => {
+   try {
+    const response = await deleteSensorData(item?.projectId, item?.sensorId, item?.id, user?.id)
+    if (response?.status === "success") {
+      toast.success("Data deleted successfully")
+    } else {
+      toast.error("Failed to delete data")
+    }
+  } catch (error) {
+    toast.error("Failed to delete data")
+  }   
+}
 
   const handleDialogClose = () => {
     setShowForm(false);
@@ -293,6 +319,7 @@ const LiveTracking = () => {
       <TableCard
         sensors={sensors?.filter((sensor) => sensor.projectId === selectedProject?.id)}
         sensorData={sensorData}
+        handleDelete={handleDelete}
       />
     </div>
   );

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { getAllProjects } from "@/APIs/projectAPI";
 import { getSensorByProjectId } from "@/APIs/sensorAPI";
-import { receiveSensorData, sendSensorData } from "@/APIs/sensorDataAPI";
+import { deleteSensorData, receiveSensorData, sendSensorData } from "@/APIs/sensorDataAPI";
 import socket from "@/utils/socket";
 
 import {
@@ -114,6 +114,22 @@ const AllTracking = () => {
           if (sensorArray.length > 0 && sensorArray[0].sensorId === data.sensorId) {
             return [...sensorArray, data];
           }
+          if (sensorArray.length === 0) {
+            return [data];
+          }
+          return sensorArray;
+        });
+        return updatedData;
+      });
+      console.log("sensorData", sensorData);
+    });
+    socket.on("deleteSensorData", (data) => {
+      console.log("socket", data);
+      setSensorData((prevData) => {
+        const updatedData = prevData.map((sensorArray) => {
+          if (sensorArray.length > 0 && sensorArray[0].sensorId === data.sensorId) {
+            return sensorArray.filter((sensor) => sensor.id !== data.id);
+          }
           return sensorArray;
         });
         return updatedData;
@@ -142,6 +158,19 @@ const AllTracking = () => {
       toast.error("Failed to send sensor data");
     }
   };
+
+  const handleDelete = async (item) => {
+     try {
+      const response = await deleteSensorData(item?.projectId, item?.sensorId, item?.id, user?.id)
+      if (response?.status === "success") {
+        toast.success("Data deleted successfully")
+      } else {
+        toast.error("Failed to delete data")
+      }
+    } catch (error) {
+      toast.error("Failed to delete data")
+    }   
+  }
 
   const handleDialogClose = () => {
     setShowForm(false);
@@ -292,6 +321,7 @@ const AllTracking = () => {
       <TableCard
         sensors={sensors?.filter((sensor) => sensor.projectId === selectedProject?.id)}
         sensorData={sensorData}
+        handleDelete={handleDelete}
       />
     </div>
   );

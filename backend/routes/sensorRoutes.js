@@ -36,7 +36,10 @@ const router = (io) => {
         getSensorData(req, res);
     });
     // Delete sensor data
-    router.delete('/projects/:projectId/sensor/:sensorId/deleteData/:dataId', authenticateToken, deleteSensorData);
+    router.delete('/projects/:projectId/sensor/:sensorId/deleteData/:dataId', authenticateToken, (req, res) => {
+        req.io = io;
+        deleteSensorData(req, res);
+    });
     // Delete multiple sensor data
     router.delete('/projects/:projectId/sensor/:sensorId/deleteData', authenticateToken, deleteMultipleSensorData);
 
