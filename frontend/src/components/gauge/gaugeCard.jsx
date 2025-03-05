@@ -39,7 +39,36 @@ const GaugeCard = ({ sensors, sensorData }) => {
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="flex flex-col items-center">
-                      <GaugeComponent value={latestData ? latestData.value : 0} unit={sensors[index]?.unit} label={sensors[index]?.name} />
+                      <GaugeComponent
+                        value={latestData ? latestData.value : 0}
+                        minValue={Math.max(0, (sensors[index]?.minThreshold || 0) - (sensors[index]?.minThreshold * 0.5))}
+                        maxValue={(sensors[index]?.maxThreshold || 100) + (sensors[index]?.maxThreshold * 0.5)}
+                        arc={{
+                          width: 0.3,
+                          padding: 0.005,
+                          cornerRadius: 1,
+                          subArcs: [
+                            {
+                              limit: sensors[index]?.minThreshold || 0, 
+                              color: "#F5CD19", 
+                              showTick: true, 
+                              tooltip: { text: `Too Low ${sensors[index]?.unit}!` },
+                            },
+                            {
+                              limit: sensors[index]?.maxThreshold || 100, 
+                              color: "#5BE12C", 
+                              showTick: true, 
+                              tooltip: { text: `${sensors[index]?.unit} in Limit!` },
+                            },
+                            {
+                              limit: (sensors[index]?.maxThreshold || 100) + 10,
+                              color: "#EA4228",
+                              showTick: true,
+                              tooltip: { text: `Too High ${sensors[index]?.unit}!` },
+                            },
+                          ],
+                        }}
+                      />
                       <p className="text-center mt-2">
                         {latestData ? latestData.value : 0} {" "} {sensors[index]?.unit}
                       </p>
