@@ -4,6 +4,25 @@ const { formatResponse } = require("../../../utils/helper");
 const Joi = require('joi');
 const sendEmail = require('../../../utils/email');
 
+const lastEmailSentTime = {}; // In-memory storage to track the last email sent time
+
+const formatEmailContent = (sensorName, sensorValue, minThreshold, maxThreshold) => {
+    return `
+            🚨 Sensor Alert: Immediate Attention Required! 🚨
+            Dear User,
+            The ${sensorName} has reported a value of ${sensorValue} which is out of the acceptable threshold range ${minThreshold} - ${maxThreshold}
+            ⚠️ Potential Impact:
+                System performance may be affected.
+               Possible safety or operational risks.
+                Immediate attention is recommended to prevent further issues.
+           🛠 Recommended Actions:
+                Check sensor functionality and calibration.
+                Inspect the surrounding environment for anomalies.
+               Take corrective measures as per operational guidelines.
+            If you need further assistance, please contact the support team immediately.
+    `;
+};
+
 const sendSensorData = async (req, res) => {
     const paramsSchema = Joi.object({
         projectId: Joi.number().integer().required(),
@@ -67,10 +86,21 @@ const sendSensorData = async (req, res) => {
 
             // Check thresholds and send email
             if (sensorData.value < sensor.minThreshold || sensorData.value > sensor.maxThreshold) {
-                const emailBody = `Sensor ${sensor.name} has a value of ${sensorData.value}, which is out of the threshold range (${sensor.minThreshold} - ${sensor.maxThreshold}).`;
-                setTimeout(async () => {
-                    await sendEmail(userEmail, 'Sensor Alert', emailBody); // Use the retrieved user email
-                }, 15 * 60 * 1000); // 15 minutes in milliseconds
+                const emailBody = formatEmailContent(sensor.name, sensorData.value, sensor.minThreshold, sensor.maxThreshold);
+                const currentTime = Date.now();
+                const lastSentTime = lastEmailSentTime[sensor.id] || 0;
+
+                if (currentTime - lastSentTime >= 15 * 60 * 1000) {
+                    // Send email immediately if 15 minutes have passed since the last email
+                    await sendEmail(userEmail, 'Sensor Alert', emailBody);
+                    lastEmailSentTime[sensor.id] = currentTime;
+                } else {
+                    // Schedule email to be sent after 15 minutes
+                    setTimeout(async () => {
+                        await sendEmail(userEmail, 'Sensor Alert', emailBody);
+                        lastEmailSentTime[sensor.id] = Date.now();
+                    }, 15 * 60 * 1000 - (currentTime - lastSentTime));
+                }
             }
 
             // Emit sensor data via WebSocket
