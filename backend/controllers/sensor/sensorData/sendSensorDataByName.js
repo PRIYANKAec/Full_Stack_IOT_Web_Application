@@ -3,14 +3,15 @@ const ProjectModel = require("../../../models/projectModel");
 const { formatResponse } = require("../../../utils/helper");
 const Joi = require('joi');
 const sendEmail = require('../../../utils/email');
+const UserModel = require("../../../models/userModel");
 
 const lastEmailSentTime = {}; // In-memory storage to track the last email sent time
 
-const formatEmailContent = (sensorName, sensorValue, minThreshold, maxThreshold) => {
+const formatEmailContent = (username, sensorName, sensorValue, minThreshold, maxThreshold) => {
     return `
         <div style="font-family: Arial, sans-serif; line-height: 1.6;">
             <h2 style="color: #d9534f;">🚨 Sensor Alert: Immediate Attention Required! 🚨</h2>
-            <p>Dear User,</p>
+            <p>Dear ${username},</p>
             <p>The <strong>${sensorName}</strong> has reported a value of <strong>${sensorValue}</strong>, which is out of the acceptable threshold range <strong>${minThreshold} - ${maxThreshold}</strong>.</p>
             <h3 style="color: #f0ad4e;">⚠️ Potential Impact:</h3>
             <ul>
@@ -30,6 +31,7 @@ const formatEmailContent = (sensorName, sensorValue, minThreshold, maxThreshold)
         </div>
     `;
 };
+
 const sendSensorDataByName = async (req, res) => {
     const paramsSchema = Joi.object({
         projectName: Joi.string().required(),
@@ -92,7 +94,9 @@ const sendSensorDataByName = async (req, res) => {
 
             // Check thresholds and send email
             if (sensorData.value < sensor.minThreshold || sensorData.value > sensor.maxThreshold) {
-                const emailBody = formatEmailContent(sensor.name, sensorData.value, sensor.minThreshold, sensor.maxThreshold);
+                // Get username
+                const user = await UserModel.findByEmail(userEmail);
+                const emailBody = formatEmailContent(user.username, sensor.name, sensorData.value, sensor.minThreshold, sensor.maxThreshold);
                 const currentTime = Date.now();
                 const lastSentTime = lastEmailSentTime[sensor.id] || 0;
 
