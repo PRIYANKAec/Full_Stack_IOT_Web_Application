@@ -2,6 +2,7 @@ const SensorModel = require("../../../models/sensorModel");
 const ProjectModel = require("../../../models/projectModel");
 const { formatResponse } = require("../../../utils/helper");
 const Joi = require('joi');
+const sendEmail = require('../../../utils/email');
 
 const sendSensorData = async (req, res) => {
     const paramsSchema = Joi.object({
@@ -33,6 +34,12 @@ const sendSensorData = async (req, res) => {
             return res.status(404).json(formatResponse('error', 'Project not found'));
         }
 
+        // Retrieve user email from project ID
+        const userEmail = await ProjectModel.findUserEmailByProjectId(paramsValue.projectId);
+        if (!userEmail) {
+            return res.status(404).json(formatResponse('error', 'User email not found'));
+        }
+
         // Check if Sensor exists
         const sensor = await SensorModel.findSensorById(paramsValue.sensorId);
         if (!sensor) {
@@ -51,12 +58,21 @@ const sendSensorData = async (req, res) => {
             // Emit sensor data via WebSocket
             req.io.emit('sensorData', sensorData);
             res.status(201).json(formatResponse('success', 'Input data change sent successfully', sensorData));
-        } else{
+        } 
+        else {
             const sensorData = await SensorModel.createSensorData({
                 value: bodyValue.value,
                 sensorId: paramsValue.sensorId
             });
-    
+
+            // Check thresholds and send email
+            if (sensorData.value < sensor.minThreshold || sensorData.value > sensor.maxThreshold) {
+                const emailBody = `Sensor ${sensor.name} has a value of ${sensorData.value}, which is out of the threshold range (${sensor.minThreshold} - ${sensor.maxThreshold}).`;
+                setTimeout(async () => {
+                    await sendEmail(userEmail, 'Sensor Alert', emailBody); // Use the retrieved user email
+                }, 15 * 60 * 1000); // 15 minutes in milliseconds
+            }
+
             // Emit sensor data via WebSocket
             req.io.emit('sensorData', sensorData);
             res.status(201).json(formatResponse('success', 'Output Sensor data sent successfully', sensorData));

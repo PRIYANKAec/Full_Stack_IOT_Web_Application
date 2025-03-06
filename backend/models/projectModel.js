@@ -26,6 +26,28 @@ class ProjectModel {
         })
     }
 
+    static async findUserEmailByProjectId(projectId) {
+        const project = await prisma.project.findUnique({
+          where: { id: projectId },
+          select: { userId: true }
+        });
+    
+        if (!project) {
+          throw new Error('Project not found');
+        }
+    
+        const user = await prisma.user.findUnique({
+          where: { id: project.userId },
+          select: { email: true }
+        });
+    
+        if (!user) {
+          throw new Error('User not found');
+        }
+    
+        return user.email;
+      }
+      
     static async getAllProjects() {
         return await prisma.project.findMany();
     }
