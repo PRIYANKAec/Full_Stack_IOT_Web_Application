@@ -8,18 +8,26 @@ const lastEmailSentTime = {}; // In-memory storage to track the last email sent 
 
 const formatEmailContent = (sensorName, sensorValue, minThreshold, maxThreshold) => {
     return `
-            🚨 Sensor Alert: Immediate Attention Required! 🚨
-            Dear User,
-            The ${sensorName} has reported a value of ${sensorValue} which is out of the acceptable threshold range ${minThreshold} - ${maxThreshold}
-            ⚠️ Potential Impact:
-                System performance may be affected.
-               Possible safety or operational risks.
-                Immediate attention is recommended to prevent further issues.
-           🛠 Recommended Actions:
-                Check sensor functionality and calibration.
-                Inspect the surrounding environment for anomalies.
-               Take corrective measures as per operational guidelines.
-            If you need further assistance, please contact the support team immediately.
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+            <h2 style="color: #d9534f;">🚨 Sensor Alert: Immediate Attention Required! 🚨</h2>
+            <p>Dear User,</p>
+            <p>The <strong>${sensorName}</strong> has reported a value of <strong>${sensorValue}</strong>, which is out of the acceptable threshold range <strong>${minThreshold} - ${maxThreshold}</strong>.</p>
+            <h3 style="color: #f0ad4e;">⚠️ Potential Impact:</h3>
+            <ul>
+                <li>System performance may be affected.</li>
+                <li>Possible safety or operational risks.</li>
+                <li>Immediate attention is recommended to prevent further issues.</li>
+            </ul>
+            <h3 style="color: #5bc0de;">🛠 Recommended Actions:</h3>
+            <ul>
+                <li>Check sensor functionality and calibration.</li>
+                <li>Inspect the surrounding environment for anomalies.</li>
+                <li>Take corrective measures as per operational guidelines.</li>
+            </ul>
+            <p>If you need further assistance, please contact the support team immediately.</p>
+            <p>Best regards,</p>
+            <p>Your Support Team</p>
+        </div>
     `;
 };
 
