@@ -1,103 +1,37 @@
-# IoT Application
-
-This is an IoT Application that consists of a frontend built with React and Vite, and a backend built with Node.js and Express.
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Technologies](#technologies)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+# IoT Application for Project Visualization & Management
 
 ## Overview
 
-The IoT Application allows users to manage and monitor IoT devices. The frontend provides a user-friendly interface for interacting with the devices, while the backend handles data storage and API endpoints.
+This IoT application was developed specifically for the IoT special lab at my College to manage and monitor IoT (Internet of Things) projects. It aims to bridge the gap between hardware and software integration, particularly for first-year students or those from non-computing backgrounds who are new to web dashboard development.
 
-## Technologies
+## Problem It Solves
 
-### Frontend
+The application addresses several key challenges:
 
-- **React**: A JavaScript library for building user interfaces.
-- **Vite**: A build tool that provides a faster and leaner development experience for modern web projects.
-- **Tailwind CSS**: A utility-first CSS framework for rapid UI development.
-- **ShadCN UI**:
-- **GetJustd**:
-- **Recharts**:
+- **Integration Complexity:** Simplifies the integration of hardware and software components, making it easier for beginners to work with IoT projects.
+- **Data Latency:** Reduces data latency by Socket IO, also allowing for local server deployment, which can operate offline without internet connectivity.
+- **Alert System:** Sends alert emails in case of abnormalities detected in the system, ensuring timely intervention(requires internet).
 
-### Backend
+## Key Features
 
-- **Node.js**: A JavaScript runtime built on Chrome's V8 JavaScript engine.
-- **Express**: A web application framework for Node.js.
-- **MySQL**:
-- **Prisma**:
-- **Socket IO**:
-- **JWT Token**: For handling JWT authentication.
-- **Node Mailer**:
-- **bcrypt**: For hashing passwords.
+- **Custom Arduino Library:** Developed to reduce complexity and promote clean code, making it easier for students to integrate Arduino devices.
+- **Tutorial Page:** Includes a tutorial section on the website that guides users through API endpoints, coding, and attachment sending.
+- **Project Management:** Users can manage projects and sensors, with visualization capabilities.
+- **Admin Dashboard:** Faculty members can view user projects, track lab activities, and present reports to higher authorities, showcasing both hardware and software support.
 
-## Installation
+## Technologies Used
 
-### Frontend
+- **Frontend:** React, Tailwind CSS, ShadCN UI, GetJustd, Recharts.
+- **Backend:** Node.js, Express, MySQL, Prisma ORM, Socket.IO, JWT (JSON Web Tokens), Nodemailer, bcrypt.
+- **Custom Arduino Library:** For seamless integration with Arduino devices.(This project can be used with any WiFi based Microcontroller not only limited to Arduino)
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/KAVIRAJec/Iot-Application.git
-   ```
-2. Navigate to the frontend directory:
-   ```
-   cd frontend
-   ```
-3. Install the dependencies:
-   ```
-   npm install --legacy-peer-deps
-   ```
-4. Create a `.env` file in the directory and add your environment variables.
+## Future Development
 
-### Backend
-
-1. Clone the repository:
-   ```
-   git clone https://github.com/KAVIRAJec/Iot-Application.git
-   ```
-2. Navigate to the backend directory:
-   ```
-   cd backend
-   ```
-3. Install the dependencies:
-   ```
-   npm install
-   ```
-4. Create a `.env` file in the directory and add your environment variables.
-
-## Usage
-
-### Frontend
-
-To start the development server, run:
-```
-npm run dev
-```
-The application will run on `http://localhost:5173`.
-
-### Backend
-
-To start the server, run:
-```
-npm start
-```
-The server will run on `http://localhost:3000`.
-
-To view the database(Prisma Studio):
-```
-npx prisma studio
-```
-The server will run on `http://localhost:5555`.
+This project is designed to be extensible. Future enhancements could include implementing new API functionalities, expanding device support, and enhancing offline capabilities.
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request.
+Contributions are welcome! If you have ideas for new features or improvements, please open an issue or submit a pull request.
 
 ## License
 
