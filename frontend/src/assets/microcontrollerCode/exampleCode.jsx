@@ -1,4 +1,4 @@
-export const Sample_ESP32_Code = `#include "WiFiSetup.h"
+export const Esp32_ExampleCode = `#include "WiFiSetup.h"
 #include "SensorData.h"
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
@@ -98,7 +98,7 @@ void loop() {
 }`
 
 
-export const Sample_RaspberryPi_Code = `import RPi.GPIO as GPIO
+export const RaspBerryPi_ExampleCode = `import RPi.GPIO as GPIO
 import time
 import Adafruit_DHT
 

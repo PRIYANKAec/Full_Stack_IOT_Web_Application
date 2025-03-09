@@ -7,10 +7,12 @@ import {
   CardContent,
 } from "@/components/ui/card1";
 import { motion } from "framer-motion";
-import { esp_code, python_code } from "@/assets/code";
 import { useAuth } from "@/context/AuthContext";
 import { getToken } from "@/utils/auth";
-import { Sample_ESP32_Code, Sample_RaspberryPi_Code } from "@/assets/exampleCode";
+import { esp_SampleCode, python_Samplecode } from "@/assets/microcontrollerCode/sampleCode";
+import { Esp32_ExampleCode, RaspBerryPi_ExampleCode } from "@/assets/microcontrollerCode/exampleCode";
+import { esp32_SensorData, RaspberryPi_SensorData } from "@/assets/microcontrollerCode/sensorData";
+import { Esp32_WifiSetUp_code, RaspBerryPi_WifiSetUp_code } from "@/assets/microcontrollerCode/WifiSetup";
 
 const Tutorial = () => {
   const { user } = useAuth()
@@ -112,7 +114,7 @@ const Tutorial = () => {
 
           <section className="mb-8">
             <h2 className="text-lg tex font-bold mb-2">
-              Send/Receive Data from Hardware
+            Sample Code for Initial Setup
             </h2>
             <Tabs defaultValue="esp32" className="flex flex-col items-center">
               <TabsList className="mb-4 flex justify-center w-[240px]">
@@ -126,7 +128,7 @@ const Tutorial = () => {
                 </h2>
                 <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
                   <code className="whitespace-pre-wrap break-all">
-                  {esp_code}
+                  {esp_SampleCode}
                   </code>
                 </pre>
               </TabsContent>
@@ -137,7 +139,73 @@ const Tutorial = () => {
                 </h2>
                 <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
                   <code className="whitespace-pre-wrap break-all">
-                  {python_code}
+                  {python_Samplecode}
+                  </code>
+                </pre>
+              </TabsContent>
+            </Tabs>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-lg tex font-bold mb-2"> Code for WifiSetup</h2>
+            <Tabs defaultValue="esp32" className="flex flex-col items-center">
+              <TabsList className="mb-4 flex justify-center w-[240px]">
+                <TabsTrigger value="esp32">ESP32/ESP8266</TabsTrigger>
+                <TabsTrigger value="raspberry-pi">Raspberry Pi</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="esp32">
+                <h2 className="text-lg font-semibold mb-2">
+                  ESP32/ESP8266 Code
+                </h2>
+                <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
+                  <code className="whitespace-pre-wrap break-all">
+                  {Esp32_WifiSetUp_code}
+                  </code>
+                </pre>
+              </TabsContent>
+
+              <TabsContent value="raspberry-pi">
+                <h2 className="text-lg font-semibold mb-2">
+                  Raspberry Pi Code
+                </h2>
+                <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
+                  <code className="whitespace-pre-wrap break-all">
+                  {RaspBerryPi_WifiSetUp_code}
+                  </code>
+                </pre>
+              </TabsContent>
+            </Tabs>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-lg tex font-bold mb-2">
+             SensorData Communication between  a Microcontroller and a Cloud-based API.
+            </h2>
+            <Tabs defaultValue="esp32" className="flex flex-col items-center">
+              <TabsList className="mb-4 flex justify-center w-[240px]">
+                <TabsTrigger value="esp32">ESP32/ESP8266</TabsTrigger>
+                <TabsTrigger value="raspberry-pi">Raspberry Pi</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="esp32">
+                <h2 className="text-lg font-semibold mb-2">
+                  ESP32/ESP8266 Code
+                </h2>
+                <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
+                  <code className="whitespace-pre-wrap break-all">
+                  {esp32_SensorData}
+                  </code>
+                </pre>
+              </TabsContent>
+
+              <TabsContent value="raspberry-pi">
+                <h2 className="text-lg font-semibold mb-2">
+                  Raspberry Pi Code
+                </h2>
+                <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
+                  <code className="whitespace-pre-wrap break-all">
+                  {RaspberryPi_SensorData}
                   </code>
                 </pre>
               </TabsContent>
@@ -147,6 +215,7 @@ const Tutorial = () => {
           <section className="mb-8">
             <h2 className="text-lg tex font-bold mb-2">
               Example Arduino Code for IoT-based Project
+              <p>Send/Receive Data from Hardware</p>
             </h2>
             <Tabs defaultValue="esp32" className="flex flex-col items-center">
               <TabsList className="mb-4 flex justify-center w-[240px]">
@@ -160,7 +229,7 @@ const Tutorial = () => {
                 </h2>
                 <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
                   <code className="whitespace-pre-wrap break-all">
-                  {Sample_ESP32_Code}
+                  {Esp32_ExampleCode}
                   </code>
                 </pre>
               </TabsContent>
@@ -171,34 +240,18 @@ const Tutorial = () => {
                 </h2>
                 <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">
                   <code className="whitespace-pre-wrap break-all">
-                  {Sample_RaspberryPi_Code}
+                  {RaspBerryPi_ExampleCode}
                   </code>
                 </pre>
               </TabsContent>
             </Tabs>
-
-            <section className="mb-8">
-            <h2 className="text-lg font-bold mb-2">Work Flow of the Code</h2>
-            <ul className="list-disc list-inside mb-4">
-              <li>Begins Serial Communication at 115200 baud rate.</li>
-              <li>Initializes Ultrasonic Sensor (sets TRIG_PIN as output and ECHO_PIN as input).</li>
-              <li>Initializes DHT11 Sensor and retrieves minimum delay between readings.</li>
-              <li>Configures LED and Switch (LED_PIN is set to LOW initially).</li>
-              <li>Connects to Wi-Fi using connectToWiFi().</li>
-            </ul>
-            </section>
           </section>
+          
           <section className="mb-8">
-            <h2 className="text-lg font-bold mb-2">How it Works</h2>
-            <ul className="list-disc list-inside mb-4">
-              <li>Sends a 10µs pulse to TRIG_PIN.</li>
-                <li>Measures the time duration of the pulse reflected back to ECHO_PIN.</li>
-                <li>Uses the formula:
-                Distance (cm) = Time (µs) ×  0.034 / 2</li>
-                <li>Prints the distance to the Serial Monitor.</li>
-            </ul>
-          </section>
-
+          <h2 className="text-lg font-bold mb-2" > To Clarify the Doubts:  
+          <a href="https://github.com/KAVIRAJec/Iot-Application/tree/main/Microcontroller_Code" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">View On Github</a> </h2>
+         </section>
+         
         </CardContent>
       </Card>
     </motion.div>
