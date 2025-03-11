@@ -10,11 +10,11 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# RUN npx prisma generate
-RUN npx prisma generate
-
 # Copy the rest of the application code
 COPY . .
+
+# RUN npx prisma generate
+RUN npx prisma generate
 
 # Set environment variables from build arguments
 ARG JWT_SECRET=${JWT_SECRET}
