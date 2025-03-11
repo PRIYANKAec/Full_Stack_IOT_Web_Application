@@ -19,6 +19,10 @@ RUN npm run build
 # Use an official Nginx image to serve the frontend
 FROM nginx:alpine
 
+# Set environment variables from build arguments
+ARG VITE_APP_BACKEND_URL
+ENV VITE_APP_BACKEND_URL=$VITE_APP_BACKEND_URL
+
 # Copy the build output to the Nginx html directory
 COPY --from=build /app/dist /usr/share/nginx/html
 

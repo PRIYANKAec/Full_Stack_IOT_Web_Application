@@ -28,6 +28,8 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/iot-backend:latest
 
       - name: Build and Push Frontend Image
+        env:
+          VITE_APP_BACKEND_URL: ${{ secrets.VITE_APP_BACKEND_URL }}
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/iot-frontend:latest -f frontend/Dockerfile ./frontend
+          docker build --build-arg VITE_APP_BACKEND_URL=${{ secrets.VITE_APP_BACKEND_URL }} -t ${{ secrets.DOCKER_USERNAME }}/iot-frontend:latest -f frontend/Dockerfile ./frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/iot-frontend:latest
