@@ -9,10 +9,19 @@ COPY package*.json ./
 
 # Install dependencies
 RUN npm install
+
 # RUN npx prisma generate
+RUN npx prisma generate
 
 # Copy the rest of the application code
 COPY . .
+
+# Set environment variables from build arguments
+ARG JWT_SECRET=${JWT_SECRET}
+ARG DATABASE_URL=${DATABASE_URL}
+
+ENV JWT_SECRET=${JWT_SECRET}
+ENV DATABASE_URL=${DATABASE_URL}
 
 # Expose the port the app runs on
 EXPOSE 3000
