@@ -33,7 +33,7 @@ const App = () => {
   );
 }
 
-const AppContent = () => {
+const AppContent = () => { 
   const location = useLocation();
   const { user, loading } = useAuth();
 
