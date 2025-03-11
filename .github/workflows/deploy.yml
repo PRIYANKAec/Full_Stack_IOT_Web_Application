@@ -31,6 +31,6 @@ jobs:
         env:
           VITE_APP_BACKEND_URL: ${{ secrets.VITE_APP_BACKEND_URL }}
         run: |
-          echo "Building frontend with VITE_APP_BACKEND_URL=${VITE_APP_BACKEND_URL}"
-          docker build --build-arg VITE_APP_BACKEND_URL=${VITE_APP_BACKEND_URL} -t ${{ secrets.DOCKER_USERNAME }}/iot-frontend:latest -f frontend/Dockerfile ./frontend
+          echo "Building frontend with VITE_APP_BACKEND_URL=${{ secrets.VITE_APP_BACKEND_URL }}"
+          docker build --build-arg VITE_APP_BACKEND_URL=${{ secrets.VITE_APP_BACKEND_URL }} -t ${{ secrets.DOCKER_USERNAME }}/iot-frontend:latest -f frontend/Dockerfile ./frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/iot-frontend:latest
