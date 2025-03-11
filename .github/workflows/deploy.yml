@@ -27,10 +27,19 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/iot-backend:latest -f backend/Dockerfile ./backend
           docker push ${{ secrets.DOCKER_USERNAME }}/iot-backend:latest
 
+      - name: Log Environment Variable Presence
+        run: |
+          if [ -z "${{ secrets.VITE_APP_BACKEND_URL }}" ]; then
+            echo "VITE_APP_BACKEND_URL is not set"
+          else
+            echo "VITE_APP_BACKEND_URL is set"
+          fi
+
+
       - name: Build and Push Frontend Image
         env:
           VITE_APP_BACKEND_URL: ${{ secrets.VITE_APP_BACKEND_URL }}
         run: |
-          echo "Building frontend with VITE_APP_BACKEND_URL=${{ secrets.VITE_APP_BACKEND_URL }}"
+          echo "Building frontend with VITE_APP_BACKEND_URL=${VITE_APP_BACKEND_URL}"
           docker build --build-arg VITE_APP_BACKEND_URL=${{ secrets.VITE_APP_BACKEND_URL }} -t ${{ secrets.DOCKER_USERNAME }}/iot-frontend:latest -f frontend/Dockerfile ./frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/iot-frontend:latest
