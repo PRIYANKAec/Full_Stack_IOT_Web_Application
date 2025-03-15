@@ -56,7 +56,7 @@ const Register = () => {
 
   // Generate the last 4 years
   const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 4 }, (_, i) => currentYear - i);
+  const years = Array.from({ length: 4 }, (_, i) => currentYear + i);
 
   return (
     <div className="flex justify-center -mt-16 pt-12 pb-12 items-center min-h-screen bg-gradient-to-tr from-custom-cornflowerBlue to-custom-deepBlue p-4">
