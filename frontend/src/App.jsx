@@ -50,7 +50,7 @@ const AppContent = () => {
     );
   }
   
-  console.log("Testing the deployment");
+  console.log("Successfully Deployed on K8S");
   
   const isAuthRoute = hideNavbarRoutes.includes(location.pathname);
 
