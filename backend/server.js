@@ -29,7 +29,11 @@ const io = new Server(server, {
 });
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:31416' }));
+app.use(cors({
+    origin: '*', // Allow all origins (for testing)
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
