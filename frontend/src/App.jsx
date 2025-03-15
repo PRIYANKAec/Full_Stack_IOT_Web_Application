@@ -49,7 +49,9 @@ const AppContent = () => {
       </div>
     );
   }
-
+  
+  console.log("Testing the deployment");
+  
   const isAuthRoute = hideNavbarRoutes.includes(location.pathname);
 
   return (
