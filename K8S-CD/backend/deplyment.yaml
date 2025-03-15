@@ -15,6 +15,7 @@ spec:
       containers:
         - name: backend-container
           image: kaviraj2003/iot-backend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:

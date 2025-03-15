@@ -15,11 +15,6 @@ spec:
       containers:
         - name: frontend-container
           image: kaviraj2003/iot-frontend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
-          env:
-            - name: VITE_APP_BACKEND_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: iot-config
-                  key: VITE_APP_BACKEND_URL
