@@ -1,9 +1,10 @@
 name: CI/CD Pipeline
-
 on:
   push:
     branches:
       - main  # Runs when code is pushed to main
+
+  workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
   build-and-push:
