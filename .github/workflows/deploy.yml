@@ -33,4 +33,4 @@ jobs:
         run: |
           docker build --build-arg VITE_APP_BACKEND_URL=$VITE_APP_BACKEND_URL -t ${{ secrets.DOCKER_USERNAME }}/iot-frontend:latest -f frontend/Dockerfile ./frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/iot-frontend:latest
-      
+       
