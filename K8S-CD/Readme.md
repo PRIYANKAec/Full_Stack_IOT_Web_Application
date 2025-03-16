@@ -115,7 +115,7 @@ Description=Auto update K3S Deployment every 30 seconds
 After=network.target
 
 [Service]
-ExecStart=/bin/bash -c 'sleep 30; /home/z/Documents/projects/Iot-Application-CD/K8S/k3s-auto-update.sh'
+ExecStart=/bin/bash -c 'sleep 30; /usr/local/bin/k3s-auto-update.sh'
 Restart=always
 User=root
 
