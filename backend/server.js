@@ -30,10 +30,9 @@ const io = new Server(server, {
 
 // Middleware
 app.use(cors({
-    origin: ['https://full-stack-iot-web-application.vercel.app'], // Allow all origins (for testing)
+    origin: '*', // Allow all origins (for testing)
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true 
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
